@@ -1,8 +1,10 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 
 const Show = () => {
+  const {id}=useParams()
   return (
-    <div>Show</div>
+    <div>Show payment {id}</div>
   )
 }
 

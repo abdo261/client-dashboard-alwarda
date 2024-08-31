@@ -6,11 +6,11 @@ import PrimarySchoolTab from "./list/PrimarySchoolTab";
 import HightSchoolTab from "./list/HightSchoolTab";
 
 const List = () => {
+    
   return (
     <div className="flex w-full flex-col items-stretch ">
-      
-
       <Tabs
+      selectedKey="college"
         aria-label="Options"
         color="primary"
         variant="underlined"
@@ -21,20 +21,21 @@ const List = () => {
           tab: "max-w-fit px-0 h-12 mx-auto",
           tabContent: "group-data-[selected=true]:text-[#06b6d4]",
         }}
-      ><Tab
-        key="primaire"
-        title={
-          <div className="flex items-center space-x-2">
-            <FaChild />
-            <span>Primaire</span>
-            <Chip size="sm" variant="faded">
-              9
-            </Chip>
-          </div>
-        }
       >
-        <PrimarySchoolTab />
-      </Tab>
+        <Tab
+          key="primaire"
+          title={
+            <div className="flex items-center space-x-2">
+              <FaChild />
+              <span>Primaire</span>
+              <Chip size="sm" variant="faded">
+                9
+              </Chip>
+            </div>
+          }
+        >
+          <PrimarySchoolTab />
+        </Tab>
         <Tab
           key="college"
           title={
@@ -47,7 +48,7 @@ const List = () => {
             </div>
           }
         >
-          <MiddleSchoolTab/>
+          <MiddleSchoolTab />
         </Tab>
 
         <Tab
@@ -62,7 +63,7 @@ const List = () => {
             </div>
           }
         >
-          <HightSchoolTab/>
+          <HightSchoolTab />
         </Tab>
       </Tabs>
     </div>
