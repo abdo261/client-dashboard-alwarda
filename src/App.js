@@ -9,6 +9,7 @@ import { subjectRoutes } from "./pages/subject/routes";
 import { loginRoutes } from "./pages/auth/router";
 import { useSelector } from "react-redux";
 import PageNoteFound from "./pages/PageNoteFound";
+import { paymentRoutes } from "./pages/payment/routes";
 
 const App = () => {
   // const { user } = useSelector((state) => state.auth);
@@ -24,12 +25,13 @@ const App = () => {
             {teacherRoutes}
             {levelRoutes}
             {subjectRoutes}
+            {paymentRoutes}
             <Route path="/auth/login" element={<Navigate to="/"/>} />
           </>
         {/* ) : ( */}
           <>
           {loginRoutes}
-           <Route path="/*" element={<Navigate to="/auth/login"/>} />
+           <Route path="/" element={<Navigate to="/auth/login"/>} />
           </>
         {/* )} */}
         <Route path="*" element={<PageNoteFound/>}/>

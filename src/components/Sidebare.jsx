@@ -20,7 +20,7 @@ const Links = [
   { name: "Enseignants", href: "/enseignats", icon: <FaUserTie /> },
   { name: "Niveaux", href: "/niveaux", icon: <TbSchool /> },
   { name: "Matiéres", href: "/matiéres", icon: <GiBookCover /> },
-  { name: "Abonnements", href: "/abonnements", icon: <TbReportMoney /> },
+  // { name: "Abonnements", href: "/abonnements", icon: <TbReportMoney /> },
   { name: "Paiement", href: "/paiements", icon: <FaHandHoldingUsd /> },
 
 ];
