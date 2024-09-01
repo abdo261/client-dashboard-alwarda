@@ -7,27 +7,25 @@ export const getstudentsByPaymentsSchool = (school,cb) => async (dispatch) => {
   dispatch(studentActions.setGetLoading(true));
   dispatch(studentActions.setStudents(null));
   try {
-    // await new Promise((resolve)=>setTimeout(resolve,5000))
+    await new Promise((resolve)=>setTimeout(resolve,5000))
     const response = await request.get(`/students/payments/${school}`);
     console.log(response)
     dispatch(studentActions.setStudents(response.data));
   } catch (error) {
     console.log(error);
  
-    // dispatch(studentActions.setStudents(null));
-    // if (error?.response) {
-    //   error.response.status === 500 &&
-    //     dispatch(studentActions.setError(error.response.data.message));
-
-    //   console.log("responce exist");
-    // } else {
-    //   dispatch(
-    //     studentActions.setError(
-    //       "Le serveur est en panne, vérifiez si votre serveur est démarré ?"
-    //     )
-    //   );
-    // }
-    // cb && cb();
+    dispatch(studentActions.setStudents(null));
+    if (error?.response) {
+      error.response.status === 500 &&
+        dispatch(studentActions.setError(error.response.data.message));
+    } else {
+      dispatch(
+        studentActions.setError(
+          "Le serveur est en panne, vérifiez si votre serveur est démarré ?"
+        )
+      );
+    }
+    cb && cb();
   } finally {
     dispatch(studentActions.setGetLoading(false));
   }

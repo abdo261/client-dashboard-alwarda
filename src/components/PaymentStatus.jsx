@@ -158,11 +158,11 @@ const PaymentStatus = ({ payment }) => {
                     <IoMdMore size={20} />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Static Actions">
-                  <DropdownItem key="new">Payé Touts</DropdownItem>
-                  <DropdownItem key="copy">Payé just 50 Dh</DropdownItem>
+                <DropdownMenu aria-label="Static Actions" disabledKeys={[ amountPaid ===totalAmount && 'allPayed',have50 === 0 &&'50DH_payed']}>
+                  <DropdownItem key="allPayed">Payé Touts</DropdownItem>
+                  <DropdownItem key="50DH_payed" >Payé just 50 Dh</DropdownItem>
                   <DropdownItem
-                    key="delete"
+                    key="custem"
                     className="text-warning"
                     color="warning"
                   >

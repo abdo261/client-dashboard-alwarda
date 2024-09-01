@@ -3,11 +3,12 @@ import {
   Button,
   Card,
   CardBody,
+  Chip,
   Input,
   Pagination,
   Select,
   SelectItem,
- 
+  Spinner,
 } from "@nextui-org/react";
 
 import { FiEye, FiSearch } from "react-icons/fi";
@@ -16,6 +17,7 @@ import { BiSolidEdit, BiTrash } from "react-icons/bi";
 import PaymentStatus from "../../../components/PaymentStatus";
 import { useDispatch, useSelector } from "react-redux";
 import { getstudentsByPaymentsSchool } from "../../../redux/api/studentApi";
+import ErrorAlert from "../../../components/ErrorAlert";
 
 const monthsTable = [
   { name: "Tous les mois", value: "" },
@@ -31,27 +33,34 @@ const monthsTable = [
   { name: "Juin", value: "June", id: 6 },
 ];
 const levels = [
-  { name: "Aucun", value: "" }, 
-  { name: "1AP", value: 1}, 
-  { name: "2AP", value: 2}, 
-  { name: "3AP", value: 3}, 
-  { name: "4AP", value: 4}, 
-  { name: "5AP", value: 5}, 
-  { name: "6AP", value: 6}, 
-
+  { name: "Aucun", value: "" },
+  { name: "1AP", value: 1 },
+  { name: "2AP", value: 2 },
+  { name: "3AP", value: 3 },
+  { name: "4AP", value: 4 },
+  { name: "5AP", value: 5 },
+  { name: "6AP", value: 6 },
+];
+const status = [
+  { id: 2, name: "Payé",value:"Payé" },
+  { id: 3, name: "Non payé" ,value:"Non payé"},
+  { id: 4, name: "Partiellement payé",value:"Partiellement payé" },
 ];
 const PrimarySchoolTab = () => {
   const dispatch = useDispatch();
   const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  
+  
   useEffect(() => {
     dispatch(getstudentsByPaymentsSchool("ECOLE_PRIMAIRE"));
   }, [dispatch]);
-  const {error,loading,students} = useSelector(state=>state.student)
+  const { error, loading, students } = useSelector((state) => state.student);
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
 
-  const pages = useMemo(() => {
+  const { totalFilteredStudents, pages } = useMemo(() => {
     // Filter students based on search input
     const filteredstudents = students?.filter((c) =>
       (c.firstName + " " + c.lastName)
@@ -67,30 +76,66 @@ const PrimarySchoolTab = () => {
             s.payments.some((p) => p.month === selectedMonth)
           );
   
-    return Math.ceil(filteredstudentsByMonth?.length / rowsPerPage);
-  }, [searchItem, selectedMonth, students]);
-
+    // Further filter by status
+    const filteredStudentsByStatus = selectedStatus
+      ? filteredstudentsByMonth?.filter((s) => {
+          const payment = s.payments?.find((p) => p.month === selectedMonth);
+          if (!payment) return false;
+  
+          if (selectedStatus === "Payé") {
+            return payment.amountDue === 0;
+          } else if (selectedStatus === "Non payé") {
+            return payment.amountDue === payment.totalAmount;
+          } else if (selectedStatus === "Partiellement payé") {
+            return payment.amountDue > 0 && payment.totalAmount > payment.amountDue;
+          }
+          return false;
+        })
+      : filteredstudentsByMonth;
+  
+    const totalFilteredStudents = filteredStudentsByStatus?.length;
+    const pages = Math.ceil(totalFilteredStudents / rowsPerPage);
+  
+    return { totalFilteredStudents, pages };
+  }, [searchItem, selectedMonth, students, selectedStatus]);
+  
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-
+  
     const filteredstudents = students?.filter((c) =>
-      (c.firstName + " " + c.lastName)
-        .toLowerCase()
-        .includes(searchItem.toLowerCase())
+      (c.firstName + " " + c.lastName).toLowerCase().includes(searchItem.toLowerCase())
     );
-
-    const filteredstudentsByMonth =
-      selectedMonth === ""
-        ? filteredstudents
-        : filteredstudents?.map((s) => ({
-            ...s,
-            payments: s.payments.filter((p) => p.month === selectedMonth),
-          }));
-
-    return filteredstudentsByMonth?.slice(start, end);
-  }, [page, searchItem, selectedMonth, students]);
-
+  
+    const filteredstudentsByMonth = selectedMonth === ""
+      ? filteredstudents
+      : filteredstudents?.map((s) => ({
+          ...s,
+          payments: s.payments?.filter((p) => p.month === selectedMonth),
+        }));
+  
+    let filteredStudentsByStatus = filteredstudentsByMonth;
+  
+    if (selectedStatus) {
+      filteredStudentsByStatus = filteredstudentsByMonth?.filter((s) => {
+        if (selectedStatus === "") return true; // Show all students
+        const payment = s.payments.find((p) => p.month === selectedMonth);
+        if (!payment) return false; // No payment for selected month
+  
+        if (selectedStatus === "Payé") {
+          return payment.amountDue === 0;
+        } else if (selectedStatus === "Non payé") {
+          return payment.amountDue === payment.totalAmount;
+        } else if (selectedStatus === "Partiellement payé") {
+          return payment.amountDue > 0 && payment.totalAmount > payment.amountDue;
+        }
+        return filteredStudentsByStatus?.slice(start, end);
+      });
+    }
+  
+    return filteredStudentsByStatus?.slice(start, end);
+  }, [page, searchItem, selectedMonth, students, selectedStatus]);
+  
   const mouthItems = useMemo(() => {
     return selectedMonth === ""
       ? monthsTable
@@ -101,12 +146,21 @@ const PrimarySchoolTab = () => {
     setSelectedMonth(e.target.value);
     items.filter((s) => s.payments.find((p) => p.month === searchItem));
   };
+  const handelSelectStatusChnage = (e) => {
+    const statusValue = e.target.value;
+    setSelectedStatus(statusValue);
+    if (statusValue === "") {
+      // Reset to show all students if "Tous les paiements" is selected
+      setPage(1); // Optionally reset to the first page
+    }
+  };
+  
   return (
     <Card>
-      {students ? (
+      {students && (
         <CardBody>
           <div className="flex justify-between gap-3 items-end bg-white   p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-            <form className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <form className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Input
                 isClearable
                 placeholder="Rechercher par nom..."
@@ -135,13 +189,26 @@ const PrimarySchoolTab = () => {
                 ))}
               </Select>
               <Select
-                placeholder="Sélectionnez par statut"
+                placeholder="Sélectionnez par niveau"
                 variant="faded"
                 aria-label="status"
               >
                 {levels.map((level, i) => (
                   <SelectItem key={level.value} value={level.value}>
                     {level.name}
+                  </SelectItem>
+                ))}
+              </Select>
+              <Select
+                placeholder="Sélectionnez par statut"
+                variant="faded"
+                aria-label="status"
+                isDisabled={selectedMonth === "" ? true : false}
+                onChange={handelSelectStatusChnage}
+              >
+                {status.map((s) => (
+                  <SelectItem key={s.name} value={s.name}>
+                    {s.name}
                   </SelectItem>
                 ))}
               </Select>
@@ -169,7 +236,13 @@ const PrimarySchoolTab = () => {
                     })}
 
                     <th className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white ">
-                      Actions
+                      <div className="w-full flex justify-end">
+                        {students && (
+                          <Chip variant="flat" color="success" size="lg">
+                            Total {totalFilteredStudents}
+                          </Chip>
+                        )}
+                      </div>
                     </th>
                   </tr>
                 </thead>
@@ -325,8 +398,18 @@ const PrimarySchoolTab = () => {
             />
           </div>{" "}
         </CardBody>
-      ) : (
-        <CardBody>no data</CardBody>
+      )}
+      {loading.loadingGet && (
+        <CardBody>
+          <div className="w-full flex justify-center py-9">
+            <Spinner size="lg" label="Chargement en cours..." />
+          </div>
+        </CardBody>
+      )}
+      {error && (
+        <CardBody>
+          <ErrorAlert message={error}/>
+        </CardBody>
       )}
     </Card>
   );

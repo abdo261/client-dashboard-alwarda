@@ -111,8 +111,8 @@ const List = () => {
           Créer
         </Button>
       </div>
-      <div className="rounded-lg border border-gray-200 dark:border-gray-700 mt-4 shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
-        <div className="overflow-x-auto rounded-t-lg">
+      <div className="rounded-lg border border-gray-200  mt-4 h-[535px]   ">
+        <div className="overflow-x-auto rounded-t-lg shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white  dark:divide-gray-700 dark:bg-[#43474b] text-lg">
             <thead className="ltr:text-left rtl:text-right">
               <tr className="font-normal">

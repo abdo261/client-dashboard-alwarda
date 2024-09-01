@@ -46,7 +46,17 @@ const List = () => {
     );
   }, [searchItem, centres]);
 
-  const pages = Math.ceil(filteredCentres?.length / rowsPerPage);
+  const { totalFilteredCentres, pages } = useMemo(() => {
+    const filteredCentres = centres?.filter((c) =>
+      c.name.toLowerCase().includes(searchItem.toLowerCase())
+    );
+  
+    const totalFilteredCentres = filteredCentres?.length;
+    const pages = Math.ceil(totalFilteredCentres / rowsPerPage);
+  
+    return { totalFilteredCentres, pages, filteredCentres };
+  }, [searchItem, centres, rowsPerPage]);
+  
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -147,9 +157,9 @@ const List = () => {
         </div>
       )}
       {!error && centres && (
-        <div className="rounded-lg border border-gray-200  w-full h-[292px] max-h-[535px]  dark:border-gray-700 mt-4 ">
+        <div className="rounded-lg    w-full h-[292px] max-h-[535px]  mt-4 ">
           <div className="overflow-x-auto rounded-t-lg w-full justify-center shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
-            <table className="min-w-full divide-y-2 divide-gray-200 bg-white  dark:divide-gray-700 dark:bg-[#43474b] text-lg">
+            <table className="min-w-full divide-y-2 divide-gray-200 bg-white  dark:divide-gray-700 dark:bg-[#43474b] text-lg ">
               <thead className="ltr:text-left rtl:text-right">
                 <tr className="font-normal">
                   <th className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white">
@@ -172,7 +182,7 @@ const List = () => {
                     <div className="w-full flex justify-end">
                       {centres && (
                         <Chip variant="flat" color="success" size="lg">
-                          Total {items.length}
+                          Total {totalFilteredCentres}
                         </Chip>
                       )}
                     </div>
