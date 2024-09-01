@@ -29,7 +29,7 @@ const Sidebare = ({ open }) => {
     <aside
       className={`flex h-screen  ${
         open ? "w-16" : "w-0  "
-      } overflow-hidden duration-500 ease-in-out  flex-col justify-between border-e dark:border-gray-800 dark:bg-[#242526] dark:text-white bg-white fixed top-0 left-0`}
+      } overflow-hidden duration-500 ease-in-out  flex-col justify-between border-e dark:border-gray-800 dark:bg-[#242526] dark:text-white bg-white fixed top-0 left-0 `}
     >
       <div>
         <div className="inline-flex size-16 items-center justify-center">

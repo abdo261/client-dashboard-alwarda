@@ -174,7 +174,7 @@ const HightSchoolTab = () => {
                           color="primary"
                           variant="ghost"
                           as={Link}
-                          to={`/matiéres/show/${i + 1}`}
+                          to={`/paiements/lycee/show/${i + 1}`}
                         >
                           <FiEye />
                         </Button>
