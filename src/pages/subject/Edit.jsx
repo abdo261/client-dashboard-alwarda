@@ -10,7 +10,7 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { FaSchool } from "react-icons/fa";
+
 
 const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
   const handelSubmit = (e) => {

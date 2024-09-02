@@ -23,7 +23,7 @@ const Create = ({ isOpen, onOpenChange }) => {
     { key: "4 eme", label: "4 eme" },
   ];
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="subject">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
       <ModalContent>
         {(onClose) => (
           <form onSubmit={handelSubmit} className="dark:text-white">

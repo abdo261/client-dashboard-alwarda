@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { Chip, chip, Select, SelectItem } from "@nextui-org/react";
+import  { useEffect, useState } from "react";
+import { Chip,  Select, SelectItem } from "@nextui-org/react";
 import { RiCloseCircleLine } from "react-icons/ri";
 
 export default function SelectMaterial() {
-  const [values, setValues] = React.useState([]);
+  const [values, setValues] =useState([]);
   const materials = [
     { key: "francais", label: "Francai" },
     { key: "Arabee", label: "Arabee" },

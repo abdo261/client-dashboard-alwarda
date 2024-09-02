@@ -6,6 +6,8 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
+    Select,
+    SelectItem,
     Spinner,
   } from "@nextui-org/react";
   import { useEffect, useState } from "react";
@@ -14,7 +16,8 @@ import {
   import { formatErrorField } from "../../utils/utils";
   import { levelActions } from "../../redux/slices/levelSlice";
   import ErrorAlert from "../../components/ErrorAlert";
-  
+  const types = [  "ECOLE_PRIMAIRE", "COLLEGE", "LYCEE"];
+
   const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
     const dispatch = useDispatch();
     const { level, loading, errorValidation, error } = useSelector(
@@ -22,7 +25,7 @@ import {
     );
     const [formData, setFormData] = useState({
       name: "",
-      color: "",
+      type: "",
     });
     const [disableBtn, setDisableBtn] = useState(true);
   
@@ -48,7 +51,7 @@ import {
       if (isOpen) {
         SelectEditItem(null);
         setFormData({
-          name: "",
+          type: "",
           color: "",
         });
       }
@@ -96,6 +99,36 @@ import {
                       )
                     }
                   />
+                    <Select
+                onChange={(e) => handleChange("type", e.target.value)}
+                defaultSelectedKeys={[level?.type+'']}
+                value={formData.type}
+                label="Grade"
+                placeholder="Selctioné Le Grad De Niveau"
+                variant="bordered"
+                id="type"
+                isInvalid={
+                  errorValidation &&
+                  formatErrorField(errorValidation, "type") &&
+                  true
+                }
+                errorMessage={
+                  errorValidation &&
+                  formatErrorField(errorValidation, "type") && (
+                    <ol>
+                      {formatErrorField(errorValidation, "type").map((e) => (
+                        <li key={e}>-{e}</li>
+                      ))}
+                    </ol>
+                  )
+                }
+              >
+                {types.map((s) => (
+                  <SelectItem value={s} key={s}>
+                    {s}
+                  </SelectItem>
+                ))}
+              </Select>
                 </>
               ) : (
                 <div className="py-6 flex w-full justify-center">

@@ -9,8 +9,37 @@ export const getLevels = (cb) => async (dispatch) => {
   try {
     const response = await request.get("/levels");
     dispatch(levelActions.setLevels(response.data));
+   
   } catch (error) {
-    console.log(error);
+    
+    dispatch(levelActions.setLevels(null));
+    if (error?.response) {
+      error.response.status === 500 &&
+        dispatch(levelActions.setError(error.response.data.message));
+    } else {
+      dispatch(
+        levelActions.setError(
+          "Le serveur est en panne, vérifiez si votre serveur est démarré ?"
+        )
+      );
+    }
+    cb && cb();
+  } finally {
+    dispatch(levelActions.setGetLoading(false));
+  }
+};
+export const getLevelsBySchool = (school,cb) => async (dispatch) => {
+  dispatch(levelActions.setError(null));
+  dispatch(levelActions.setGetLoading(true));
+  dispatch(levelActions.setLevels(null));
+  try {
+        await new Promise((resolve)=>setTimeout(resolve,7000))
+
+    const response = await request.get(`/levels/school/${school}`);
+    dispatch(levelActions.setLevels(response.data));
+
+  } catch (error) {
+    
     dispatch(levelActions.setLevels(null));
     if (error?.response) {
       error.response.status === 500 &&
@@ -39,7 +68,7 @@ export const createLevel = (level, cb) => async (dispatch) => {
     toast.success(response.data.message);
     cb && cb();
   } catch (error) {
-    console.log(error);
+  
     if (error?.response) {
       if (error.response.status === 500) {
         toast.error(error.response.data.message, {
@@ -77,7 +106,7 @@ export const getLevelById = (id, cb) => async (dispatch) => {
     const response = await request.get(`/levels/${id}`);
     dispatch(levelActions.setLevel(response.data));
   } catch (error) {
-    console.log(error);
+   
     if (error?.response) {
       if (error.response.status === 500 || error.response.status === 404) {
         dispatch(levelActions.setError(error.response.data.message));
@@ -114,7 +143,7 @@ export const updateLevel = (id, updatedLevel, cb) => async (dispatch) => {
       cb && cb();
     }
   } catch (error) {
-    console.log(error);
+  
     if (error?.response) {
       if (error.response.status === 500) {
         toast.error(error.response.data.message, {
@@ -152,7 +181,7 @@ export const deleteLevel = (id, cb) => async (dispatch) => {
       toast.success(response.data.message);
     }
   } catch (error) {
-    console.log(error);
+ 
     if (error?.response) {
       toast.error(error.response.data.message);
     } else {

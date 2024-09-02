@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import  { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Card,
@@ -46,7 +46,7 @@ const MiddleSchoolTab = () => {
   useEffect(() => {
     dispatch(getstudentsByPaymentsSchool("COLLEGE"));
   }, [dispatch]);
-  const {error,loading,students} = useSelector(state=>state.student)
+  const {students} = useSelector(state=>state.student)
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;

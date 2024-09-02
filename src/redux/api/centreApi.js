@@ -11,14 +11,14 @@ export const getCentres = (cb) => async (dispatch) => {
     const response = await request.get("/centres");
     dispatch(centreActions.setCentres(response.data));
   } catch (error) {
-    console.log(error);
+   
     // dispatch(centreActions.setError(null));
     dispatch(centreActions.setCentres(null));
     if (error?.response) {
       error.response.status === 500 &&
         dispatch(centreActions.setError(error.response.data.message));
 
-      console.log("responce exist");
+     
     } else {
       dispatch(
         centreActions.setError(
@@ -43,7 +43,7 @@ export const createCentre = (centre, cb) => async (dispatch) => {
     toast.success(response.data.message);
     cb && cb();
   } catch (error) {
-    console.log(error);
+    
     if (error?.response) {
       error.response.status === 500 &&
         toast.error(error.response.data.message, {
@@ -83,7 +83,7 @@ export const getCentreById = (id, cb) => async (dispatch) => {
     const response = await request.get(`/centres/${id}`);
     dispatch(centreActions.setCentre(response.data));
   } catch (error) {
-    console.log(error);
+  
     if (error?.response) {
       if (error.response.status === 500 || error.response.status === 404) {
         dispatch(centreActions.setError(error.response.data.message));
@@ -122,7 +122,7 @@ export const updateCentre = (id, updatedCentre, cb) => async (dispatch) => {
     } 
   
   } catch (error) {
-    console.log(error);
+   
     if (error?.response) {
       if (error.response.status === 500) {
         toast.error(error.response.data.message, {
@@ -161,7 +161,7 @@ export const deleteCentre = (id, cb) => async (dispatch) => {
       toast.success(response.data.message);
     } 
   } catch (error) {
-    console.log(error)
+    
     if (error?.response) {
       toast.error(error.response.data.message);
     } else {

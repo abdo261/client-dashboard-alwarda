@@ -10,7 +10,7 @@ export const getSubjects = (cb) => async (dispatch) => {
     const response = await request.get("/subjects");
     dispatch(subjectActions.setSubjects(response.data));
   } catch (error) {
-    console.log(error);
+   
     dispatch(subjectActions.setSubjects(null));
     if (error?.response) {
       error.response.status === 500 &&
@@ -39,7 +39,7 @@ export const createSubject = (subject, cb) => async (dispatch) => {
     toast.success(response.data.message);
     cb && cb();
   } catch (error) {
-    console.log(error);
+   
     if (error?.response) {
       if (error.response.status === 500) {
         toast.error(error.response.data.message, {
@@ -77,7 +77,7 @@ export const getSubjectById = (id, cb) => async (dispatch) => {
     const response = await request.get(`/subjects/${id}`);
     dispatch(subjectActions.setSubject(response.data));
   } catch (error) {
-    console.log(error);
+   
     if (error?.response) {
       if (error.response.status === 500 || error.response.status === 404) {
         dispatch(subjectActions.setError(error.response.data.message));
@@ -114,7 +114,7 @@ export const updateSubject = (id, updatedSubject, cb) => async (dispatch) => {
       cb && cb();
     }
   } catch (error) {
-    console.log(error);
+  
     if (error?.response) {
       if (error.response.status === 500) {
         toast.error(error.response.data.message, {
@@ -152,7 +152,7 @@ export const deleteSubject = (id, cb) => async (dispatch) => {
       toast.success(response.data.message);
     }
   } catch (error) {
-    console.log(error);
+ 
     if (error?.response) {
       toast.error(error.response.data.message);
     } else {

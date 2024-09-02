@@ -16,7 +16,7 @@ export const loginUser = (formData,cb) => async (dispatch) => {
       cb && cb()
     }
   } catch (error) {
-    console.log(error);
+  
     if (error?.response?.status === 400) {
       dispatch(authActions.setErrorValidation(error.response.data));
       toast.error("Ereur de validation !");

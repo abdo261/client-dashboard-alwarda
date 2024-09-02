@@ -13,7 +13,7 @@ export const getUsers = (cb) => async (dispatch) => {
     const response = await request.get("/users");
     dispatch(userActions.setUsers(response.data));
   } catch (error) {
-    console.log(error);
+    
     
     if (error?.response) {
       dispatch(userActions.setError(error.response.data.message));
@@ -38,7 +38,7 @@ export const createUser = (user, cb) => async (dispatch) => {
     toast.success(response.data.message);
     cb && cb();
   } catch (error) {
-    console.log(error);
+    
     if (error?.response) {
       if (error.response.status === 400) {
         toast.error("Erreur de validation", {
@@ -72,7 +72,7 @@ export const getUserById = (id, cb) => async (dispatch) => {
     const response = await request.get(`/users/${id}`);
     dispatch(userActions.setUser(response.data));
   } catch (error) {
-    console.log(error);
+   
     if (error?.response) {
       dispatch(userActions.setError(error.response.data.message));
     } else {
@@ -108,7 +108,7 @@ export const updateUser = (id, updatedUser={}, cb) => async (dispatch) => {
     cb && cb();
    } 
   } catch (error) {
-    console.log(error);
+    
     if (error?.response) {
       if (error.response.status === 400) {
         toast.error("Erreur de validation", {
@@ -141,9 +141,9 @@ export const deleteUser = (id, cb) => async (dispatch) => {
     dispatch(userActions.removeUser(id));
     toast.success(response.data.message);
    }
-   console.log(response)
+
   } catch (error) {
-    console.log(error);
+    
     if (error?.response) {
       toast.error(error.response.data.message);
     } else {

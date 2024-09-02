@@ -1,4 +1,4 @@
-import React from "react";
+
 import { MdPhoneInTalk } from "react-icons/md";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import PieChart from "../../components/PieChart";

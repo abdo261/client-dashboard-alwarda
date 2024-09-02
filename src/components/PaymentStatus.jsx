@@ -10,7 +10,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@nextui-org/react";
-import React, { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoIosCloseCircle, IoMdMore } from "react-icons/io";
 import { formatDateToDDMMYY } from "../utils/utils";
@@ -23,16 +22,16 @@ const PaymentStatus = ({ payment }) => {
     amountDue,
     startAt,
     discount,
-    dueDate: date,
+    dueDate,
     have50,
     subjects: jsonSubjects,
   } = payment;
   const currentDate = new Date();
-  const dueDate = new Date(startAt);
+  const startDate = new Date(startAt);
 
   const subjects = jsonSubjects ? JSON.parse(jsonSubjects) : [];
 
-  if (payment && currentDate >= dueDate) {
+  if (payment && currentDate >= startDate) {
     if (totalAmount === amountPaid) {
       return (
         <Popover size="lg">
@@ -54,7 +53,7 @@ const PaymentStatus = ({ payment }) => {
                 >
                   Payé
                 </Chip>
-              </Badge>{" "}
+              </Badge>
             </span>
           </PopoverTrigger>
           <PopoverContent className="relative">
@@ -78,7 +77,7 @@ const PaymentStatus = ({ payment }) => {
               <div className="flex flex-col gap-1">
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Devoir de 50 DH:{" "}
+                    Devoir de 50 DH:
                   </span>
                   <span
                     className={have50 === 0 ? "text-success" : "text-danger"}
@@ -89,20 +88,20 @@ const PaymentStatus = ({ payment }) => {
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex gap-1">
                     <span className=" text-gray-600 dark:text-gray-400">
-                      Demare Le :{" "}
+                      Demare Le :
                     </span>
                     <span>{formatDateToDDMMYY(startAt)}</span>
                   </div>
                   <div className="flex gap-1">
                     <span className=" text-gray-600 dark:text-gray-400">
-                      Jusqua :{" "}
+                      Jusqua :
                     </span>
                     <span>{formatDateToDDMMYY(dueDate)}</span>
                   </div>
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Total ({subjects?.length}) matiére :{" "}
+                    Total ({subjects?.length}) matiére :
                   </span>
                   <span className="tracking-widest">
                     {discount + totalAmount} DH
@@ -110,14 +109,14 @@ const PaymentStatus = ({ payment }) => {
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Rabais:{" "}
+                    Rabais:
                   </span>
                   <span>-{discount} DH</span>
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                    {" "}
-                    <PiHandCoinsBold size="25" /> :{" "}
+                    
+                    <PiHandCoinsBold size="25" /> :
                   </span>
                   <span className="tracking-widest">{amountPaid} DH </span>
                 </div>
@@ -125,13 +124,13 @@ const PaymentStatus = ({ payment }) => {
               <div className="flex items-center justify-between  gap-4">
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Devoir:{" "}
+                    Devoir:
                   </span>
                   <span className="tracking-widest">{totalAmount} DH</span>
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Le Rest:{" "}
+                    Le Rest:
                   </span>
                   <span className="tracking-widest">{amountDue} DH</span>
                 </div>
@@ -195,7 +194,7 @@ const PaymentStatus = ({ payment }) => {
                 >
                   Non payé
                 </Chip>
-              </Badge>{" "}
+              </Badge>
             </span>
           </PopoverTrigger>
           <PopoverContent className="relative">
@@ -219,7 +218,7 @@ const PaymentStatus = ({ payment }) => {
               <div className="flex flex-col gap-1">
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Devoir de 50 DH:{" "}
+                    Devoir de 50 DH:
                   </span>
                   <span
                     className={have50 === 0 ? "text-success" : "text-danger"}
@@ -230,20 +229,20 @@ const PaymentStatus = ({ payment }) => {
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex gap-1">
                     <span className=" text-gray-600 dark:text-gray-400">
-                      Demare Le :{" "}
+                      Demare Le :
                     </span>
                     <span>{formatDateToDDMMYY(startAt)}</span>
                   </div>
                   <div className="flex gap-1">
                     <span className=" text-gray-600 dark:text-gray-400">
-                      Jusqua :{" "}
+                      Jusqua :
                     </span>
                     <span>{formatDateToDDMMYY(dueDate)}</span>
                   </div>
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Total ({subjects?.length}) matiére :{" "}
+                    Total ({subjects?.length}) matiére :
                   </span>
                   <span className="tracking-widest">
                     {discount + totalAmount} DH
@@ -251,14 +250,14 @@ const PaymentStatus = ({ payment }) => {
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Rabais:{" "}
+                    Rabais:
                   </span>
                   <span>-{discount} DH</span>
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                    {" "}
-                    <PiHandCoinsBold size="25" /> :{" "}
+                    
+                    <PiHandCoinsBold size="25" /> :
                   </span>
                   <span className="tracking-widest">{amountPaid} DH </span>
                 </div>
@@ -266,13 +265,13 @@ const PaymentStatus = ({ payment }) => {
               <div className="flex items-center justify-between  gap-4">
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Devoir ({subjects?.length}):{" "}
+                    Devoir ({subjects?.length}):
                   </span>
                   <span className="tracking-widest">{totalAmount} DH</span>
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Le Rest:{" "}
+                    Le Rest:
                   </span>
                   <span className="tracking-widest">{amountDue} DH</span>
                 </div>
@@ -360,7 +359,7 @@ const PaymentStatus = ({ payment }) => {
               <div className="flex flex-col gap-1">
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Devoir de 50 DH:{" "}
+                    Devoir de 50 DH:
                   </span>
                   <span
                     className={have50 === 0 ? "text-success" : "text-danger"}
@@ -371,13 +370,13 @@ const PaymentStatus = ({ payment }) => {
                 <div className="flex items-center justify-between  gap-3">
                   <div className="flex gap-1">
                     <span className=" text-gray-600 dark:text-gray-400">
-                      Demare Le :{" "}
+                      Demare Le :
                     </span>
                     <span>{formatDateToDDMMYY(startAt)}</span>
                   </div>
                   <div className="flex gap-1">
                     <span className=" text-gray-600 dark:text-gray-400">
-                      Jusqua :{" "}
+                      Jusqua :
                     </span>
                     <span>{formatDateToDDMMYY(dueDate)}</span>
                   </div>
@@ -392,13 +391,13 @@ const PaymentStatus = ({ payment }) => {
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Rabais:{" "}
+                    Rabais:
                   </span>
                   <span>-{discount} DH</span>
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                    <PiHandCoinsBold size="25" /> :{" "}
+                    <PiHandCoinsBold size="25" /> :
                   </span>
                   <span className="tracking-widest">{amountPaid} DH </span>
                 </div>
@@ -406,13 +405,13 @@ const PaymentStatus = ({ payment }) => {
               <div className="flex items-center justify-between  gap-4">
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Devoir ({subjects?.length}):{" "}
+                    Devoir ({subjects?.length}):
                   </span>
                   <span className="tracking-widest">{totalAmount} DH</span>
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400">
-                    Le Rest:{" "}
+                    Le Rest:
                   </span>
                   <span className="tracking-widest">{amountDue} DH</span>
                 </div>

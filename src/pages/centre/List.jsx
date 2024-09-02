@@ -182,11 +182,7 @@ const List = () => {
                     <div className="w-full flex justify-end">
                       {centres && (
                         <Chip variant="flat" color="success" size="lg">
-<<<<<<< HEAD
-                          Total {filteredCentres.length}
-=======
                           Total {totalFilteredCentres}
->>>>>>> 3ff2b292e45aff6bb0577f5f8cc301b2b1706b4f
                         </Chip>
                       )}
                     </div>

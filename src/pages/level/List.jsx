@@ -3,6 +3,8 @@ import {
   Chip,
   Input,
   Pagination,
+  Select,
+  SelectItem,
   Spinner,
   Tooltip,
   useDisclosure,
@@ -21,7 +23,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteLevel, getLevels } from "../../redux/api/levelApi";
 import ErrorAlert from "../../components/ErrorAlert";
 import { TfiReload } from "react-icons/tfi";
-
+const types = ["ECOLE_PRIMAIRE", "COLLEGE", "LYCEE"];
 const List = () => {
   const dispatch = useDispatch();
   const { levels, loading, error } = useSelector((state) => state.level);
@@ -33,16 +35,17 @@ const List = () => {
   useEffect(() => {
     getLevelsCallback();
   }, [getLevelsCallback]);
+  const [selectedType, setSelectedType] = useState("");
 
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 5;
 
   const filteredLevels = useMemo(() => {
-    return levels?.filter((l) =>
-      l.name.toLowerCase().includes(searchItem.toLowerCase())
-    );
-  }, [searchItem, levels]);
+    return levels
+      ?.filter((l) => l.name.toLowerCase().includes(searchItem.toLowerCase()))
+      .filter((l) => (selectedType ? l.type === selectedType : true));
+  }, [searchItem, levels, selectedType]);
 
   const pages = Math.ceil(filteredLevels?.length / rowsPerPage);
 
@@ -115,8 +118,8 @@ const List = () => {
           </Tooltip>
         </div>
       </div>
-      <div className="flex justify-between gap-3 items-center bg-white shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-        <form className="w-full sm:max-w-[44%]">
+      <div className="flex justify-between gap-3 items-start bg-white shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
+        <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
           <Input
             fullWidth
             isClearable
@@ -129,6 +132,20 @@ const List = () => {
             size="lg"
             className="tracking-widest"
           />
+          <Select
+            size="lg"
+            onChange={(e) => setSelectedType(e.target.value)}
+            value={selectedType}
+            variant="faded"
+            placeholder="filtres par"
+            id="type"
+          >
+            {types.map((s) => (
+              <SelectItem value={s} key={s}>
+                {s}
+              </SelectItem>
+            ))}
+          </Select>
         </form>
         <Button
           endContent={<FaPlus />}
@@ -154,15 +171,18 @@ const List = () => {
                     Nom
                   </th>
                   <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                    Gade
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
                     Nombre d'élèves
                   </th>
                   <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-                  <div className="w-full flex justify-end">
-                    {levels && (
-                      <Chip variant="flat" color="success" size="lg">
-                        Total {levels.length}
-                      </Chip>
-                    )}
+                    <div className="w-full flex justify-end">
+                      {filteredLevels && (
+                        <Chip variant="flat" color="success" size="lg">
+                          Total {filteredLevels.length}
+                        </Chip>
+                      )}
                     </div>
                   </th>
                 </tr>
@@ -174,8 +194,12 @@ const List = () => {
                       className="hover:bg-blue-200 dark:hover:bg-gray-900"
                       key={level.id}
                     >
-                      <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                      <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white ">
                         {level.name}
+                      </td>
+
+                      <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white text-center">
+                        {level.type}
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 text-center">
                         <Chip
@@ -272,6 +296,7 @@ const List = () => {
           isOpen={isEditOpen}
           itemToEdit={itemToEdit}
           onEditChangeOpen={onEditChangeOpen}
+          SelectEditItem={SelectEditItem}
         />
       )}
     </>

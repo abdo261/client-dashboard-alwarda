@@ -1,4 +1,4 @@
-import React from "react";
+
 import { FaSchool } from "react-icons/fa";
 import { PiStudent } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
@@ -7,7 +7,6 @@ import { Tooltip } from "@nextui-org/react";
 import { FaUserShield } from "react-icons/fa6";
 import { TbSchool } from "react-icons/tb";
 import { GiBookCover } from "react-icons/gi";
-import { TbReportMoney } from "react-icons/tb";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 

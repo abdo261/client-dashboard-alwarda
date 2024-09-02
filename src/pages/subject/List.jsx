@@ -12,8 +12,6 @@ import { FaPlus } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import Create from "./Create";
 import swal from "sweetalert";
-import { Link } from "react-router-dom";
-import { FiEye } from "react-icons/fi";
 import { BiSolidEdit, BiTrash } from "react-icons/bi";
 import Edit from "./Edit";
 import { PiStudent, PiMoneyWavyThin } from "react-icons/pi";

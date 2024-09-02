@@ -15,12 +15,9 @@ import { parseDate } from "@internationalized/date";
 import { useState } from "react";
 
 const Create = ({ isOpen, onOpenChange }) => {
-  const handelSubmit = (e) => {
-    e.preventDefault();
-    console.log("submit");
-  };
+ 
   const [date, setDate] = useState(
-    parseDate(new Date().toISOString().split("T")[0])
+   new Date()
   );
 
   const today = parseDate(new Date().toISOString().split("T")[0]);
@@ -39,6 +36,15 @@ const Create = ({ isOpen, onOpenChange }) => {
     { key: "otter", label: "Otter" },
     { key: "crocodile", label: "Crocodile" },
   ];
+   const handelSubmit = (e) => {
+    e.preventDefault();
+     // Check if date is set and convert to ISO string
+     const isoDate = (date instanceof Date && !isNaN(date.getTime())) 
+     ? date.toISOString() 
+     : today.toISOString(); // Default to today's date if no valid date is set
+   
+   console.log("Selected Date in ISO Format:", isoDate);
+  };
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
       <ModalContent>
@@ -93,7 +99,10 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Inscri Le"
                   variant="bordered"
                   showMonthAndYearPickers
-                  onChange={setDate}
+                  onChange={(newDate) => {
+                   
+                    setDate(new Date(newDate));
+                  }}
                 />
                 <Select
                   size="sm"
