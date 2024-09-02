@@ -88,6 +88,8 @@ const List = () => {
     }
   }, [itemToDelete, dispatch]);
 
+  console.log(levels)
+
   return (
     <>
       <div className="flex justify-start ">
@@ -181,11 +183,11 @@ const List = () => {
                         <Chip
                           variant="bordered"
                           color="default"
-                          endContent={<PiStudent />}
+                          startContent={<PiStudent />}
                           size="lg"
                           radius="sm"
                         >
-                          {level.studentCount || 0}
+                          {level.students.length}
                         </Chip>
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 text-center">
