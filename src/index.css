@@ -16,3 +16,7 @@ a.active {
 a.active span {
  @apply bg-blue-200  text-blue-700 dark:text-blue-700 dark:bg-blue-200
 }
+
+.payment-link.active , .payment-link.active:hover{
+  @apply bg-inherit text-inherit
+}

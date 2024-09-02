@@ -36,14 +36,16 @@ const List = () => {
   const [page, setPage] = useState(1);
   const rowsPerPage = 5;
 
-  const pages = useMemo(() => {
+  const { totalFilteredUsers, pages } = useMemo(() => {
     const filteredUsers = users?.filter((c) =>
       (c.firstName + " " + c.lastName)
         .toLowerCase()
         .includes(searchItem.toLowerCase())
     );
-    return Math.ceil(filteredUsers?.length / rowsPerPage);
-  }, [searchItem, users]);
+    const totalFilteredUsers = filteredUsers?.length;
+    const pages = Math.ceil(totalFilteredUsers / rowsPerPage);
+    return { totalFilteredUsers, pages, filteredUsers };
+  }, [searchItem, users, rowsPerPage]);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -83,14 +85,13 @@ const List = () => {
         dangerMode: true,
       }).then((isOk) => {
         if (isOk) {
-         
           dispatch(deleteUser(itemToDelete));
         }
         setItemToDelete(null);
       });
     }
   }, [itemToDelete]);
-console.log(error)
+  console.log(error);
   return (
     <>
       <div className="flex justify-start ">
@@ -126,7 +127,7 @@ console.log(error)
         </div>
       )}
       {!error && users && (
-        <div className="rounded-lg border border-gray-200 dark:border-gray-700 mt-4 ">
+        <div className="rounded-lg  mt-4 ">
           <div className="overflow-x-auto rounded-t-lg h-[290px]">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white  dark:divide-gray-700 dark:bg-[#43474b] text-lg shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] h-fit">
               <thead className="ltr:text-left rtl:text-right">
@@ -149,7 +150,14 @@ console.log(error)
                   </th>
 
                   <th className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white ">
-                    Actions
+                    <div className="w-full flex justify-end">
+                      {" "}
+                      {users && (
+                        <Chip variant="flat" color="success" size="lg">
+                          Total {totalFilteredUsers}
+                        </Chip>
+                      )}
+                    </div>
                   </th>
                 </tr>
               </thead>
