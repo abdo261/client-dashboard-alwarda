@@ -42,7 +42,7 @@ export default function SelectMaterial() {
         onChange={handleSelectionChange}
       >
         {materials.map((animal) => (
-          <SelectItem key={animal.key}>{animal.label}</SelectItem>
+          <SelectItem  className="dark:text-white" key={animal.key}>{animal.label}</SelectItem>
         ))}
       </Select>
       <span className="flex items-center flex-wrap gap-1">

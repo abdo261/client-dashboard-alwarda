@@ -16,11 +16,6 @@ const Create = ({ isOpen, onOpenChange }) => {
     e.preventDefault();
     console.log("submit");
   };
-  const teachers = [
-    {key: "reda" , label : "reda"},
-    {key: "ayoub" , label : "ayoub"},
-    {key: "hassan" , label : "hassan"},
-  ]
   const levels = [
     { key: "2bac", label: "2 bac" },
     { key: "1bac", label: "1 bac"},
@@ -56,19 +51,10 @@ const Create = ({ isOpen, onOpenChange }) => {
                   variant="bordered"
                 >
                   {levels.map((level) => (
-                    <SelectItem key={level.key}>{level.label}</SelectItem>
+                    <SelectItem  className="dark:text-white" key={level.key}>{level.label}</SelectItem>
                   ))}
                 </Select>
-              <Select
-                  size="sm"
-                  label="Enseignantes"
-                  placeholder="Selectioné Le Enseignante"
-                  variant="bordered"
-                >
-                  {teachers.map((teacher) => (
-                    <SelectItem key={teacher.key}>{teacher.label}</SelectItem>
-                  ))}
-                </Select>
+              
 
             </ModalBody>
             <ModalFooter>

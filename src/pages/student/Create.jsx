@@ -71,7 +71,7 @@ const Create = ({ isOpen, onOpenChange }) => {
                   variant="bordered"
                 >
                   {['Home',"Femme"].map((sex) => (
-                    <SelectItem key={sex}>{sex}</SelectItem>
+                    <SelectItem  className="dark:text-white" key={sex}>{sex}</SelectItem>
                   ))}
                 </Select>
                 <Input
@@ -100,7 +100,6 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Centre"
                   placeholder="Selectioné Le Centre "
                   variant="bordered"
-                  className="dark:text-white"
                 >
                   {centres.map((centre) => (
                     <SelectItem  className="dark:text-white" key={centre.key}>{centre.label}</SelectItem>
@@ -115,7 +114,7 @@ const Create = ({ isOpen, onOpenChange }) => {
                   variant="bordered"
                 >
                   {centres.map((Niveau) => (
-                    <SelectItem key={Niveau.key}>{Niveau.label}</SelectItem>
+                    <SelectItem  className="dark:text-white" key={Niveau.key}>{Niveau.label}</SelectItem>
                   ))}
                 </Select>
                 <SelectMaterial />
