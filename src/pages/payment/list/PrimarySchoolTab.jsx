@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import  { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Card,
@@ -18,6 +18,7 @@ import PaymentStatus from "../../../components/PaymentStatus";
 import { useDispatch, useSelector } from "react-redux";
 import { getstudentsByPaymentsSchool } from "../../../redux/api/studentApi";
 import ErrorAlert from "../../../components/ErrorAlert";
+import { getLevelsBySchool } from "../../../redux/api/levelApi";
 
 const monthsTable = [
   { name: "Tous les mois", value: "" },
@@ -32,129 +33,169 @@ const monthsTable = [
   { name: "Mai", value: "May", id: 5 },
   { name: "Juin", value: "June", id: 6 },
 ];
-const levels = [
-  { name: "Aucun", value: "" },
-  { name: "1AP", value: 1 },
-  { name: "2AP", value: 2 },
-  { name: "3AP", value: 3 },
-  { name: "4AP", value: 4 },
-  { name: "5AP", value: 5 },
-  { name: "6AP", value: 6 },
-];
 const status = [
-  { id: 2, name: "Payé",value:"Payé" },
-  { id: 3, name: "Non payé" ,value:"Non payé"},
-  { id: 4, name: "Partiellement payé",value:"Partiellement payé" },
+  { id: 2, name: "touts", value: "" },
+  { id: 2, name: "Payé", value: "Payé" },
+  { id: 3, name: "Non payé", value: "Non payé" },
+  { id: 4, name: "Partiellement payé", value: "Partiellement payé" },
 ];
 const PrimarySchoolTab = () => {
   const dispatch = useDispatch();
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-  
-  
+  const [selectedLevel, setSelectedLevel] = useState("");
+
   useEffect(() => {
     dispatch(getstudentsByPaymentsSchool("ECOLE_PRIMAIRE"));
+    dispatch(getLevelsBySchool("ECOLE_PRIMAIRE"));
   }, [dispatch]);
+
   const { error, loading, students } = useSelector((state) => state.student);
+  const { levels } = useSelector((state) => state.level);
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
-
   const { totalFilteredStudents, pages } = useMemo(() => {
-    // Filter students based on search input
     const filteredstudents = students?.filter((c) =>
       (c.firstName + " " + c.lastName)
         .toLowerCase()
         .includes(searchItem.toLowerCase())
     );
-  
-    // Further filter by selected month if applicable
+
+    // Ensure correct filtering by levelId
+    const filteredstudentsByLevel =
+      selectedLevel === ""
+        ? filteredstudents
+        : filteredstudents?.filter(
+            (s) => s.levelId === parseInt(selectedLevel)
+          );
+
+    // Proceed with month and status filtering after level filtering
     const filteredstudentsByMonth =
       selectedMonth === ""
-        ? filteredstudents
-        : filteredstudents?.filter((s) =>
+        ? filteredstudentsByLevel
+        : filteredstudentsByLevel?.filter((s) =>
             s.payments.some((p) => p.month === selectedMonth)
           );
-  
-    // Further filter by status
+
     const filteredStudentsByStatus = selectedStatus
       ? filteredstudentsByMonth?.filter((s) => {
           const payment = s.payments?.find((p) => p.month === selectedMonth);
           if (!payment) return false;
-  
+
           if (selectedStatus === "Payé") {
             return payment.amountDue === 0;
           } else if (selectedStatus === "Non payé") {
             return payment.amountDue === payment.totalAmount;
           } else if (selectedStatus === "Partiellement payé") {
-            return payment.amountDue > 0 && payment.totalAmount > payment.amountDue;
+            return (
+              payment.amountDue > 0 && payment.totalAmount > payment.amountDue
+            );
           }
           return false;
         })
       : filteredstudentsByMonth;
-  
+
     const totalFilteredStudents = filteredStudentsByStatus?.length;
     const pages = Math.ceil(totalFilteredStudents / rowsPerPage);
-  
+
     return { totalFilteredStudents, pages };
-  }, [searchItem, selectedMonth, students, selectedStatus]);
-  
+  }, [searchItem, selectedMonth, selectedStatus, selectedLevel, students]);
+
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-  
+
     const filteredstudents = students?.filter((c) =>
-      (c.firstName + " " + c.lastName).toLowerCase().includes(searchItem.toLowerCase())
+      (c.firstName + " " + c.lastName)
+        .toLowerCase()
+        .includes(searchItem.toLowerCase())
     );
-  
-    const filteredstudentsByMonth = selectedMonth === ""
-      ? filteredstudents
-      : filteredstudents?.map((s) => ({
-          ...s,
-          payments: s.payments?.filter((p) => p.month === selectedMonth),
-        }));
-  
+
+    const filteredstudentsByLevel =
+      selectedLevel === ""
+        ? filteredstudents
+        : filteredstudents?.filter(
+            (s) => s.levelId === parseInt(selectedLevel)
+          );
+
+    const filteredstudentsByMonth =
+      selectedMonth === ""
+        ? filteredstudentsByLevel
+        : filteredstudentsByLevel?.map((s) => ({
+            ...s,
+            payments: s.payments?.filter((p) => p.month === selectedMonth),
+          }));
+
     let filteredStudentsByStatus = filteredstudentsByMonth;
-  
+
     if (selectedStatus) {
       filteredStudentsByStatus = filteredstudentsByMonth?.filter((s) => {
-        if (selectedStatus === "") return true; // Show all students
+        if (selectedStatus === "") return true;
         const payment = s.payments.find((p) => p.month === selectedMonth);
-        if (!payment) return false; // No payment for selected month
-  
+        if (!payment) return false;
+
         if (selectedStatus === "Payé") {
           return payment.amountDue === 0;
         } else if (selectedStatus === "Non payé") {
           return payment.amountDue === payment.totalAmount;
         } else if (selectedStatus === "Partiellement payé") {
-          return payment.amountDue > 0 && payment.totalAmount > payment.amountDue;
+          return (
+            payment.amountDue > 0 && payment.totalAmount > payment.amountDue
+          );
         }
         return filteredStudentsByStatus?.slice(start, end);
       });
     }
-  
+
     return filteredStudentsByStatus?.slice(start, end);
-  }, [page, searchItem, selectedMonth, students, selectedStatus]);
-  
+  }, [
+    page,
+    searchItem,
+    selectedMonth,
+    selectedStatus,
+    selectedLevel,
+    students,
+  ]);
+
   const mouthItems = useMemo(() => {
     return selectedMonth === ""
       ? monthsTable
       : monthsTable.filter((m) => m.value === selectedMonth);
   }, [selectedMonth]);
-  console.log(mouthItems);
+
   const handelSelectMonthChnage = (e) => {
     setSelectedMonth(e.target.value);
     items.filter((s) => s.payments.find((p) => p.month === searchItem));
+    if (selectedMonth === "") {
+      setSelectedStatus("");
+    }
   };
   const handelSelectStatusChnage = (e) => {
     const statusValue = e.target.value;
     setSelectedStatus(statusValue);
     if (statusValue === "") {
-      // Reset to show all students if "Tous les paiements" is selected
-      setPage(1); // Optionally reset to the first page
+      setPage(1);
     }
   };
-  
+  const handelSelectLavelChnage = (e) => {
+    const levelValue = e.target.value;
+    setSelectedLevel(levelValue);
+
+    setPage(1);
+  };
+  useEffect(() => {
+    if (!selectedMonth) {
+      setSelectedStatus("");
+    } else {
+      if (selectedStatus) {
+        setSelectedStatus((prevStatus) => {
+          return prevStatus ? prevStatus : "";
+        });
+      }
+    }
+  }, [selectedMonth, selectedStatus]);
+  console.log(selectedLevel);
   return (
     <Card>
       {students && (
@@ -180,6 +221,7 @@ const PrimarySchoolTab = () => {
               >
                 {monthsTable.map((month, i) => (
                   <SelectItem
+                    className="dark:text-gray-200"
                     key={month.value}
                     value={month.value}
                     endContent={month.id}
@@ -188,30 +230,53 @@ const PrimarySchoolTab = () => {
                   </SelectItem>
                 ))}
               </Select>
-              <Select
-                placeholder="Sélectionnez par niveau"
-                variant="faded"
-                aria-label="status"
-              >
-                {levels.map((level, i) => (
-                  <SelectItem key={level.value} value={level.value}>
-                    {level.name}
-                  </SelectItem>
-                ))}
-              </Select>
+
               <Select
                 placeholder="Sélectionnez par statut"
                 variant="faded"
                 aria-label="status"
-                isDisabled={selectedMonth === "" ? true : false}
+                selectedKeys={[`${selectedStatus}`]}
                 onChange={handelSelectStatusChnage}
+                value={selectedStatus}
+                isDisabled={selectedMonth === "" ? true : false}
               >
-                {status.map((s) => (
-                  <SelectItem key={s.name} value={s.name}>
-                    {s.name}
-                  </SelectItem>
-                ))}
+                {status.map(
+                  (s) =>
+                    s.value !== "" && (
+                      <SelectItem
+                        className="dark:text-gray-200"
+                        key={s.name}
+                        value={s.name}
+                      >
+                        {s.name}
+                      </SelectItem>
+                    )
+                )}
               </Select>
+              {levels ? (
+                <Select
+                  placeholder="Sélectionnez par niveau"
+                  variant="faded"
+                  aria-label="level"
+                  onChange={handelSelectLavelChnage}
+                  selectedKeys={[`${selectedLevel}`]}
+                  value={selectedLevel}
+                >
+                  {levels.map((level, i) => (
+                    <SelectItem
+                      className="dark:text-gray-200"
+                      key={level.id}
+                      value={level.id}
+                    >
+                      {level.name}
+                    </SelectItem>
+                  ))}
+                </Select>
+              ) : (
+                <div className="flex justify-center">
+                  <Spinner size="sm" />
+                </div>
+              )}
             </form>
           </div>
           <div className="rounded-lg border border-gray-200 dark:border-gray-700 mt-4 shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
@@ -248,7 +313,7 @@ const PrimarySchoolTab = () => {
                 </thead>
 
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700 font-sans tracking-wide text-sm">
-                  {items.map((c, i) => (
+                  {items?.map((c, i) => (
                     <tr
                       className="hover:bg-blue-200 dark:hover:bg-gray-900"
                       key={i}
@@ -408,7 +473,7 @@ const PrimarySchoolTab = () => {
       )}
       {error && (
         <CardBody>
-          <ErrorAlert message={error}/>
+          <ErrorAlert message={error} />
         </CardBody>
       )}
     </Card>

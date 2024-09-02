@@ -1,16 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import Sidebare from "../components/Sidebare";
 import Header from "../components/Header";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
-import { Button, Tooltip } from "@nextui-org/react";
+import { Button, NextUIProvider, Tooltip } from "@nextui-org/react";
 
 const Layout = () => {
-  // Custom hook to track previous route
   const usePreviousRoute = () => {
     const location = useLocation();
-    const previousPath = useRef(null); // Start as null to identify direct entry
+    const previousPath = useRef(null); 
     const currentPath = location.pathname;
 
     useEffect(() => {
@@ -29,17 +28,16 @@ const Layout = () => {
 
   const handelNavigate = () => {
     if (prevRoute && pathname !== "/") {
-      navigate(-1); // Go back if there's a valid previous route
+      navigate(-1);
     } else {
-      navigate("/"); // If no previous route or at the root, navigate to home
+      navigate("/"); 
     }
   };
 
-  // Hide back button on home page
   const showBackButton = pathname !== "/";
 
   return (
-    <div
+    <NextUIProvider locale="fr-CA"><div
       className={`min-h-screen pr-4 pb-4 ${
         open ? "pl-[5rem]" : "pl-3"
       } duration-500 ease-in-out pt-[5rem] dark:bg-[#18191A] bg-gray-200`}
@@ -74,7 +72,7 @@ const Layout = () => {
           </div>
         </main>
       </section>
-    </div>
+    </div></NextUIProvider> 
   );
 };
 

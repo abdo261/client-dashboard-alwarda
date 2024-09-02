@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import {  useState } from "react";
 import ToggleThem from "../../components/ToggleThem";
 import { Button, Input } from "@nextui-org/react";
 import { LuMail } from "react-icons/lu";
@@ -23,7 +23,7 @@ export const Login = () => {
   };
   const handelSubmit = (e) => {
     e.preventDefault();
-    // console.log(formData);
+
     dispatch(
       loginUser(formData, () => {
         navigate("/");

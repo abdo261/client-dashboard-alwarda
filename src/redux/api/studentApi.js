@@ -7,12 +7,12 @@ export const getstudentsByPaymentsSchool = (school,cb) => async (dispatch) => {
   dispatch(studentActions.setGetLoading(true));
   dispatch(studentActions.setStudents(null));
   try {
-    await new Promise((resolve)=>setTimeout(resolve,5000))
+    // await new Promise((resolve)=>setTimeout(resolve,5000))
     const response = await request.get(`/students/payments/${school}`);
-    console.log(response)
+ 
     dispatch(studentActions.setStudents(response.data));
   } catch (error) {
-    console.log(error);
+  
  
     dispatch(studentActions.setStudents(null));
     if (error?.response) {
@@ -36,13 +36,13 @@ export const createstudent = (student, cb) => async (dispatch) => {
   dispatch(studentActions.setCreateLoading(true));
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
     const response = await request.post("/students", student);
     dispatch(studentActions.addstudent(response.data.student));
     toast.success(response.data.message);
     cb && cb();
   } catch (error) {
-    console.log(error);
+   
     if (error?.response) {
       error.response.status === 500 &&
         toast.error(error.response.data.message, {
@@ -82,7 +82,7 @@ export const getstudentById = (id, cb) => async (dispatch) => {
     const response = await request.get(`/students/${id}`);
     dispatch(studentActions.setstudent(response.data));
   } catch (error) {
-    console.log(error);
+   
     if (error?.response) {
       if (error.response.status === 500 || error.response.status === 404) {
         dispatch(studentActions.setError(error.response.data.message));
@@ -121,7 +121,7 @@ export const updatestudent = (id, updatedstudent, cb) => async (dispatch) => {
     } 
   
   } catch (error) {
-    console.log(error);
+   
     if (error?.response) {
       if (error.response.status === 500) {
         toast.error(error.response.data.message, {
@@ -160,7 +160,7 @@ export const deletestudent = (id, cb) => async (dispatch) => {
       toast.success(response.data.message);
     } 
   } catch (error) {
-    console.log(error)
+    
     if (error?.response) {
       toast.error(error.response.data.message);
     } else {

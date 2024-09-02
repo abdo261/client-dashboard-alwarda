@@ -1,5 +1,5 @@
 import { Skeleton } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 
 const TableSkitlon = ({ rows=1 }) => {
   const [numberOfRows, setNumberOfRows] = useState(rows);
