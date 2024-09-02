@@ -128,7 +128,7 @@ const List = () => {
       )}
       {!error && users && (
         <div className="rounded-lg  mt-4 ">
-          <div className="overflow-x-auto rounded-t-lg h-[290px]">
+          <div className="overflow-x-auto rounded-t-lg ">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white  dark:divide-gray-700 dark:bg-[#43474b] text-lg shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] h-fit">
               <thead className="ltr:text-left rtl:text-right">
                 <tr className="font-normal">

@@ -3,6 +3,8 @@ import {
   Chip,
   Input,
   Pagination,
+  Select,
+  SelectItem,
   Spinner,
   Tooltip,
   useDisclosure,
@@ -24,28 +26,37 @@ import {
 import { CgDanger } from "react-icons/cg";
 import ErrorAlert from "../../components/ErrorAlert";
 import { TfiReload } from "react-icons/tfi";
+import { getLevels } from "../../redux/api/levelApi";
 
 const SubjectList = () => {
   const dispatch = useDispatch();
   const { subjects, loading, error } = useSelector((state) => state.subject);
+  const { levels, loading: levelsLoading, error: levelsError } = useSelector((state) => state.level);
 
   const getSubjectsCallback = useCallback(() => {
     dispatch(getSubjects());
   }, [dispatch]);
 
+  const getLevelsCallback = useCallback(() => {
+    dispatch(getLevels());
+  }, [dispatch]);
+
   useEffect(() => {
     getSubjectsCallback();
-  }, [getSubjectsCallback]);
+    getLevelsCallback();
+  }, [getSubjectsCallback, getLevelsCallback]);
 
   const [searchItem, setSearchItem] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 5;
 
   const filteredSubjects = useMemo(() => {
     return subjects?.filter((s) =>
-      s.name.toLowerCase().includes(searchItem.toLowerCase())
+    (s.name.toLowerCase().includes(searchItem.toLowerCase()) &&
+      (selectedLevel === "" || s.levelId === Number(selectedLevel)))
     );
-  }, [searchItem, subjects]);
+  }, [searchItem, subjects, selectedLevel]);
 
   const pages = Math.ceil(filteredSubjects?.length / rowsPerPage);
 
@@ -92,8 +103,6 @@ const SubjectList = () => {
     }
   }, [itemToDelete, dispatch]);
 
-  console.log(subjects)
-
   return (
     <>
       <div className="flex justify-start ">
@@ -122,7 +131,7 @@ const SubjectList = () => {
         </div>
       </div>
       <div className="flex justify-between gap-3 items-center bg-white shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-        <form className="w-full sm:max-w-[44%]">
+        <form className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Input
             fullWidth
             isClearable
@@ -132,9 +141,21 @@ const SubjectList = () => {
             onChange={(e) => setSearchItem(e.target.value)}
             value={searchItem}
             onClear={() => setSearchItem("")}
-            size="lg"
             className="tracking-widest"
           />
+          <Select
+            aria-label="Niveau"
+            placeholder="Filtrer par niveau"
+            variant="faded"
+            onChange={(e) => setSelectedLevel(e.target.value)}
+          >
+            <SelectItem key="" value="">Tous les niveaux</SelectItem>
+            {levels?.map((level) => (
+              <SelectItem key={level.id} value={level.id}>
+                {level.name}
+              </SelectItem>
+            ))}
+          </Select>
         </form>
         <Button
           endContent={<FaPlus />}
@@ -172,11 +193,13 @@ const SubjectList = () => {
                     Prix
                   </th>
                   <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-                    {subjects && (
-                      <Chip variant="flat" color="success" size="lg">
-                        Total {filteredSubjects.length}
-                      </Chip>
-                    )}
+                    <div className="w-full flex justify-end">
+                      {subjects && (
+                        <Chip variant="flat" color="success" size="lg">
+                          Total {filteredSubjects.length}
+                        </Chip>
+                      )}
+                    </div>
                   </th>
                 </tr>
               </thead>
@@ -192,7 +215,7 @@ const SubjectList = () => {
                         {subject.name}
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 w-auto">
-                        {subject.teacher
+                        {subject?.teacher
                           ? `${subject.teacher.firstName} ${subject.teacher.lastName}`
                           : "Non Assigné"}
                       </td>
@@ -219,7 +242,7 @@ const SubjectList = () => {
                           size="lg"
                           radius="sm"
                         >
-                          {subject._count.students}
+                          {subject._count?.students}
                         </Chip>
                       </td>
                       <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
