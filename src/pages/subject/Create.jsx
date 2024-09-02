@@ -1,4 +1,3 @@
-
 import {
   Button,
   Input,
@@ -18,7 +17,7 @@ const Create = ({ isOpen, onOpenChange }) => {
   };
   const levels = [
     { key: "2bac", label: "2 bac" },
-    { key: "1bac", label: "1 bac"},
+    { key: "1bac", label: "1 bac" },
     { key: "6 eme", label: "6 eme" },
     { key: "4 eme", label: "4 eme" },
   ];
@@ -32,30 +31,30 @@ const Create = ({ isOpen, onOpenChange }) => {
             </ModalHeader>
             <ModalBody>
               <Input
-              size="sm"
+                size="sm"
                 autoFocus
                 label="Nome"
                 placeholder="Enter Le Nom De subject"
                 variant="bordered"
               />
               <Input
-              size="sm"
+                size="sm"
                 label="Prix"
                 placeholder="Enter Le Prix"
                 variant="bordered"
               />
               <Select
-                  size="sm"
-                  label="Niveaux"
-                  placeholder="Selectioné Le Niveau"
-                  variant="bordered"
-                >
-                  {levels.map((level) => (
-                    <SelectItem  className="dark:text-white" key={level.key}>{level.label}</SelectItem>
-                  ))}
-                </Select>
-              
-
+                size="sm"
+                label="Niveaux"
+                placeholder="Selectioné Le Niveau"
+                variant="bordered"
+              >
+                {levels.map((level) => (
+                  <SelectItem className="dark:text-white" key={level.key}>
+                    {level.label}
+                  </SelectItem>
+                ))}
+              </Select>
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>

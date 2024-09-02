@@ -232,7 +232,7 @@ const Create = ({ isOpen, onOpenChange }) => {
                     )
                   }
                 >
-                  {centres.map((c, i) => (
+                  {centres?.map((c, i) => (
                     <SelectItem
                     
                       className="dark:text-white text-gray-900"
