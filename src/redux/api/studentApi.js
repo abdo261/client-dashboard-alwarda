@@ -2,6 +2,35 @@ import { toast } from "react-toastify";
 import { request } from "../../utils/request";
 import { studentActions } from "../slices/studentSlice";
 
+export const getStudents = (cb) => async (dispatch) => {
+  dispatch(studentActions.setError(null));
+  dispatch(studentActions.setGetLoading(true));
+  dispatch(studentActions.setStudents(null));
+  try {
+    // await new Promise((resolve)=>setTimeout(resolve,5000))
+    const response = await request.get(`/students`);
+ 
+    dispatch(studentActions.setStudents(response.data));
+    console.log(response)
+  } catch (error) {
+  
+ 
+    dispatch(studentActions.setStudents(null));
+    if (error?.response) {
+      error.response.status === 500 &&
+        dispatch(studentActions.setError(error.response.data.message));
+    } else {
+      dispatch(
+        studentActions.setError(
+          "Le serveur est en panne, vérifiez si votre serveur est démarré ?"
+        )
+      );
+    }
+    cb && cb();
+  } finally {
+    dispatch(studentActions.setGetLoading(false));
+  }
+};
 export const getstudentsByPaymentsSchool = (school,cb) => async (dispatch) => {
   dispatch(studentActions.setError(null));
   dispatch(studentActions.setGetLoading(true));

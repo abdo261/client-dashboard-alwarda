@@ -10,54 +10,44 @@ import { FaPhoneVolume, FaPlus, FaSchool } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import Create from "./Create";
 import swal from "sweetalert";
-import { Link } from "react-router-dom";
 import { FiEye } from "react-icons/fi";
 import { BiSolidEdit, BiTrash } from "react-icons/bi";
 import Edit from "./Edit";
-import { PiStudent } from "react-icons/pi";
-import { FaUserShield } from "react-icons/fa";
-import { GiBookCover } from "react-icons/gi";
-import { FaMale ,FaFemale } from "react-icons/fa";
 import Show from "./Show";
-
-const centres = [
-  "eknke",
-  "eknke",
-  "eknke",
-  "eknke",
-  "eknke",
-  "eknke",
-  "eknke",
-  "eknke",
-  "eknke",
-  "zzwcjxjbcjb",
-  "bjxbjbrf rf",
-  "frjrnfr",
-  "d",
-  "f",
-  "r",
-];
+import { useDispatch, useSelector } from "react-redux";
+import { getStudents } from "../../redux/api/studentApi";
+// import { getCentres } from "../../redux/api/centreApi";
 
 const List = () => {
+  // const { centres } = useSelector((state) => state.centre);
+  const { students } = useSelector((state) => state.student);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getStudents());
+  }, [dispatch]);
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
 
   const pages = useMemo(() => {
-    const filteredCentres = centres.filter((c) =>
-      c.toLowerCase().includes(searchItem.toLowerCase())
+    const filteredStudents = students?.filter((c) =>
+      (c.firstName + " " + c.lastName)
+        .toLowerCase()
+        .includes(searchItem.toLowerCase())
     );
-    return Math.ceil(filteredCentres.length / rowsPerPage);
-  }, [searchItem]);
+    return Math.ceil(filteredStudents?.length / rowsPerPage);
+  }, [searchItem, students]);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    const filteredCentres = centres.filter((c) =>
-      c.toLowerCase().includes(searchItem.toLowerCase())
+    const filteredStudents = students?.filter((c) =>
+      (c.firstName + " " + c.lastName)
+        .toLowerCase()
+        .includes(searchItem.toLowerCase())
     );
-    return filteredCentres.slice(start, end);
-  }, [page, searchItem]);
+    return filteredStudents?.slice(start, end);
+  }, [page, searchItem, students]);
 
   const {
     isOpen: isCreateOpen,
@@ -136,126 +126,120 @@ const List = () => {
         <div className="overflow-x-auto rounded-t-lg">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white  dark:divide-gray-700 dark:bg-[#43474b] text-md">
             <thead className="ltr:text-left rtl:text-right">
-            <tr className="font-normal">
-  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-    #ID
-  </th>
-  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-    Nom
-  </th>
-  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-    Prénom
-  </th>
- 
-  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-    Niveau
-  </th>
-  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-  Inscrit Le
-  </th>
-  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-    Télé
-  </th>
-  
- 
-  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-    Centre
-  </th>
+              <tr className="font-normal">
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Nom
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Prénom
+                </th>
 
-  <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-    Actions
-  </th>
-</tr>
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Niveau
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Inscrit Le
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Télé
+                </th>
 
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Centre
+                </th>
+
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Actions
+                </th>
+              </tr>
             </thead>
 
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700 font-sans tracking-wide">
-              {items.map((c, i) => (
-                <tr
-                  className="hover:bg-blue-200 dark:hover:bg-gray-900"
-                  key={i}
-                >
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white w-auto text-center underline underline-offset-2">
-                    {i + 1}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white w-auto tracking-widest">
-                    {c}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white w-auto tracking-widest">
-                   Alami
-                  </td>
-                
-                  <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                   1 ere anner bac
-                  </td>
-                  <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center underline">
-                    12/05/2024
-                  </td>
-                  <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                  <Chip
-                      variant="bordered"
-                      color="default"
-                      startContent={ <FaPhoneVolume/> }
-                      size="md"
-                      radius="sm"
-                      className=" "
-                    >
-                    +212658963214
-                    </Chip>
-                  </td>
-                
-                  
-                  <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                    <Chip
-                      variant="bordered"
-                      color="default"
-                      startContent={<FaSchool />}
-                      size="md"
-                      radius="sm"
-                    >
-                      centre n 1 dschayra eljihadiya
-                    </Chip>
-                  </td>
-                 
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 w-full ">
-                    <div className="flex justify-center w-full items-center gap-2">
-                      <Button
-                        size="sm"
-                        isIconOnly
-                        radius="md"
-                        className="text-xl"
-                        color="primary"
-                        variant="ghost"
-                      onClick={()=>SelectShowItem(i+1)}
+              {students &&
+                items?.map((s) => (
+                  <tr
+                    className="hover:bg-blue-200 dark:hover:bg-gray-900"
+                    key={s.id}
+                  >
+                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white w-auto text-center underline underline-offset-2">
+                      {s.firstName}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white w-auto tracking-widest">
+                      {s.lastName}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white w-auto tracking-widest">
+                      {s.level.name}
+                    </td>
+
+                    <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
+                      {s.registrationDate}
+                    </td>
+
+                    <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
+                      <Chip
+                        variant="bordered"
+                        color="default"
+                        startContent={<FaPhoneVolume />}
+                        size="md"
+                        radius="sm"
+                        className=" "
                       >
-                        <FiEye />
-                      </Button>
-                      <Button
-                        size="sm"
-                        isIconOnly
-                        radius="md"
-                        className="text-xl"
-                        color="warning"
-                        variant="ghost"
-                        onPress={() => SelectEditItem(i+1)}
+                        {" "}
+                        {s.phone}
+                      </Chip>
+                    </td>
+
+                    <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
+                      <Chip
+                        variant="bordered"
+                        color="default"
+                        startContent={<FaSchool />}
+                        size="md"
+                        radius="sm"
                       >
-                        <BiSolidEdit />
-                      </Button>
-                      <Button
-                        size="sm"
-                        isIconOnly
-                        radius="md"
-                        className="text-xl"
-                        color="danger"
-                        variant="ghost"
-                        onClick={() => setItemToDelete(i + 1)}
-                      >
-                        <BiTrash />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                        {s.centre.name}
+                      </Chip>
+                    </td>
+
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 w-full ">
+                      <div className="flex justify-center w-full items-center gap-2">
+                        <Button
+                          size="sm"
+                          isIconOnly
+                          radius="md"
+                          className="text-xl"
+                          color="primary"
+                          variant="ghost"
+                          onClick={() => SelectShowItem(s.id)}
+                        >
+                          <FiEye />
+                        </Button>
+                        <Button
+                          size="sm"
+                          isIconOnly
+                          radius="md"
+                          className="text-xl"
+                          color="warning"
+                          variant="ghost"
+                          onPress={() => SelectEditItem(s.id)}
+                        >
+                          <BiSolidEdit />
+                        </Button>
+                        <Button
+                          size="sm"
+                          isIconOnly
+                          radius="md"
+                          className="text-xl"
+                          color="danger"
+                          variant="ghost"
+                          onClick={() => setItemToDelete(s.id)}
+                        >
+                          <BiTrash />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
