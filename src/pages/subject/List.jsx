@@ -49,7 +49,7 @@ const SubjectList = () => {
   const [searchItem, setSearchItem] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [page, setPage] = useState(1);
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
 
   const filteredSubjects = useMemo(() => {
     return subjects?.filter((s) =>
@@ -147,7 +147,10 @@ const SubjectList = () => {
             aria-label="Niveau"
             placeholder="Filtrer par niveau"
             variant="faded"
-            onChange={(e) => setSelectedLevel(e.target.value)}
+            onChange={(e) =>{
+              setSelectedLevel(e.target.value)
+              setPage(1)
+            } }
           >
             <SelectItem key="" value="">Tous les niveaux</SelectItem>
             {levels?.map((level) => (

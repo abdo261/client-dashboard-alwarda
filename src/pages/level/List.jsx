@@ -39,7 +39,7 @@ const List = () => {
 
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
 
   const filteredLevels = useMemo(() => {
     return levels
@@ -209,17 +209,18 @@ const List = () => {
                           size="lg"
                           radius="sm"
                         >
-                          {level.studentCount || 0}
+                          {level.students?.length}
                         </Chip>
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 text-center">
                         <div className="flex justify-center items-center gap-2">
                           <Button
-                            size="sm"
+                             size="sm"
                             isIconOnly
-                            radius="md"
-                            color="primary"
-                            variant="ghost"
+                             radius="md"
+                             className="text-xl"
+                             color="primary"
+                             variant="ghost"
                             as={Link}
                             to={`/niveaux/show/${level.id}`}
                           >
@@ -229,6 +230,7 @@ const List = () => {
                             size="sm"
                             isIconOnly
                             radius="md"
+                            className="text-xl"
                             color="warning"
                             variant="ghost"
                             onPress={() => SelectEditItem(level.id)}
@@ -239,6 +241,7 @@ const List = () => {
                             size="sm"
                             isIconOnly
                             radius="md"
+                            className="text-xl"
                             color="danger"
                             variant="ghost"
                             onClick={() => setItemToDelete(level.id)}

@@ -3,10 +3,13 @@ import {
   Chip,
   Input,
   Pagination,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   useDisclosure,
 } from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
-import { FaPhoneVolume, FaPlus, FaSchool } from "react-icons/fa";
+import { FaBook, FaPhoneVolume, FaPlus, FaSchool } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import Create from "./Create";
 import swal from "sweetalert";
@@ -16,6 +19,7 @@ import Edit from "./Edit";
 import Show from "./Show";
 import { useDispatch, useSelector } from "react-redux";
 import { getStudents } from "../../redux/api/studentApi";
+import { formatTimestamp } from "../../utils/utils";
 // import { getCentres } from "../../redux/api/centreApi";
 
 const List = () => {
@@ -27,7 +31,7 @@ const List = () => {
   }, [dispatch]);
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 5;
 
   const pages = useMemo(() => {
     const filteredStudents = students?.filter((c) =>
@@ -93,6 +97,8 @@ const List = () => {
     }
   }, [itemToDelete]);
 
+  console.log(students)
+
   return (
     <>
       <div className="flex justify-start ">
@@ -133,23 +139,27 @@ const List = () => {
                 <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
                   Prénom
                 </th>
-
                 <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
                   Niveau
+                </th>
+                <th className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white">
+                  Les mtiéres
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Télé
+                </th>
+                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
+                  Centre
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
                   Inscrit Le
                 </th>
                 <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-                  Télé
-                </th>
-
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-                  Centre
-                </th>
-
-                <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-                  Actions
+                  {students && (
+                    <Chip variant="flat" color="success" size="lg">
+                      Total {students.length}
+                    </Chip>
+                  )}
                 </th>
               </tr>
             </thead>
@@ -168,13 +178,40 @@ const List = () => {
                       {s.lastName}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white w-auto tracking-widest">
-                      {s.level.name}
+                      {s.level?.name}
                     </td>
-
-                    <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                      {s.registrationDate}
+                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white w-auto text-center">
+                      <Popover showArrow offset={10}>
+                        <PopoverTrigger>
+                          <Button
+                            radius="full"
+                            variant="flat"
+                            className="font-semibold text-medium"
+                            color={
+                              s.subjects.length > 0 ? "success" : "danger"
+                            }
+                            startContent={<FaBook />}
+                            size="sm"
+                          >
+                            {s.subjects.length}
+                          </Button>
+                        </PopoverTrigger>
+                        {s.subjects.length > 0 && (
+                          <PopoverContent className="w-fit">
+                            <div className="px-1 py-2 w-full">
+                              <p className="text-small font-bold text-foreground">
+                                les Matiéres
+                              </p>
+                              <div className="mt-2 flex flex-col gap-2 w-full">
+                                {s.subjects.map((s) => (
+                                  <Chip variant="dot">{s.name} </Chip>
+                                ))}
+                              </div>
+                            </div>
+                          </PopoverContent>
+                        )}
+                      </Popover>
                     </td>
-
                     <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
                       <Chip
                         variant="bordered"
@@ -184,7 +221,6 @@ const List = () => {
                         radius="sm"
                         className=" "
                       >
-                        {" "}
                         {s.phone}
                       </Chip>
                     </td>
@@ -200,7 +236,9 @@ const List = () => {
                         {s.centre.name}
                       </Chip>
                     </td>
-
+                    <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
+                      {formatTimestamp(s.registrationDate)}
+                    </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 w-full ">
                       <div className="flex justify-center w-full items-center gap-2">
                         <Button
@@ -245,14 +283,16 @@ const List = () => {
         </div>
       </div>
       <div className="my-4  w-full flex justify-between">
-        <Pagination
-          showControls
-          isCompact
-          total={pages}
-          page={page}
-          onChange={(page) => setPage(page)}
-          showShadow
-        />
+        {pages > 1 && (
+          <Pagination
+            showControls
+            isCompact
+            total={pages}
+            page={page}
+            onChange={(page) => setPage(page)}
+            showShadow
+          />
+        )}
       </div>
       <Create onOpenChange={onCreateChangeOpen} isOpen={isCreateOpen} />
       <Edit
