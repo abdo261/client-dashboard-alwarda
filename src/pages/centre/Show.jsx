@@ -101,7 +101,7 @@ const Show = () => {
                     </p>
                   </CardBody>
                 </Card>
-               { (girlsCount >0 || boysCount>0 ) && <PieChart
+                {(girlsCount > 0 || boysCount > 0) && <PieChart
                   girlsCount={girlsCount}
                   boysCount={boysCount}
                   width={200}
@@ -263,14 +263,15 @@ const Show = () => {
             </div>
           </div>
           <div className="my-4  ">
-            <Pagination
+            {page > 1 && <Pagination
               showControls
               isCompact
               total={pages}
               page={page}
               onChange={(page) => setPage(page)}
               showShadow
-            />
+            />}
+
           </div>
         </>
       )}
