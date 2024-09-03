@@ -1,4 +1,4 @@
-import  { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Card,
@@ -39,16 +39,16 @@ const status = [
   { id: 3, name: "Non payé", value: "Non payé" },
   { id: 4, name: "Partiellement payé", value: "Partiellement payé" },
 ];
-const PrimarySchoolTab = () => {
+const List = ({ schoolType }) => {
   const dispatch = useDispatch();
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
 
   useEffect(() => {
-    dispatch(getstudentsByPaymentsSchool("ECOLE_PRIMAIRE"));
-    dispatch(getLevelsBySchool("ECOLE_PRIMAIRE"));
-  }, [dispatch]);
+    dispatch(getstudentsByPaymentsSchool(schoolType));
+    dispatch(getLevelsBySchool(schoolType));
+  }, [dispatch, schoolType]);
 
   const { error, loading, students } = useSelector((state) => state.student);
   const { levels } = useSelector((state) => state.level);
@@ -313,141 +313,88 @@ const PrimarySchoolTab = () => {
                 </thead>
 
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700 font-sans tracking-wide text-sm">
-                  {items?.map((c, i) => (
-                    <tr
-                      className="hover:bg-blue-200 dark:hover:bg-gray-900"
-                      key={i}
-                    >
-                      <td className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white w-auto  font-semibold capitalize">
-                        {c.firstName + " " + c.lastName}
-                      </td>
-                      {c.payments.find((p) => p.month === "September") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find(
-                              (p) => p.month === "September"
-                            )}
-                          />
+                  {items?.length ? (
+                     items?.map((c, i) => (
+                      <tr
+                        className="hover:bg-blue-200 dark:hover:bg-gray-900"
+                        key={i}
+                      >
+                        <td className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white w-auto  font-semibold capitalize">
+                          {c.firstName + " " + c.lastName}
                         </td>
-                      )}
-                      {c.payments.find((p) => p.month === "October") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find(
-                              (p) => p.month === "October"
-                            )}
-                          />
+                
+                        {mouthItems.map((month, idx) => {
+                          if (month.value === "") return null; 
+                
+                          const payment = c.payments.find((p) => p.month === month.value);
+                
+                          return payment ? (
+                            <td
+                              key={idx}
+                              className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center"
+                            >
+                              <PaymentStatus payment={payment} />
+                            </td>
+                          ) : (
+                            <td
+                              key={idx}
+                              className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center"
+                            >
+                              {mouthItems.length === 1 ? "___" : "___"}
+                            </td>
+                          );
+                        })}
+                
+                        <td className="whitespace-nowrap  py-2 text-gray-700 dark:text-gray-200">
+                          <div className="flex justify-subject items-subject gap-1">
+                            <Button
+                              size="sm"
+                              isIconOnly
+                              radius="md"
+                              className="text-xl"
+                              color="primary"
+                              variant="ghost"
+                              as={Link}
+                              to={`/paiements/primaire/show/${c.id}`}
+                            >
+                              <FiEye />
+                            </Button>
+                            <Button
+                              size="sm"
+                              isIconOnly
+                              radius="md"
+                              className="text-xl"
+                              color="warning"
+                              variant="ghost"
+                              // onPress={() => SelectEditItem(i)}
+                            >
+                              <BiSolidEdit />
+                            </Button>
+                            <Button
+                              size="sm"
+                              isIconOnly
+                              radius="md"
+                              className="text-xl"
+                              color="danger"
+                              variant="ghost"
+                              // onClick={() => setItemToDelete(i + 1)}
+                            >
+                              <BiTrash />
+                            </Button>
+                          </div>
                         </td>
-                      )}
-                      {c.payments.find((p) => p.month === "November") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find(
-                              (p) => p.month === "November"
-                            )}
-                          />
-                        </td>
-                      )}
-                      {c.payments.find((p) => p.month === "December") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find(
-                              (p) => p.month === "December"
-                            )}
-                          />
-                        </td>
-                      )}
-                      {c.payments.find((p) => p.month === "January") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find(
-                              (p) => p.month === "January"
-                            )}
-                          />
-                        </td>
-                      )}
-                      {c.payments.find((p) => p.month === "February") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find(
-                              (p) => p.month === "February"
-                            )}
-                          />
-                        </td>
-                      )}
-                      {c.payments.find((p) => p.month === "March") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find(
-                              (p) => p.month === "March"
-                            )}
-                          />
-                        </td>
-                      )}
-                      {c.payments.find((p) => p.month === "April") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find(
-                              (p) => p.month === "April"
-                            )}
-                          />
-                        </td>
-                      )}
-                      {c.payments.find((p) => p.month === "May") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find((p) => p.month === "May")}
-                          />
-                        </td>
-                      )}
-                      {c.payments.find((p) => p.month === "June") && (
-                        <td className="whitespace-nowrap px-1 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                          <PaymentStatus
-                            payment={c.payments.find((p) => p.month === "June")}
-                          />
-                        </td>
-                      )}
-
-                      <td className="whitespace-nowrap  py-2 text-gray-700 dark:text-gray-200">
-                        <div className="flex justify-subject  items-subject gap-1">
-                          <Button
-                            size="sm"
-                            isIconOnly
-                            radius="md"
-                            className="text-xl"
-                            color="primary"
-                            variant="ghost"
-                            as={Link}
-                            to={`/paiements/primaire/show/${i + 1}`}
-                          >
-                            <FiEye />
-                          </Button>
-                          <Button
-                            size="sm"
-                            isIconOnly
-                            radius="md"
-                            className="text-xl"
-                            color="warning"
-                            variant="ghost"
-                            // onPress={() => SelectEditItem(i)}
-                          >
-                            <BiSolidEdit />
-                          </Button>
-                          <Button
-                            size="sm"
-                            isIconOnly
-                            radius="md"
-                            className="text-xl"
-                            color="danger"
-                            variant="ghost"
-                            // onClick={() => setItemToDelete(i + 1)}
-                          >
-                            <BiTrash />
-                          </Button>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      {" "}
+                      <td colSpan={12}>
+                        <div className="flex itesm-center justify-center font-semibold text-lg py-5 text-red-500">
+                          aucun eleve trouvé
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
@@ -480,4 +427,4 @@ const PrimarySchoolTab = () => {
   );
 };
 
-export default PrimarySchoolTab;
+export default List;
