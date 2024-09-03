@@ -74,13 +74,14 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setDisableBtn(false);
   };
+  console.log(subject )
 
   return (
     <Modal isOpen={isOpen} onOpenChange={handleClose} placement="center">
       <ModalContent>
         <form onSubmit={handleSubmit} className="dark:text-white">
           <ModalHeader className="flex flex-col gap-1">
-            Modifier Le Sujet
+            Modifier Le Matiére
           </ModalHeader>
           <ModalBody>
             {!error && !loading.loadingGetById ? (
@@ -145,6 +146,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
                   variant="bordered"
                   onChange={(e) => handleChange("levelId", e.target.value)}
                   value={formData.levelId}
+                  defaultSelectedKeys={[subject ?  subject?.levelId + "" : "" ]}
                 >
                   {levels?.map((level) => (
                     <SelectItem key={level.id} value={level.id}>
@@ -159,6 +161,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
                   variant="bordered"
                   onChange={(e) => handleChange("school", e.target.value)}
                   value={formData.school}
+                  defaultSelectedKeys={[subject ?  subject?.school : ""]}
                 >
                   <SelectItem key="COLLEGE" value="COLLEGE">
                     College
