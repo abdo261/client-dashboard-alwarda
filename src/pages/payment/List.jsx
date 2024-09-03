@@ -14,11 +14,11 @@ import {
 import { FiEye, FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { BiSolidEdit, BiTrash } from "react-icons/bi";
-import PaymentStatus from "../../../components/PaymentStatus";
+import PaymentStatus from "../../components/PaymentStatus";
 import { useDispatch, useSelector } from "react-redux";
-import { getstudentsByPaymentsSchool } from "../../../redux/api/studentApi";
-import ErrorAlert from "../../../components/ErrorAlert";
-import { getLevelsBySchool } from "../../../redux/api/levelApi";
+import { getstudentsByPaymentsSchool } from "../../redux/api/studentApi";
+import ErrorAlert from "../../components/ErrorAlert";
+import { getLevelsBySchool } from "../../redux/api/levelApi";
 
 const monthsTable = [
   { name: "Tous les mois", value: "" },
@@ -314,7 +314,7 @@ const List = ({ schoolType }) => {
 
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700 font-sans tracking-wide text-sm">
                   {items?.length ? (
-                     items?.map((c, i) => (
+                    items?.map((c, i) => (
                       <tr
                         className="hover:bg-blue-200 dark:hover:bg-gray-900"
                         key={i}
@@ -322,12 +322,14 @@ const List = ({ schoolType }) => {
                         <td className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white w-auto  font-semibold capitalize">
                           {c.firstName + " " + c.lastName}
                         </td>
-                
+
                         {mouthItems.map((month, idx) => {
-                          if (month.value === "") return null; 
-                
-                          const payment = c.payments.find((p) => p.month === month.value);
-                
+                          if (month.value === "") return null;
+
+                          const payment = c.payments.find(
+                            (p) => p.month === month.value
+                          );
+
                           return payment ? (
                             <td
                               key={idx}
@@ -344,7 +346,7 @@ const List = ({ schoolType }) => {
                             </td>
                           );
                         })}
-                
+
                         <td className="whitespace-nowrap  py-2 text-gray-700 dark:text-gray-200">
                           <div className="flex justify-subject items-subject gap-1">
                             <Button
@@ -366,10 +368,12 @@ const List = ({ schoolType }) => {
                               className="text-xl"
                               color="warning"
                               variant="ghost"
-                              // onPress={() => SelectEditItem(i)}
+                              as={Link}
+                              // to={`/students/edit/${c.id}`}
                             >
                               <BiSolidEdit />
                             </Button>
+
                             <Button
                               size="sm"
                               isIconOnly
