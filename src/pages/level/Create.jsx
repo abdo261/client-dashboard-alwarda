@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createLevel } from "../../redux/api/levelApi"; // You should have a levelApi file
 import { formatErrorField } from "../../utils/utils";
 import { levelActions } from "../../redux/slices/levelSlice"; // You should have a levelSlice file
-const types = [  "ECOLE_PRIMAIRE", "COLLEGE", "LYCEE"];
+const types = ["ECOLE_PRIMAIRE", "COLLEGE", "LYCEE"];
 const Create = ({ isOpen, onOpenChange, onCreateChangeOpen }) => {
   const dispatch = useDispatch();
   const { errorValidation, loading } = useSelector((state) => state.level);
@@ -32,7 +32,7 @@ const Create = ({ isOpen, onOpenChange, onCreateChangeOpen }) => {
         onCreateChangeOpen();
       })
     );
-    
+
   };
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const Create = ({ isOpen, onOpenChange, onCreateChangeOpen }) => {
             </ModalHeader>
             <ModalBody>
               <Input
-                size="lg"
+                size="sm"
                 autoFocus
                 label="Nom"
                 placeholder="Enter Le Nom De Niveau"
@@ -79,6 +79,7 @@ const Create = ({ isOpen, onOpenChange, onCreateChangeOpen }) => {
                 }
               />
               <Select
+                size="sm"
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, type: e.target.value }))
                 }

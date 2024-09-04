@@ -5,6 +5,7 @@ import { authReducer } from "./slices/authSlice";
 import { levelReducer } from "./slices/levelSlice";
 import { subjectReducer } from "./slices/subjectSlice";
 import { studentReducer } from "./slices/studentSlice";
+import { paymentReducer } from "./slices/paymentSlice";
 const store = configureStore({
   reducer: {
     subject : subjectReducer,
@@ -12,7 +13,8 @@ const store = configureStore({
     level: levelReducer,
     user:userReducer,
     auth:authReducer,
-    student:studentReducer
+    student:studentReducer,
+    payment:paymentReducer
   },
 });
 export default store;

@@ -10,6 +10,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { TbSchool } from "react-icons/tb";
 import { FaPlus } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import Create from "./Create";
@@ -49,7 +50,7 @@ const SubjectList = () => {
   const [searchItem, setSearchItem] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [page, setPage] = useState(1);
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
 
   const filteredSubjects = useMemo(() => {
     return subjects?.filter((s) =>
@@ -147,7 +148,10 @@ const SubjectList = () => {
             aria-label="Niveau"
             placeholder="Filtrer par niveau"
             variant="faded"
-            onChange={(e) => setSelectedLevel(e.target.value)}
+            onChange={(e) =>{
+              setSelectedLevel(e.target.value)
+              setPage(1)
+            } }
           >
             <SelectItem key="" value="">Tous les niveaux</SelectItem>
             {levels?.map((level) => (
@@ -223,7 +227,7 @@ const SubjectList = () => {
                         <Chip
                           variant={subject.level ? "bordered" : "flat"}
                           color={subject.level ? "default" : "danger"}
-                          startContent={subject.level && <FaUserShield />}
+                          startContent={subject.level && <TbSchool />}
                           size="lg"
                           radius="sm"
                         >

@@ -10,10 +10,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@nextui-org/react";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaMoneyBillWave } from "react-icons/fa";
 import { IoIosCloseCircle, IoMdMore } from "react-icons/io";
 import { formatDateToDDMMYY } from "../utils/utils";
 import { PiHandCoinsBold } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updatepayment } from "../redux/api/paymentApi";
+import { FcMoneyTransfer } from "react-icons/fc";
+import { GiPayMoney } from "react-icons/gi";
 
 const PaymentStatus = ({ payment }) => {
   const {
@@ -25,12 +30,30 @@ const PaymentStatus = ({ payment }) => {
     dueDate,
     have50,
     subjects: jsonSubjects,
+    id,
   } = payment;
   const currentDate = new Date();
   const startDate = new Date(startAt);
 
   const subjects = jsonSubjects ? JSON.parse(jsonSubjects) : [];
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handelPayAll = () => {
+    const updatePayment = {
+      ...payment,
+      subjects: JSON.stringify(subjects.map((s) => ({ ...s, isPayed: true }))),
+      amountPaid: totalAmount,
+      amountDue: 0,
+    };
+    dispatch(updatepayment(id, updatePayment));
+  };
+  const handelPay50 = () => {
+    const updatePayment = {
+      ...payment,
+      have50: 0,
+    };
+    dispatch(updatepayment(id, updatePayment));
+  };
   if (payment && currentDate >= startDate) {
     if (totalAmount === amountPaid) {
       return (
@@ -65,7 +88,7 @@ const PaymentStatus = ({ payment }) => {
                     color={"success"}
                     size="lg"
                     variant="faded"
-                    startContent={<FaCheckCircle />}
+                    startContent={s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle/>}
                     endContent={<>{s.pricePerMonth} DH</>}
                   >
                     <div className="text-small text-gray-950 dark:text-white">
@@ -115,7 +138,6 @@ const PaymentStatus = ({ payment }) => {
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                    
                     <PiHandCoinsBold size="25" /> :
                   </span>
                   <span className="tracking-widest">{amountPaid} DH </span>
@@ -157,13 +179,33 @@ const PaymentStatus = ({ payment }) => {
                     <IoMdMore size={20} />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Static Actions" disabledKeys={[ amountPaid ===totalAmount && 'allPayed',have50 === 0 &&'50DH_payed']}>
-                  <DropdownItem key="allPayed">Payé Touts</DropdownItem>
-                  <DropdownItem key="50DH_payed" >Payé just 50 Dh</DropdownItem>
+                <DropdownMenu
+                  aria-label="Static Actions"
+                  disabledKeys={[
+                    amountPaid === totalAmount && "allPayed",
+                    have50 === 0 && "50DH_payed",
+                  ]}
+                >
+                  <DropdownItem
+                    key="allPayed"
+                    startContent={<FcMoneyTransfer />}
+                    onClick={handelPayAll}
+                  >
+                    Payé Touts
+                  </DropdownItem>
+                  <DropdownItem
+                    key="50DH_payed"
+                    startContent={<FaMoneyBillWave className="text-success" />}
+                    onClick={handelPay50}
+                  >
+                    Payé just 50 Dh
+                  </DropdownItem>
                   <DropdownItem
                     key="custem"
                     className="text-warning"
                     color="warning"
+                    onPress={() => navigate(`/paiements/edit/${id}`)}
+                    startContent={<GiPayMoney />}
                   >
                     Personnaliser le paiement
                   </DropdownItem>
@@ -206,7 +248,7 @@ const PaymentStatus = ({ payment }) => {
                     color={"danger"}
                     size="lg"
                     variant="faded"
-                    startContent={<FaCheckCircle />}
+                    startContent={s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle/>}
                     endContent={<>{s.pricePerMonth} DH</>}
                   >
                     <div className="text-small text-gray-950 dark:text-white">
@@ -256,7 +298,6 @@ const PaymentStatus = ({ payment }) => {
                 </div>
                 <div className="flex gap-1">
                   <span className=" text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                    
                     <PiHandCoinsBold size="25" /> :
                   </span>
                   <span className="tracking-widest">{amountPaid} DH </span>
@@ -298,13 +339,33 @@ const PaymentStatus = ({ payment }) => {
                     <IoMdMore size={20} />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Static Actions">
-                  <DropdownItem key="new">Payé Touts</DropdownItem>
-                  <DropdownItem key="copy">Payé just 50 Dh</DropdownItem>
+                <DropdownMenu
+                  aria-label="Static Actions"
+                  disabledKeys={[
+                    amountPaid === totalAmount && "allPayed",
+                    have50 === 0 && "50DH_payed",
+                  ]}
+                >
                   <DropdownItem
-                    key="delete"
+                    key="allPayed"
+                    startContent={<FcMoneyTransfer />}
+                    onClick={handelPayAll}
+                  >
+                    Payé Touts
+                  </DropdownItem>
+                  <DropdownItem
+                    key="50DH_payed"
+                    startContent={<FaMoneyBillWave className="text-success" />}
+                    onClick={handelPay50}
+                  >
+                    Payé just 50 Dh
+                  </DropdownItem>
+                  <DropdownItem
+                    key="custem"
                     className="text-warning"
                     color="warning"
+                    onPress={() => navigate(`/paiements/edit/${id}`)}
+                    startContent={<GiPayMoney />}
                   >
                     Personnaliser le paiement
                   </DropdownItem>
@@ -347,7 +408,7 @@ const PaymentStatus = ({ payment }) => {
                     color={s.isPayed ? "success" : "danger"}
                     size="lg"
                     variant="faded"
-                    startContent={<FaCheckCircle />}
+                    startContent={s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle/>}
                     endContent={<>{s.pricePerMonth} DH</>}
                   >
                     <div className="text-small text-gray-950 dark:text-white">
@@ -438,13 +499,33 @@ const PaymentStatus = ({ payment }) => {
                     <IoMdMore size={20} />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Static Actions">
-                  <DropdownItem key="new">Payé Touts</DropdownItem>
-                  <DropdownItem key="copy">Payé just 50 Dh</DropdownItem>
+                <DropdownMenu
+                  aria-label="Static Actions"
+                  disabledKeys={[
+                    amountPaid === totalAmount && "allPayed",
+                    have50 === 0 && "50DH_payed",
+                  ]}
+                >
                   <DropdownItem
-                    key="delete"
+                    key="allPayed"
+                    startContent={<FcMoneyTransfer />}
+                    onClick={handelPayAll}
+                  >
+                    Payé Touts
+                  </DropdownItem>
+                  <DropdownItem
+                    key="50DH_payed"
+                    startContent={<FaMoneyBillWave className="text-success" />}
+                    onClick={handelPay50}
+                  >
+                    Payé just 50 Dh
+                  </DropdownItem>
+                  <DropdownItem
+                    key="custem"
                     className="text-warning"
                     color="warning"
+                    onPress={() => navigate(`/paiements/edit/${id}`)}
+                    startContent={<GiPayMoney />}
                   >
                     Personnaliser le paiement
                   </DropdownItem>

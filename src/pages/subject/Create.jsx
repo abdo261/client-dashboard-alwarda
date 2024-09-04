@@ -48,7 +48,7 @@ const Create = ({ isOpen, onOpenChange }) => {
       })
     );
   };
-  
+
 
   useEffect(() => {
     if (!isOpen) {
@@ -64,7 +64,7 @@ const Create = ({ isOpen, onOpenChange }) => {
   ];
 
 
-console.log(formData)
+  console.log(formData)
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
@@ -83,7 +83,10 @@ console.log(formData)
                 variant="bordered"
                 onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                 value={formData.name}
-                isInvalid={errorValidation && formatErrorField(errorValidation, "name")}
+                isInvalid={errorValidation && formatErrorField(errorValidation, "name") &&
+                  true
+                }
+
                 errorMessage={
                   errorValidation &&
                   formatErrorField(errorValidation, "name") && (
@@ -96,26 +99,27 @@ console.log(formData)
                 }
               />
               <Input
-              size="sm"
-              label="Prix"
-              placeholder="Enter Le Prix"
-              variant="bordered"
-              type="number"
-              min="0"
-              onChange={(e) => setFormData((prev) => ({ ...prev, pricePerMonth: e.target.value }))}
-              value={formData.pricePerMonth}
-              isInvalid={errorValidation && formatErrorField(errorValidation, "pricePerMonth")}
-              errorMessage={
-                errorValidation &&
-                formatErrorField(errorValidation, "pricePerMonth") && (
-                  <ol>
-                    {formatErrorField(errorValidation, "pricePerMonth")?.map((e) => (
-                      <li key={e}>-{e}</li>
-                    ))}
-                  </ol>
-                )
-              }
-            />
+                size="sm"
+                label="Prix"
+                placeholder="Enter Le Prix"
+                variant="bordered"
+                type="number"
+                min="0"
+                onChange={(e) => setFormData((prev) => ({ ...prev, pricePerMonth: e.target.value }))}
+                value={formData.pricePerMonth}
+                isInvalid={errorValidation && formatErrorField(errorValidation, "pricePerMonth") &&
+                  true}
+                errorMessage={
+                  errorValidation &&
+                  formatErrorField(errorValidation, "pricePerMonth") && (
+                    <ol>
+                      {formatErrorField(errorValidation, "pricePerMonth")?.map((e) => (
+                        <li key={e}>-{e}</li>
+                      ))}
+                    </ol>
+                  )
+                }
+              />
               <Select
                 size="sm"
                 label="Niveaux"
@@ -123,10 +127,26 @@ console.log(formData)
                 variant="bordered"
                 onChange={(e) => setFormData((prev) => ({ ...prev, levelId: e.target.value }))}
                 value={formData.levelId}
+                isInvalid={
+                  errorValidation &&
+                  formatErrorField(errorValidation, "levelId") &&
+                  true
+                }
+                errorMessage={
+                  errorValidation &&
+                  formatErrorField(errorValidation, "levelId") && (
+                    <ol>
+                      {formatErrorField(errorValidation, "levelId").map((e) => (
+                        <li key={e}>-{e}</li>
+                      ))}
+                    </ol>
+                  )
+                }
               >
                 {levels?.map((level) => (
                   <SelectItem key={level.id}>{level.name}</SelectItem>
                 ))}
+
               </Select>
               <Select
                 size="sm"
@@ -135,6 +155,18 @@ console.log(formData)
                 variant="bordered"
                 onChange={(e) => setFormData((prev) => ({ ...prev, school: e.target.value }))}
                 value={formData.school}
+                isInvalid={errorValidation && formatErrorField(errorValidation, "school") &&
+                  true}
+                errorMessage={
+                  errorValidation &&
+                  formatErrorField(errorValidation, "school") && (
+                    <ol>
+                      {formatErrorField(errorValidation, "school")?.map((e) => (
+                        <li key={e}>-{e}</li>
+                      ))}
+                    </ol>
+                  )
+                }
               >
                 {schools?.map((school) => (
                   <SelectItem key={school.key}>{school.label}</SelectItem>

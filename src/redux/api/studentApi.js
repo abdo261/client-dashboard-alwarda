@@ -101,13 +101,13 @@ export const createstudent = (student, cb) => async (dispatch) => {
 export const getstudentById = (id, cb) => async (dispatch) => {
   dispatch(studentActions.setError(null));
   dispatch(studentActions.setGetLoadingById(true));
-  dispatch(studentActions.setstudent(null));
+  dispatch(studentActions.setStudent(null));
 
   try {
     await new Promise((resolve)=>setTimeout(resolve,5000))
 
     const response = await request.get(`/students/${id}`);
-    dispatch(studentActions.setstudent(response.data));
+    dispatch(studentActions.setStudent(response.data));
   } catch (error) {
    
     if (error?.response) {
@@ -125,7 +125,7 @@ export const getstudentById = (id, cb) => async (dispatch) => {
         )
       );
     }
-    dispatch(studentActions.setstudent(null));
+    dispatch(studentActions.setStudent(null));
     cb && cb();
   }
   finally {
@@ -136,13 +136,13 @@ export const getstudentById = (id, cb) => async (dispatch) => {
 export const updatestudent = (id, updatedstudent, cb) => async (dispatch) => {
   dispatch(studentActions.setError(null));
   dispatch(studentActions.setCreateLoading(true));
-  dispatch(studentActions.setstudent(null));
+  dispatch(studentActions.setStudent(null));
 
   try {
     await new Promise((resolve)=>setTimeout(resolve,5000))
     const response = await request.put(`/students/${id}`, updatedstudent);
     if (response.status === 200){
-      dispatch(studentActions.updatestudents({ id, student: response.data.student }));
+      dispatch(studentActions.updateStudents({ id, student: response.data.student }));
       toast.success(response.data.message);
       cb && cb();
     } 
@@ -179,11 +179,11 @@ export const updatestudent = (id, updatedstudent, cb) => async (dispatch) => {
   }
 };
 
-export const deletestudent = (id, cb) => async (dispatch) => {
+export const deleteStudent = (id, cb) => async (dispatch) => {
   try {
     const response = await request.delete(`students/${id}`);
     if (response.status === 200){
-      dispatch(studentActions.removestudent(id))
+      dispatch(studentActions.removeStudent(id))
       toast.success(response.data.message);
     } 
   } catch (error) {
