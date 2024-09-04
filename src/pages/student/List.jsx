@@ -157,7 +157,7 @@ const List = () => {
                 <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
                   {students && (
                     <Chip variant="flat" color="success" size="lg">
-                      Total {students.length}
+                      Total {students?.length}
                     </Chip>
                   )}
                 </th>
@@ -188,15 +188,15 @@ const List = () => {
                             variant="flat"
                             className="font-semibold text-medium"
                             color={
-                              s.subjects.length > 0 ? "success" : "danger"
+                              s.subjects?.length > 0 ? "success" : "danger"
                             }
                             startContent={<FaBook />}
                             size="sm"
                           >
-                            {s.subjects.length}
+                            {s.subjects?.length}
                           </Button>
                         </PopoverTrigger>
-                        {s.subjects.length > 0 && (
+                        {s.subjects?.length > 0 && (
                           <PopoverContent className="w-fit">
                             <div className="px-1 py-2 w-full">
                               <p className="text-small font-bold text-foreground">
@@ -233,7 +233,7 @@ const List = () => {
                         size="md"
                         radius="sm"
                       >
-                        {s.centre.name}
+                        {s.centre?.name}
                       </Chip>
                     </td>
                     <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
@@ -248,7 +248,7 @@ const List = () => {
                           className="text-xl"
                           color="primary"
                           variant="ghost"
-                          onClick={() => SelectShowItem(s.id)}
+                          onPress={() => SelectShowItem(s.id)}
                         >
                           <FiEye />
                         </Button>
@@ -304,7 +304,7 @@ const List = () => {
       <Show
         onOpenChange={onShowChangeOpen}
         isOpen={isShowOpen}
-        itemToEdit={itemToShow}
+        itemToShow={itemToShow}
         SelectEditItem={SelectShowItem}
       />
     </>

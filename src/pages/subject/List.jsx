@@ -10,6 +10,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { TbSchool } from "react-icons/tb";
 import { FaPlus } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import Create from "./Create";
@@ -226,7 +227,7 @@ const SubjectList = () => {
                         <Chip
                           variant={subject.level ? "bordered" : "flat"}
                           color={subject.level ? "default" : "danger"}
-                          startContent={subject.level && <FaUserShield />}
+                          startContent={subject.level && <TbSchool />}
                           size="lg"
                           radius="sm"
                         >
