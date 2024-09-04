@@ -129,7 +129,6 @@ export const getpaymentById = (id, cb) => async (dispatch) => {
   }
 };
 
-
 export const updatepayment = (id, updatedPayment, cb) => async (dispatch) => {
   dispatch(paymentActions.setError(null));
   dispatch(paymentActions.setCreateLoading(true));
@@ -137,12 +136,8 @@ export const updatepayment = (id, updatedPayment, cb) => async (dispatch) => {
 
   const updatePaymentPromise = new Promise(async (resolve, reject) => {
     try {
-      // Simulate delay for demonstration purposes
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      // Perform the API request
       const response = await request.put(`/payments/${id}`, updatedPayment);
-
+      console.log(response.data.payment);
       if (response.status === 200) {
         dispatch(
           studentActions.updateStudentPayment({
@@ -150,9 +145,9 @@ export const updatepayment = (id, updatedPayment, cb) => async (dispatch) => {
             payment: response.data.payment,
           })
         );
-        resolve(response.data.message); // Pass the success message
+        resolve(response.data.message);
 
-        cb && cb(); // Call the callback if it exists
+        cb && cb();
       } else {
         reject(new Error("Unexpected status code"));
       }
@@ -160,7 +155,7 @@ export const updatepayment = (id, updatedPayment, cb) => async (dispatch) => {
       // Handle errors
       if (error?.response) {
         if (error.response.status === 500) {
-          reject(new Error(error.response.data.message)); // Pass the error message
+          reject(new Error(error.response.data.message));
         } else if (error.response.status === 400) {
           toast.error("Validation error", {
             autoClose: 2000,
@@ -172,14 +167,16 @@ export const updatepayment = (id, updatedPayment, cb) => async (dispatch) => {
           reject(new Error("Error updating payment"));
         }
       } else {
-        reject(new Error("Server is down, please check if your server is running"));
+        reject(
+          new Error("Server is down, please check if your server is running")
+        );
       }
     }
   });
 
   toast.promise(updatePaymentPromise, {
     pending: "Mise à jour du paiement en cours...",
-    success:`Paiement effectué avec succès`,  
+    success: `Paiement effectué avec succès`,
     error: (error) => {
       if (error.message.includes("Validation error")) {
         return "Erreur de validation";

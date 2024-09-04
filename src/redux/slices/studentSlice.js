@@ -45,7 +45,7 @@ const studentSlice = createSlice({
     },
     updateStudentPayment(state, action) {
       state.students = state.students.map((s) =>
-      ({s,payments:s.payments.map(p=> p.id === action.payload.id ? action.payload.payment : p)})
+      ({...s,payments:s.payments.map(p=> p.id === action.payload.id ? action.payload.payment : p)})
       );
     },
     removeStudent(state,action){

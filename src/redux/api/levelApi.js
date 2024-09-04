@@ -33,7 +33,7 @@ export const getLevelsBySchool = (school,cb) => async (dispatch) => {
   dispatch(levelActions.setGetLoading(true));
   dispatch(levelActions.setLevels(null));
   try {
-        await new Promise((resolve)=>setTimeout(resolve,7000))
+       
 
     const response = await request.get(`/levels/school/${school}`);
     dispatch(levelActions.setLevels(response.data));

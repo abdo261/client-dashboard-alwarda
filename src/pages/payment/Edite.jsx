@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getpaymentById, updateCustempayment,  } from "../../redux/api/paymentApi";
 import {
-  Button,
+  getpaymentById,
+  updateCustempayment,
+} from "../../redux/api/paymentApi";
+import {
+  Badge,
   Card,
   CardBody,
   Chip,
   Spinner,
   Tab,
   Tabs,
-  Tooltip,
 } from "@nextui-org/react";
 import ErrorAlert from "../../components/ErrorAlert";
 import { FaCheckCircle } from "react-icons/fa";
-import { formatDateToDDMMYY } from "../../utils/utils";
+import { formatDateToDDMMYY, getVariantShip } from "../../utils/utils";
 import { PiHandCoinsBold } from "react-icons/pi";
-import { IoClose } from "react-icons/io5";
+
 import { IoIosCloseCircle } from "react-icons/io";
+import CustemPayment from "../../components/CustemPayment";
+import CustemSelectPay from "../../components/CustemSelectPay";
 
 const Edite = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { payment, loading, error } = useSelector((state) => state.payment);
 
   const [formData, setFormData] = useState(null);
@@ -44,7 +48,7 @@ const Edite = () => {
           ? {
               ...s,
               isPayed: value,
-              amountPayed: value
+              amountPaid: value
                 ? parseInt(s.pricePerMonth) - discountPerSubject
                 : 0,
             }
@@ -65,17 +69,52 @@ const Edite = () => {
       };
     });
   };
-
+  const hedelpayCustemSubject = (newSubjects) => {
+    setFormData((prev) => ({
+      ...prev,
+      subjects: newSubjects,
+      amountPaid: parseInt(
+        JSON.stringify(
+          JSON.parse(newSubjects).reduce(
+            (total, subject) => total + parseInt(subject.amountPaid),
+            0
+          )
+        )
+      ),
+      amountDue: parseInt(
+        formData.totalAmount -
+          JSON.stringify(
+            JSON.parse(newSubjects).reduce(
+              (total, subject) => total + parseInt(subject.amountPaid),
+              0
+            )
+          )
+      ),
+    }));
+  };
   const handelPay50 = (id, value) => {
     setFormData((prev) => ({
       ...prev,
       have50: value,
     }));
   };
-  const handelSubmit = (e) => {
+  const handelSelectSubmit = (e) => {
     e.preventDefault();
     const { amountPaid, subjects, have50, ...res } = formData;
-    dispatch(updateCustempayment(id,{ amountPaid, subjects, have50 },()=>navigate(-1)));
+    dispatch(
+      updateCustempayment(id, { amountPaid, subjects, have50 }, () =>
+        navigate(-1)
+      )
+    );
+  };
+  const handelCutemSelectSubmit = (e) => {
+    e.preventDefault();
+    const { amountPaid, subjects, have50, ...res } = formData;
+    dispatch(
+      updateCustempayment(id, { amountPaid, subjects, have50 }, () =>
+        navigate(-1)
+      )
+    );
   };
   return (
     <div className="w-full p-5 bg-white dark:bg-[#43474b] rounded-lg ">
@@ -93,169 +132,59 @@ const Edite = () => {
         payment && (
           <div className="w-full  grid grid-cols-1  md:grid-cols-[1fr_auto] gap-3">
             <div className="w-full">
-              <form
-                className="flex flex-col w-full gap-3  h-full"
-                onSubmit={handelSubmit}
+              <Tabs
+                aria-label="Options"
+                fullWidth
+                className="flex-1"
+                onSelectionChange={() => setFormData(payment)}
               >
-                <Tabs aria-label="Options" fullWidth>
-                  <Tab key="simple" title="Simple">
-                    <Card>
-                      <CardBody className="flex flex-col w-full gap-3  h-full">
-                        {formData?.subjects &&
-                          JSON.parse(formData?.subjects)?.map((s) => (
-                            <div
-                              className="flex gap-2 items-center "
-                              key={s.id}
-                            >
-                              <Chip
-                                key={s.id}
-                                color={s.isPayed ? "success" : "danger"}
-                                size="lg"
-                                variant="faded"
-                                startContent={
-                                  s.isPayed ? (
-                                    <FaCheckCircle />
-                                  ) : (
-                                    <IoIosCloseCircle />
-                                  )
-                                }
-                                endContent={
-                                  <>{s.pricePerMonth - s.discount} DH</>
-                                }
-                              >
-                                <div className="text-small text-gray-950 dark:text-white">
-                                  {s.name}
-                                </div>
-                              </Chip>
-                              <div>
-                                <Tooltip
-                                  content={
-                                    s.isPayed
-                                      ? "Annuler cette matière"
-                                      : "Payé cette matière"
-                                  }
-                                  color={s.isPayed ? "danger" : "success"}
-                                  showArrow
-                                  delay={0}
-                                  size="sm"
-                                  closeDelay={0}
-                                >
-                                  <Button
-                                    isIconOnly
-                                    size="sm"
-                                    radius="md"
-                                    variant="ghost"
-                                    color={s.isPayed ? "danger" : "success"}
-                                    onClick={() =>
-                                      handelPaySubject(
-                                        s.id,
-                                        s.isPayed ? false : true,
-                                        s.pricePerMonth
-                                      )
-                                    }
-                                  >
-                                    {s.isPayed ? (
-                                      <IoClose className="text-lg" />
-                                    ) : (
-                                      <FaCheckCircle className="text-lg" />
-                                    )}
-                                  </Button>
-                                </Tooltip>
-                              </div>
-                            </div>
-                          ))}
-                        <div>
-                          <Chip
-                            key={"50DH"}
-                            color={
-                              formData?.have50 === 0 ? "success" : "danger"
-                            }
-                            size="lg"
-                            variant="faded"
-                            startContent={
-                              formData?.have50 === 0 ? (
-                                <FaCheckCircle />
-                              ) : (
-                                <IoIosCloseCircle />
-                              )
-                            }
-                          >
-                            <div className="text-small text-gray-950 dark:text-white">
-                              50 DH
-                            </div>
-                          </Chip>
-                          <Tooltip
-                            content={
-                              formData?.have50 === 0
-                                ? "Annuler cette matière"
-                                : "Payé cette matière"
-                            }
-                            color={
-                              formData?.have50 === 0 ? "success" : "danger"
-                            }
-                            showArrow
-                            delay={0}
-                            size="sm"
-                            closeDelay={0}
-                          >
-                            <Button
-                              isIconOnly
-                              size="sm"
-                              radius="md"
-                              variant="ghost"
-                              color={
-                                formData?.have50 === 0 ? "danger" : "success"
-                              }
-                              onClick={() =>
-                                handelPay50(id, formData?.have50 === 0 ? 50 : 0)
-                              }
-                            >
-                              {formData?.have50 === 0 ? (
-                                <IoClose className="text-lg" />
-                              ) : (
-                                <FaCheckCircle className="text-lg" />
-                              )}
-                            </Button>
-                          </Tooltip>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Tab>
-                  <Tab key="custem" title="Personalisé">
-                    <Card>
-                      <CardBody className="flex flex-col w-full gap-3  h-full"></CardBody>
-                    </Card>
-                  </Tab>
-                </Tabs>{" "}
-                <Button
-                  fullWidth
-                  className="mt-auto"
-                  type="submit"
-                  color="primary"
-                  isLoading={loading.loadingCreate}
-                >
-                  Payé
-                </Button>
-              </form>
+                <Tab key="simple" title="Simple">
+                  <CustemSelectPay
+                    formData={formData}
+                    handelPay50={handelPay50}
+                    handelPaySubject={handelPaySubject}
+                    id={id}
+                    loading={loading}
+                    handelSubmit={handelSelectSubmit}
+                  />
+                </Tab>
+                <Tab key="custem" title="Personalisé">
+                  <CustemPayment
+                    payment={payment}
+                    loading={loading}
+                    formData={formData}
+                    handelPay50={handelPay50}
+                    hedelpayCustemSubject={hedelpayCustemSubject}
+                    id={id}
+                    handelSubmit={handelCutemSelectSubmit}
+                  />
+                </Tab>
+              </Tabs>
             </div>
             <div className="p-4 space-y-3 dark:text-white dark:bg-[#18191A] rounded-md bg-gray-100  dark:shadow-gray-200  shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] ">
               <div className="flex flex-col gap-2 w-full items-start">
                 {formData?.subjects &&
                   JSON.parse(formData?.subjects)?.map((s) => (
-                    <Chip
-                      key={s.id}
-                      color={s.isPayed ? "success" : "danger"}
-                      size="lg"
-                      variant="faded"
-                      startContent={
-                        s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle />
-                      }
-                      endContent={<>{s.pricePerMonth} DH</>}
-                    >
-                      <div className="text-small text-gray-950 dark:text-white">
-                        {s.name}
-                      </div>
-                    </Chip>
+                    <Badge content={s.pricePerMonth - s.discount} size="sm">
+                      <Chip
+                        key={s.id}
+                        color={getVariantShip(
+                          s.isPayed,
+                          s.pricePerMonth - s.discount,
+                          s?.amountPaid
+                        )}
+                        size="lg"
+                        variant="faded"
+                        startContent={
+                          s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle />
+                        }
+                        endContent={<>{s?.amountPaid} DH</>}
+                      >
+                        <div className="text-small text-gray-950 dark:text-white">
+                          {s.name}
+                        </div>
+                      </Chip>
+                    </Badge>
                   ))}
               </div>
               <div className="flex flex-col gap-1">

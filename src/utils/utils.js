@@ -59,3 +59,10 @@ export function formatDateToDDMMYY(dateStr) {
   
   return `${day}/${month}/${year}`;
 }
+export const getVariantShip =(isPayed, price,amountPAyed)=>{
+if(isPayed){
+  return "success"
+}else {
+  return amountPAyed===0 ? "danger" : "warning"
+}
+}

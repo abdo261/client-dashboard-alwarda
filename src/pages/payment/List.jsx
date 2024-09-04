@@ -48,6 +48,7 @@ const List = ({ schoolType }) => {
   useEffect(() => {
     dispatch(getstudentsByPaymentsSchool(schoolType));
     dispatch(getLevelsBySchool(schoolType));
+    setSelectedLevel('')
   }, [dispatch, schoolType]);
 
   const { error, loading, students } = useSelector((state) => state.student);
