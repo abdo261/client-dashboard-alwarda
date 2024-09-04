@@ -13,8 +13,6 @@ export const getStudents = (cb) => async (dispatch) => {
     dispatch(studentActions.setStudents(response.data));
     console.log(response)
   } catch (error) {
-  
- 
     dispatch(studentActions.setStudents(null));
     if (error?.response) {
       error.response.status === 500 &&

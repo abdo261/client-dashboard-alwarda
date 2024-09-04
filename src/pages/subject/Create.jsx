@@ -18,7 +18,7 @@ import { formatErrorField } from "../../utils/utils";
 
 const Create = ({ isOpen, onOpenChange }) => {
   const dispatch = useDispatch();
-  const { levels, loading: levelsLoading, error } = useSelector((state) => state.level);
+  const { levels } = useSelector((state) => state.level);
   const { errorValidation, loading } = useSelector((state) => state.subject);
 
   const [formData, setFormData] = useState({
