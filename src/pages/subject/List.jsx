@@ -181,7 +181,7 @@ const SubjectList = () => {
         </div>
       )}
       {!error && subjects && (
-        <div className="rounded-lg border border-gray-200 w-full h-[539px] overflow-y-auto dark:border-gray-700 mt-4">
+        <div className="rounded-lg border border-gray-200 w-full h-[543px] overflow-y-auto dark:border-gray-700 mt-4">
           <div className="overflow-x-auto rounded-t-lg w-full justify-center shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white dark:divide-gray-700 dark:bg-[#43474b] text-lg">
               <thead className="ltr:text-left rtl:text-right">

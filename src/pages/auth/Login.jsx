@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ToggleThem from "../../components/ToggleThem";
 import { Button, Input } from "@nextui-org/react";
 import { LuMail } from "react-icons/lu";
@@ -29,11 +29,12 @@ export const Login = () => {
 
     dispatch(
       loginUser(formData, () => {
-        navigate("/");
+        console.log('Callback executed');
         setFormData({
           email: "",
           password: "",
         });
+       navigate("/");
       })
     );
   };

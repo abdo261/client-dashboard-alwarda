@@ -3,21 +3,23 @@ import { toast } from "react-toastify";
 import { authActions } from "../slices/authSlice";
 import { request } from "../request";
 
-export const loginUser = (formData,cb) => async (dispatch) => {
+export const loginUser = (formData, cb) => async (dispatch) => {
   dispatch(authActions.setLoading(true));
   dispatch(authActions.setError(null));
   dispatch(authActions.setUser(null));
-
   try {
     const response = await request.post("/auth/login", formData);
+    console.log(response)
     if (response.status === 200) {
-      authActions.setUser(response.data.user);
-      localStorage.setItem("session_user", JSON.stringify( {user:response.data.user,token:response.data.token}));
+      dispatch(authActions.setUser(response.data.user));
+      localStorage.setItem(
+        "session_user",
+        JSON.stringify({ user: response.data.user, token: response.data.token })
+      );
       toast.success(response.data.message);
-      cb && cb()
+      cb && cb();
     }
   } catch (error) {
-  
     if (error?.response?.status === 400) {
       dispatch(authActions.setErrorValidation(error.response.data));
       toast.error("Ereur de validation !");
@@ -37,4 +39,11 @@ export const loginUser = (formData,cb) => async (dispatch) => {
   } finally {
     dispatch(authActions.setLoading(false));
   }
+};
+
+
+export const logoutUser = (cb) => async (dispatch) => {
+  dispatch(authActions.logOutUser());
+  localStorage.removeItem("session_user");
+  cb && cb();
 };

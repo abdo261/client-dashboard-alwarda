@@ -30,7 +30,7 @@ export default function SelectMaterial({ subjects,addSubjects,errorValidation })
 
   return (
     <>
-      {subjects.length === 0 ? (
+      {subjects?.length === 0 ? (
         <div className="flex justify-center items-cenetr py-2 ">
           <Chip color="danger" variant="bordered">
             il n'y a pas de matiére à ce niveau

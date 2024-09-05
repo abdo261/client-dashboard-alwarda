@@ -8,6 +8,8 @@ import { TbSchool } from "react-icons/tb";
 import { GiBookCover } from "react-icons/gi";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
+import { logoutUser } from "../redux/api/authApi";
+import { useDispatch } from "react-redux";
 
 const AdminLinks = [
   { name: "Utilisateurs", href: "/utilisateurs", icon: <FaUserShield /> },
@@ -21,7 +23,12 @@ const Links = [
   // { name: "Abonnements", href: "/abonnements", icon: <TbReportMoney /> },
   { name: "Paiement", href: "/paiements", icon: <FaHandHoldingUsd /> },
 ];
+
 const Sidebare = ({ open }) => {
+  const dispatch=useDispatch()
+  const handelLogout = ()=>{
+  dispatch(logoutUser())
+}
   return (
     <aside
       className={`flex h-screen  ${
@@ -92,16 +99,31 @@ const Sidebare = ({ open }) => {
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 p-2">
         <form action="#">
-          <button
-            type="submit"
-            className="group relative flex w-full justify-center rounded-lg p-2 text-gray-500  dark:text-gray-300 hover:bg-red-400  hover:text-white text-2xl"
+          <Tooltip
+            content={"Déconnecter"}
+            showArrow
+            placement="right"
+            size="lg"
+            color="foreground"
+            className="bg-red-400 "
+            radius="sm"
+            delay={0}
+            closeDelay={0}
           >
-            <IoIosLogOut />
+            <span>
+              <button
+              onClick={handelLogout}
+                type="submit"
+                className="group relative flex w-full justify-center rounded-lg p-2 text-gray-500  dark:text-gray-300 hover:bg-red-400  hover:text-white text-2xl"
+              >
+                <IoIosLogOut />
 
-            <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-red-400 px-2 py-1.5 text-lg  text-white group-hover:visible">
-              Logout
+                {/* <span className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-red-400 px-2 py-1.5 text-lg  text-white group-hover:visible">
+                Logout
+              </span> */}
+              </button>
             </span>
-          </button>
+          </Tooltip>
         </form>
       </div>
     </aside>

@@ -10,13 +10,14 @@ import { loginRoutes } from "./pages/auth/router";
 
 import PageNoteFound from "./pages/PageNoteFound";
 import { paymentRoutes } from "./pages/payment/routes";
+import { useSelector } from "react-redux";
 
 const App = () => {
-  // const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   return (
     <>
       <Routes>
-        {/* {user ? ( */}
+        {user ? (
           <>
             {homeRoutes}
             {centerRoutes}
@@ -26,15 +27,15 @@ const App = () => {
             {levelRoutes}
             {subjectRoutes}
             {paymentRoutes}
-            <Route path="/auth/login" element={<Navigate to="/"/>} />
+            <Route path="/auth/login" element={<Navigate to="/" />} />
           </>
-        {/* ) : ( */}
+        ) : (
           <>
-          {loginRoutes}
-           <Route path="/" element={<Navigate to="/auth/login"/>} />
+            {loginRoutes}
+            <Route path="/" element={<Navigate to="/auth/login" />} />
           </>
-        {/* )} */}
-        <Route path="*" element={<PageNoteFound/>}/>
+        )}
+        <Route path="*" element={<PageNoteFound />} />
       </Routes>
     </>
   );
