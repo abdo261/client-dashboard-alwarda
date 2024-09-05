@@ -26,12 +26,15 @@ import { formatTimestamp } from "../../utils/utils";
 import { CgDanger } from "react-icons/cg";
 import { getLevels } from "../../redux/api/levelApi";
 import ErrorAlert from "../../components/ErrorAlert";
-// import { getCentres } from "../../redux/api/centreApi";
+
 
 const List = () => {
-  // const { centres } = useSelector((state) => state.centre);
+  useEffect(() => {
+    document.title = "Alwarda | Etudients";
+  }, []);
+
   const { students, loading: studentsLoading, error: studentsError } = useSelector((state) => state.student);
-  const { levels, loading: levelsLoading, error: levelsError } = useSelector((state) => state.level);
+  const { levels } = useSelector((state) => state.level);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -106,27 +109,29 @@ const List = () => {
     }
   }, [itemToDelete]);
 
-  console.log(students)
+ 
 
   return (
     <>
       <div className="flex justify-start ">
         <h1 className="text-3xl font-semibold underline">Eleves</h1>
       </div>
-      <div className="flex justify-between gap-3 items-end bg-white  shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-        <form className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="flex justify-between gap-3 items-start md:items-center bg-white  shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Input
             fullWidth
             isClearable
             placeholder="Rechercher par nom..."
             startContent={<FiSearch />}
             variant="faded"
+            size="lg"
             onChange={(e) => setSearchItem(e.target.value)}
             value={searchItem}
             onClear={() => setSearchItem("")}
             className="tracking-widest"
           />
           <Select
+          size="lg"
             aria-label="Niveau"
             placeholder="Filtrer par niveau"
             variant="faded"
@@ -141,14 +146,14 @@ const List = () => {
               </SelectItem>
             ))}
           </Select>
-        </form>
+        </div>
         <Button
           endContent={<FaPlus />}
           color="primary"
           variant="flat"
           onPress={onCreateOpen}
         >
-          Créer
+            Nouveau
         </Button>
       </div>
       {studentsError && (
@@ -241,7 +246,7 @@ const List = () => {
                                 </p>
                                 <div className="mt-2 flex flex-col gap-2 w-full">
                                   {s.subjects.map((s) => (
-                                    <Chip variant="dot">{s.name} </Chip>
+                                    <Chip variant="dot" key={s.id}>{s.name} </Chip>
                                   ))}
                                 </div>
                               </div>

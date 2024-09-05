@@ -1,13 +1,11 @@
 import {
   Button,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
-import SwiperCardsMaterial from "../../components/SwiperCardsMaterial";
 
 const Show = ({ isOpen, onOpenChange }) => {
   return (

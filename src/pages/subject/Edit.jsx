@@ -18,6 +18,7 @@ import { subjectActions } from "../../redux/slices/subjectSlice";
 import ErrorAlert from "../../components/ErrorAlert";
 
 const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
+
   const dispatch = useDispatch();
   const { subject, loading, errorValidation, error } = useSelector(
     (state) => state.subject

@@ -11,11 +11,12 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createLevel } from "../../redux/api/levelApi"; // You should have a levelApi file
+import { createLevel } from "../../redux/api/levelApi"; 
 import { formatErrorField } from "../../utils/utils";
-import { levelActions } from "../../redux/slices/levelSlice"; // You should have a levelSlice file
+import { levelActions } from "../../redux/slices/levelSlice"; 
 const types = ["ECOLE_PRIMAIRE", "COLLEGE", "LYCEE"];
 const Create = ({ isOpen, onOpenChange, onCreateChangeOpen }) => {
+
   const dispatch = useDispatch();
   const { errorValidation, loading } = useSelector((state) => state.level);
 

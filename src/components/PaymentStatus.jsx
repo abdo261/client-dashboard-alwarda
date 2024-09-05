@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import { FaCheckCircle, FaMoneyBillWave } from "react-icons/fa";
 import { IoIosCloseCircle, IoMdMore } from "react-icons/io";
-import { formatDateToDDMMYY } from "../utils/utils";
+import { formatDateToDDMMYY, getVariantShip } from "../utils/utils";
 import { PiHandCoinsBold } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -41,7 +41,7 @@ const PaymentStatus = ({ payment }) => {
   const handelPayAll = () => {
     const updatePayment = {
       ...payment,
-      subjects: JSON.stringify(subjects.map((s) => ({ ...s, isPayed: true }))),
+      subjects: JSON.stringify(subjects.map((s) => ({ ...s, isPayed: true,amountPaid:s.pricePerMonth - s.discount }))),
       amountPaid: totalAmount,
       amountDue: 0,
     };
@@ -83,18 +83,26 @@ const PaymentStatus = ({ payment }) => {
             <div className="px-1 py-2 space-y-3 dark:text-white ">
               <div className="flex flex-col gap-2 w-full items-start">
                 {subjects?.map((s) => (
-                  <Chip
-                    key={s.id}
-                    color={"success"}
-                    size="lg"
-                    variant="faded"
-                    startContent={s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle/>}
-                    endContent={<>{s.pricePerMonth} DH</>}
-                  >
-                    <div className="text-small text-gray-950 dark:text-white">
-                      {s.name}
-                    </div>
-                  </Chip>
+                 <Badge content={s.pricePerMonth - s.discount} size="sm">
+                 <Chip
+                   key={s.id}
+                   color={getVariantShip(
+                     s.isPayed,
+                     s.pricePerMonth - s.discount,
+                     s?.amountPaid
+                   )}
+                   size="lg"
+                   variant="faded"
+                   startContent={
+                     s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle />
+                   }
+                   endContent={<>{s?.amountPaid} DH</>}
+                 >
+                   <div className="text-small text-gray-950 dark:text-white">
+                     {s.name}
+                   </div>
+                 </Chip>
+               </Badge>
                 ))}
               </div>
               <div className="flex flex-col gap-1">
@@ -243,18 +251,26 @@ const PaymentStatus = ({ payment }) => {
             <div className="px-1 py-2 space-y-3 dark:text-white">
               <div className="flex flex-col gap-2 w-full items-start">
                 {subjects?.map((s) => (
-                  <Chip
-                    key={s.id}
-                    color={"danger"}
-                    size="lg"
-                    variant="faded"
-                    startContent={s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle/>}
-                    endContent={<>{s.pricePerMonth} DH</>}
-                  >
-                    <div className="text-small text-gray-950 dark:text-white">
-                      {s.name}
-                    </div>
-                  </Chip>
+                   <Badge content={s.pricePerMonth - s.discount} size="sm">
+                   <Chip
+                     key={s.id}
+                     color={getVariantShip(
+                       s.isPayed,
+                       s.pricePerMonth - s.discount,
+                       s?.amountPaid
+                     )}
+                     size="lg"
+                     variant="faded"
+                     startContent={
+                       s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle />
+                     }
+                     endContent={<>{s?.amountPaid} DH</>}
+                   >
+                     <div className="text-small text-gray-950 dark:text-white">
+                       {s.name}
+                     </div>
+                   </Chip>
+                 </Badge>
                 ))}
               </div>
               <div className="flex flex-col gap-1">
@@ -403,18 +419,26 @@ const PaymentStatus = ({ payment }) => {
             <div className="px-1 py-2 space-y-3 dark:text-white">
               <div className="flex flex-col gap-2 w-full items-start">
                 {subjects?.map((s) => (
+                  <Badge content={s.pricePerMonth - s.discount} size="sm">
                   <Chip
                     key={s.id}
-                    color={s.isPayed ? "success" : "danger"}
+                    color={getVariantShip(
+                      s.isPayed,
+                      s.pricePerMonth - s.discount,
+                      s?.amountPaid
+                    )}
                     size="lg"
                     variant="faded"
-                    startContent={s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle/>}
-                    endContent={<>{s.pricePerMonth} DH</>}
+                    startContent={
+                      s.isPayed ? <FaCheckCircle /> : <IoIosCloseCircle />
+                    }
+                    endContent={<>{s?.amountPaid} DH</>}
                   >
                     <div className="text-small text-gray-950 dark:text-white">
                       {s.name}
                     </div>
                   </Chip>
+                </Badge>
                 ))}
               </div>
               <div className="flex flex-col gap-1">

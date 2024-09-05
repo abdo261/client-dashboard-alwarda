@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { request } from "../../utils/request";
+import { request } from "../request";
 import { userActions } from "../slices/userSlice";
 
 
@@ -8,7 +8,7 @@ export const getUsers = (cb) => async (dispatch) => {
   dispatch(userActions.setGetLoading(true));
   dispatch(userActions.setUsers(null));
   try {
-        // await new Promise((resolve)=>setTimeout(resolve,5000))
+        // 
 
     const response = await request.get("/users");
     dispatch(userActions.setUsers(response.data));
@@ -99,7 +99,7 @@ export const updateUser = (id, updatedUser={}, cb) => async (dispatch) => {
     delete formData.centreId;
   }
   try {
-    await new Promise((resolve)=>setTimeout(resolve,5000))
+    
 
     const response = await request.put(`/users/${id}`, formData);
    if(response.status === 200){

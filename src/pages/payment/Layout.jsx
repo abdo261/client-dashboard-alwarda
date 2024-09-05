@@ -2,6 +2,7 @@ import { Button } from "@nextui-org/react";
 import { Link,  Outlet, useLocation } from "react-router-dom";
 
 const LayoutPayment = () => {
+  
   const {pathname} = useLocation()
   return (
     <div className="flex flex-col items-center w-full gap-6">

@@ -43,7 +43,7 @@ const Edit = ({ isOpen, onOpenChange, SelectEditItem, itemToEdit }) => {
       setDisableBtn(true);
     }
     dispatch(getCentres());
-  }, [dispatch, itemToEdit]);
+  }, [dispatch, itemToEdit,isOpen]);
   useEffect(() => {
     if (user) {
       setFormData((prev) => ({ ...user, password: "" }));
@@ -52,6 +52,9 @@ const Edit = ({ isOpen, onOpenChange, SelectEditItem, itemToEdit }) => {
   const handelSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    if(formData.centreId===""){
+      itemToEdit.centreId=null
+    }
     dispatch(updateUser(itemToEdit, formData,()=>onOpenChange()));
   };
 
@@ -87,9 +90,10 @@ const Edit = ({ isOpen, onOpenChange, SelectEditItem, itemToEdit }) => {
             Modifié l'Utilisateur
             </ModalHeader>
             <ModalBody>
+              
               {!error &&
                 (!loading.loadingGetById ? (
-                  <>
+                  <div className="flex flex-col  gap-1 overflow-y-auto h-[360px]">
                     <Input size="lg"
                       autoFocus
                       label="Nome"
@@ -273,7 +277,7 @@ const Edit = ({ isOpen, onOpenChange, SelectEditItem, itemToEdit }) => {
                           </SelectItem>
                         )))}
                     </Select>
-                  </>
+                  </div>
                 ) : (
                   <div className="py-6 flex w-full justify-center">
                     <Spinner size="lg" label="Chargement en cours..." />

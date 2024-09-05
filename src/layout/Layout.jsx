@@ -67,7 +67,7 @@ const Layout = () => {
               </span>
             </Tooltip>
           )}
-          <div className="w-full flex flex-col items-stretch ">
+          <div className="w-full flex flex-col items-stretch overflow-clip ">
             <Outlet />
           </div>
         </main>

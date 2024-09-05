@@ -29,9 +29,12 @@ import { TfiReload } from "react-icons/tfi";
 import { getLevels } from "../../redux/api/levelApi";
 
 const SubjectList = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Matiéres";
+  }, []);
   const dispatch = useDispatch();
   const { subjects, loading, error } = useSelector((state) => state.subject);
-  const { levels, loading: levelsLoading, error: levelsError } = useSelector((state) => state.level);
+  const { levels } = useSelector((state) => state.level);
 
   const getSubjectsCallback = useCallback(() => {
     dispatch(getSubjects());
@@ -109,6 +112,7 @@ const SubjectList = () => {
         <div className="flex justify-between items-center w-full">
           <h1 className="text-3xl font-semibold underline">Matières</h1>
           <Tooltip
+          
             color="foreground"
             content="Actualiser"
             offset={4}
@@ -130,9 +134,10 @@ const SubjectList = () => {
           </Tooltip>
         </div>
       </div>
-      <div className="flex justify-between gap-3 items-center bg-white shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-        <form className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="flex justify-between gap-3 items-start md:items-center bg-white shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Input
+          size="lg"
             fullWidth
             isClearable
             placeholder="Rechercher par nom..."
@@ -144,6 +149,7 @@ const SubjectList = () => {
             className="tracking-widest"
           />
           <Select
+          size="lg"
             aria-label="Niveau"
             placeholder="Filtrer par niveau"
             variant="faded"
@@ -154,12 +160,12 @@ const SubjectList = () => {
           >
             <SelectItem key="" value=""  className="dark:text-white">Tous les niveaux</SelectItem>
             {levels?.map((level) => (
-              <SelectItem key={level.id} value={level.id}  className="dark:text-white">
+              <SelectItem key={level.id} value={level.id}  className="dark:text-white" endContent={level?.type}>
                 {level.name}
               </SelectItem>
             ))}
           </Select>
-        </form>
+        </div>
         <Button
           endContent={<FaPlus />}
           color="primary"
@@ -175,7 +181,7 @@ const SubjectList = () => {
         </div>
       )}
       {!error && subjects && (
-        <div className="rounded-lg border border-gray-200 w-full h-auto max-h-[600px] overflow-y-auto dark:border-gray-700 mt-4">
+        <div className="rounded-lg border border-gray-200 w-full h-[539px] overflow-y-auto dark:border-gray-700 mt-4">
           <div className="overflow-x-auto rounded-t-lg w-full justify-center shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white dark:divide-gray-700 dark:bg-[#43474b] text-lg">
               <thead className="ltr:text-left rtl:text-right">

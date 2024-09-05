@@ -14,6 +14,7 @@ import { formatErrorField } from "../../utils/utils";
 import { centreActions } from "../../redux/slices/centreSlice";
 
 const Create = ({ isOpen, onOpenChange, onCreateChangeOpen }) => {
+ 
   const dispatch = useDispatch();
 
   const { errorValidation, loading } = useSelector((state) => state.centre);
@@ -39,14 +40,14 @@ const Create = ({ isOpen, onOpenChange, onCreateChangeOpen }) => {
     }
   }, [isOpen, dispatch]);
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" >
       <ModalContent>
         {(onClose) => (
           <form onSubmit={handelSubmit} className="dark:text-white">
             <ModalHeader className="flex flex-col gap-1">
               Crée une Nouvelle Centre
             </ModalHeader>
-            <ModalBody>
+            <ModalBody >
               <Input
                 size="lg"
                 autoFocus

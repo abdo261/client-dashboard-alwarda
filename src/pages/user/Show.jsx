@@ -3,12 +3,9 @@ import { useParams } from "react-router-dom";
 import { FiEye } from "react-icons/fi";
 import {
   Avatar,
-  Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  Chip,
 } from "@nextui-org/react";
 import { MdPhoneInTalk } from "react-icons/md";
 const Show = () => {

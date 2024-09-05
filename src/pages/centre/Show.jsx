@@ -24,6 +24,9 @@ import { FaBook, FaPhoneVolume } from "react-icons/fa";
 import PieChart from "../../components/PieChart";
 
 const Show = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Details Centres";
+  }, []);
   const { id } = useParams();
   const { centre, loading, error } = useSelector((state) => state.centre);
   const dispatch = useDispatch();

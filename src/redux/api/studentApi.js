@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { request } from "../../utils/request";
+import { request } from "../request";
 import { studentActions } from "../slices/studentSlice";
 
 export const getStudents = (cb) => async (dispatch) => {
@@ -7,11 +7,10 @@ export const getStudents = (cb) => async (dispatch) => {
   dispatch(studentActions.setGetLoading(true));
   dispatch(studentActions.setStudents(null));
   try {
-    // await new Promise((resolve)=>setTimeout(resolve,5000))
+    // 
     const response = await request.get(`/students`);
  
     dispatch(studentActions.setStudents(response.data));
-    console.log(response)
   } catch (error) {
     dispatch(studentActions.setStudents(null));
     if (error?.response) {
@@ -34,7 +33,7 @@ export const getstudentsByPaymentsSchool = (school,cb) => async (dispatch) => {
   dispatch(studentActions.setGetLoading(true));
   dispatch(studentActions.setStudents(null));
   try {
-    // await new Promise((resolve)=>setTimeout(resolve,5000))
+    // 
     const response = await request.get(`/students/payments/${school}`);
  
     dispatch(studentActions.setStudents(response.data));
@@ -58,18 +57,18 @@ export const getstudentsByPaymentsSchool = (school,cb) => async (dispatch) => {
   }
 };
 
-export const createstudent = (student, cb) => async (dispatch) => {
+export const createStudent = (student, cb) => async (dispatch) => {
   dispatch(studentActions.setError(null));
   dispatch(studentActions.setCreateLoading(true));
 
   try {
     // await new Promise((resolve) => setTimeout(resolve, 5000));
     const response = await request.post("/students", student);
-    dispatch(studentActions.addstudent(response.data.student));
+    dispatch(studentActions.addStudent(response.data.student));
     toast.success(response.data.message);
     cb && cb();
   } catch (error) {
-   
+   console.log(error)
     if (error?.response) {
       error.response.status === 500 &&
         toast.error(error.response.data.message, {
@@ -104,7 +103,7 @@ export const getstudentById = (id, cb) => async (dispatch) => {
   dispatch(studentActions.setStudent(null));
 
   try {
-    await new Promise((resolve)=>setTimeout(resolve,5000))
+    
 
     const response = await request.get(`/students/${id}`);
     dispatch(studentActions.setStudent(response.data));
@@ -139,7 +138,7 @@ export const updatestudent = (id, updatedstudent, cb) => async (dispatch) => {
   dispatch(studentActions.setStudent(null));
 
   try {
-    await new Promise((resolve)=>setTimeout(resolve,5000))
+    
     const response = await request.put(`/students/${id}`, updatedstudent);
     if (response.status === 200){
       dispatch(studentActions.updateStudents({ id, student: response.data.student }));

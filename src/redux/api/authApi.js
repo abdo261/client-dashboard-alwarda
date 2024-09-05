@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
-import { request } from "../../utils/request";
+
 import { authActions } from "../slices/authSlice";
+import { request } from "../request";
 
 export const loginUser = (formData,cb) => async (dispatch) => {
   dispatch(authActions.setLoading(true));

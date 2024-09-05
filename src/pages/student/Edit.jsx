@@ -1,8 +1,7 @@
 
-import { parseDate } from "@internationalized/date";
+
 import {
   Button,
-  DatePicker,
   Input,
   Modal,
   ModalBody,
@@ -12,12 +11,11 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { useState } from "react";
-import { FaSchool } from "react-icons/fa";
+
 import SelectMaterial from "../../components/SelectMaterial";
 
 const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
-  
+ 
   const handelSubmit = (e) => {
     e.preventDefault();
     console.log("submit");
@@ -52,7 +50,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
               Modifié Le eleve
             </ModalHeader>
             <ModalBody>
-              <div className="flex flex-col gap-1 overflow-y-auto h-[500px]">
+            <div className="flex flex-col  gap-1 overflow-y-auto h-[360px]">
                 <Input
                   size="sm"
                   autoFocus

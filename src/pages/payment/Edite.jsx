@@ -7,8 +7,6 @@ import {
 } from "../../redux/api/paymentApi";
 import {
   Badge,
-  Card,
-  CardBody,
   Chip,
   Spinner,
   Tab,
@@ -24,6 +22,9 @@ import CustemPayment from "../../components/CustemPayment";
 import CustemSelectPay from "../../components/CustemSelectPay";
 
 const Edite = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Modifier Paiement";
+  }, []);
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ const Edite = () => {
   };
   const handelSelectSubmit = (e) => {
     e.preventDefault();
-    const { amountPaid, subjects, have50, ...res } = formData;
+    const { amountPaid, subjects, have50} = formData;
     dispatch(
       updateCustempayment(id, { amountPaid, subjects, have50 }, () =>
         navigate(-1)
@@ -109,7 +110,7 @@ const Edite = () => {
   };
   const handelCutemSelectSubmit = (e) => {
     e.preventDefault();
-    const { amountPaid, subjects, have50, ...res } = formData;
+    const { amountPaid, subjects, have50} = formData;
     dispatch(
       updateCustempayment(id, { amountPaid, subjects, have50 }, () =>
         navigate(-1)

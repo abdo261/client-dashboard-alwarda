@@ -17,6 +17,7 @@ import { subjectActions } from "../../redux/slices/subjectSlice";
 import { formatErrorField } from "../../utils/utils";
 
 const Create = ({ isOpen, onOpenChange }) => {
+ 
   const dispatch = useDispatch();
   const { levels } = useSelector((state) => state.level);
   const { errorValidation, loading } = useSelector((state) => state.subject);
@@ -25,7 +26,6 @@ const Create = ({ isOpen, onOpenChange }) => {
     name: "",
     pricePerMonth: "",
     levelId: "",
-    school: "",
   });
 
   const getLevelsCallback = useCallback(() => {
@@ -41,10 +41,10 @@ const Create = ({ isOpen, onOpenChange }) => {
     dispatch(
       createSubject({
         ...formData,
-        pricePerMonth: Number(formData.pricePerMonth), // Convert to number
+        pricePerMonth: Number(formData.pricePerMonth), 
       }, () => {
         setFormData({ name: "", pricePerMonth: "", levelId: "", school: "" });
-        onOpenChange(); // Close the modal on successful submit
+        onOpenChange(); 
       })
     );
   };
@@ -57,14 +57,6 @@ const Create = ({ isOpen, onOpenChange }) => {
     }
   }, [isOpen, dispatch]);
 
-  const schools = [
-    { key: "COLLEGE", label: "College" },
-    { key: "LYCEE", label: "Lycee" },
-    { key: "ECOLE_PRIMAIRE", label: "Ecole Primaire" },
-  ];
-
-
-  console.log(formData)
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
@@ -144,34 +136,11 @@ const Create = ({ isOpen, onOpenChange }) => {
                 }
               >
                 {levels?.map((level) => (
-                  <SelectItem key={level.id}>{level.name}</SelectItem>
+                  <SelectItem key={level.id} endContent={level.type}>{level.name}</SelectItem>
                 ))}
 
               </Select>
-              <Select
-                size="sm"
-                label="Type d'École"
-                placeholder="Sélectionnez Le Type d'École"
-                variant="bordered"
-                onChange={(e) => setFormData((prev) => ({ ...prev, school: e.target.value }))}
-                value={formData.school}
-                isInvalid={errorValidation && formatErrorField(errorValidation, "school") &&
-                  true}
-                errorMessage={
-                  errorValidation &&
-                  formatErrorField(errorValidation, "school") && (
-                    <ol>
-                      {formatErrorField(errorValidation, "school")?.map((e) => (
-                        <li key={e}>-{e}</li>
-                      ))}
-                    </ol>
-                  )
-                }
-              >
-                {schools?.map((school) => (
-                  <SelectItem key={school.key}>{school.label}</SelectItem>
-                ))}
-              </Select>
+              
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>

@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { request } from "../../utils/request";
+import { request } from "../request";
 import { subjectActions } from "../slices/subjectSlice";
 
 export const getSubjects = (cb) => async (dispatch) => {
@@ -27,13 +27,40 @@ export const getSubjects = (cb) => async (dispatch) => {
     dispatch(subjectActions.setGetLoading(false));
   }
 };
+export const getSubjectsByLevel = (levelId,cb) => async (dispatch) => {
+  dispatch(subjectActions.setError(null));
+  dispatch(subjectActions.setGetLoading(true));
+  dispatch(subjectActions.setSubjects(null));
+  try {
+    const response = await request.get(`/subjects/level/${levelId}`);
+   
+    dispatch(subjectActions.setSubjects(response.data));
+  } catch (error) {
+   
+    dispatch(subjectActions.setSubjects(null));
+
+    if (error?.response) {
+      error.response.status === 500 &&
+        dispatch(subjectActions.setError(error.response.data.message));
+    } else {
+      dispatch(
+        subjectActions.setError(
+          "Le serveur est en panne, vérifiez si votre serveur est démarré ?"
+        )
+      );
+    }
+    cb && cb();
+  } finally {
+    dispatch(subjectActions.setGetLoading(false));
+  }
+};
 
 export const createSubject = (subject, cb) => async (dispatch) => {
   dispatch(subjectActions.setError(null));
   dispatch(subjectActions.setCreateLoading(true));
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    
     const response = await request.post("/subjects", subject);
     dispatch(subjectActions.addSubject(response.data.subject));
     toast.success(response.data.message);
@@ -73,7 +100,7 @@ export const getSubjectById = (id, cb) => async (dispatch) => {
   dispatch(subjectActions.setSubject(null));
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    
     const response = await request.get(`/subjects/${id}`);
     dispatch(subjectActions.setSubject(response.data));
   } catch (error) {
@@ -106,7 +133,7 @@ export const updateSubject = (id, updatedSubject, cb) => async (dispatch) => {
   dispatch(subjectActions.setSubject(null));
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    
     const response = await request.put(`/subjects/${id}`, updatedSubject);
     if (response.status === 200) {
       dispatch(subjectActions.updateSubjects({ id, subject: response.data.subject }));

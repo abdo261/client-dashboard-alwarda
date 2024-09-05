@@ -19,6 +19,7 @@ import {
   const types = [  "ECOLE_PRIMAIRE", "COLLEGE", "LYCEE"];
 
   const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
+  
     const dispatch = useDispatch();
     const { level, loading, errorValidation, error } = useSelector(
       (state) => state.level

@@ -4,7 +4,6 @@
  * @returns {Array}
  */
 
-import { Chip } from "@nextui-org/react";
 
 export const formatErrorField = (errors, field) => {
   return errors[field] || null;

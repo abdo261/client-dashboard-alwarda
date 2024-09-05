@@ -1,14 +1,16 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaRegMoon } from "react-icons/fa";
 import { MdOutlineLightMode } from "react-icons/md";
 import { Button } from "@nextui-org/react";
 
-const ToggleThem = ({size='md'}) => {
-  const [dark, setDark] = useState(JSON.parse(localStorage.getItem('dark')) || false);
+const ToggleThem = ({ size = "sm" }) => {
+  const [dark, setDark] = useState(
+    JSON.parse(localStorage.getItem("dark")) || false
+  );
   const toggleDark = () => setDark(!dark);
   useEffect(() => {
-    localStorage.setItem("dark",dark)
+    localStorage.setItem("dark", dark);
     if (dark) {
       document.body.className = "dark";
     } else {
@@ -18,12 +20,12 @@ const ToggleThem = ({size='md'}) => {
   return (
     <motion.span
       whileTap={{ rotate: "360deg", scale: 0.6 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 0.3 }}
     >
       {" "}
       <Button
         isIconOnly
-        className="text-xl"
+        className="text-lg"
         radius="full"
         variant="bordered"
         onClick={toggleDark}

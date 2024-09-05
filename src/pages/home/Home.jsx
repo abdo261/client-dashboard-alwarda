@@ -2,8 +2,12 @@
 import { MdPhoneInTalk } from "react-icons/md";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import PieChart from "../../components/PieChart";
+import { useEffect } from "react";
 
 const Home = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Accueil";
+  }, []);
   return (
     <div className="grid grid-cols-[auto] md:grid-cols-[auto,1fr]  gap-2 w-full">
       <div className=" bg-white rounded-lg flex flex-col gap-3 justify-center  p-3 dark:bg-[#242526] dark:text-white">

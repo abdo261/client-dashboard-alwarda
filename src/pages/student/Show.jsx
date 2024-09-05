@@ -1,6 +1,5 @@
 import {
   Button,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -8,7 +7,6 @@ import {
   ModalHeader,
   Spinner,
 } from "@nextui-org/react";
-import SwiperCardsMaterial from "../../components/SwiperCardsMaterial";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getstudentById } from "../../redux/api/studentApi";
@@ -16,6 +14,7 @@ import { formatTimestamp } from "../../utils/utils";
 import ErrorAlert from "../../components/ErrorAlert";
 
 const Show = ({ isOpen, onOpenChange, itemToShow }) => {
+ 
   const dispatch = useDispatch();
   const { student, loading, error } = useSelector(
     (state) => state.student
@@ -26,7 +25,7 @@ const Show = ({ isOpen, onOpenChange, itemToShow }) => {
     }
   }, [dispatch, itemToShow]);
 
-  console.log(student)
+ 
 
   return (
     <Modal

@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { request } from "../../utils/request";
+import { request } from "../request";
 import { centreActions } from "../slices/centreSlice";
 
 export const getCentres = (cb) => async (dispatch) => {
@@ -7,7 +7,7 @@ export const getCentres = (cb) => async (dispatch) => {
   dispatch(centreActions.setGetLoading(true));
   dispatch(centreActions.setCentres(null));
   try {
-    // await new Promise((resolve)=>setTimeout(resolve,5000))
+    // 
     const response = await request.get("/centres");
     dispatch(centreActions.setCentres(response.data));
   } catch (error) {
@@ -37,7 +37,7 @@ export const createCentre = (centre, cb) => async (dispatch) => {
   dispatch(centreActions.setCreateLoading(true));
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    ;
     const response = await request.post("/centres", centre);
     dispatch(centreActions.addCentre(response.data.centre));
     toast.success(response.data.message);
@@ -78,7 +78,7 @@ export const getCentreById = (id, cb) => async (dispatch) => {
   dispatch(centreActions.setCentre(null));
 
   try {
-    await new Promise((resolve)=>setTimeout(resolve,5000))
+    
 
     const response = await request.get(`/centres/${id}`);
     dispatch(centreActions.setCentre(response.data));
@@ -113,7 +113,7 @@ export const updateCentre = (id, updatedCentre, cb) => async (dispatch) => {
   dispatch(centreActions.setCentre(null));
 
   try {
-    await new Promise((resolve)=>setTimeout(resolve,5000))
+    
     const response = await request.put(`/centres/${id}`, updatedCentre);
     if (response.status === 200){
       dispatch(centreActions.updateCentres({ id, centre: response.data.centre }));

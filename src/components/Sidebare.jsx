@@ -1,4 +1,3 @@
-
 import { FaSchool } from "react-icons/fa";
 import { PiStudent } from "react-icons/pi";
 import { Link, NavLink } from "react-router-dom";
@@ -21,7 +20,6 @@ const Links = [
   { name: "Matiéres", href: "/matiéres", icon: <GiBookCover /> },
   // { name: "Abonnements", href: "/abonnements", icon: <TbReportMoney /> },
   { name: "Paiement", href: "/paiements", icon: <FaHandHoldingUsd /> },
-
 ];
 const Sidebare = ({ open }) => {
   return (
@@ -32,11 +30,10 @@ const Sidebare = ({ open }) => {
     >
       <div>
         <div className="inline-flex size-16 items-center justify-center">
-          <Link
-            to="/"
-            className="grid size-10 place-content-center rounded-lg bg-gray-200  text-gray-600 font-bold text-lg"
-          >
-            L
+          <Link to="/" className="grid size-10 place-content-center ">
+            <div className="w-12">
+              <img src="/logo.png" alt="alwarda logo" className="w-full" />
+            </div>
           </Link>
         </div>
 
@@ -63,11 +60,10 @@ const Sidebare = ({ open }) => {
                   </NavLink>
                 </Tooltip>
               ))}
-             
             </div>
 
             <ul className="space-y-1 border-t border-gray-100 pt-4">
-              {Links.map((l,i) => (
+              {Links.map((l, i) => (
                 <Tooltip
                   content={l.name}
                   showArrow

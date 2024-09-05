@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { request } from "../../utils/request";
+import { request } from "../request";
 import { levelActions } from "../slices/levelSlice";
 
 export const getLevels = (cb) => async (dispatch) => {
@@ -62,7 +62,7 @@ export const createLevel = (level, cb) => async (dispatch) => {
   dispatch(levelActions.setCreateLoading(true));
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    
     const response = await request.post("/levels", level);
     dispatch(levelActions.addLevel(response.data.level));
     toast.success(response.data.message);
@@ -102,7 +102,7 @@ export const getLevelById = (id, cb) => async (dispatch) => {
   dispatch(levelActions.setLevel(null));
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    
     const response = await request.get(`/levels/${id}`);
     dispatch(levelActions.setLevel(response.data));
   } catch (error) {
@@ -135,7 +135,7 @@ export const updateLevel = (id, updatedLevel, cb) => async (dispatch) => {
   dispatch(levelActions.setLevel(null));
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    
     const response = await request.put(`/levels/${id}`, updatedLevel);
     if (response.status === 200) {
       dispatch(levelActions.updateLevels({ id, level: response.data.level }));

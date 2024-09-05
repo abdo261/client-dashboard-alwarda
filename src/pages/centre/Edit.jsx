@@ -16,6 +16,7 @@ import { centreActions } from "../../redux/slices/centreSlice";
 import ErrorAlert from "../../components/ErrorAlert";
 
 const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
+ 
   const dispatch = useDispatch();
   const { centre, loading, errorValidation,error } = useSelector(
     (state) => state.centre

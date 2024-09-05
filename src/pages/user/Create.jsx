@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCentres } from "../../redux/api/centreApi";
 import { createUser } from "../../redux/api/userApi";
-import { BsEye, BsEyeSlash, BsPatchQuestionFill } from "react-icons/bs";
+import { BsEye, BsEyeSlash} from "react-icons/bs";
 import { BsPatchCheckFill } from "react-icons/bs";
 
 import { formatErrorField } from "../../utils/utils";
@@ -48,7 +48,7 @@ const Create = ({ isOpen, onOpenChange }) => {
   };
   const handelSubmit = (e) => {
     e.preventDefault();
-    // console.log(formData);
+ 
     dispatch(createUser(formData,()=>{
       setFormData({
         firstName: "",
@@ -64,6 +64,7 @@ const Create = ({ isOpen, onOpenChange }) => {
     if (isOpen) {
       setFormData({ name: "", color: "", location: "" });
       dispatch(userActions.setErrorValidation(null));
+      dispatch(getCentres());
     }
   }, [isOpen, dispatch]);
   return (
@@ -80,6 +81,7 @@ const Create = ({ isOpen, onOpenChange }) => {
               Crée une Nouvelle Utilisateur
             </ModalHeader>
             <ModalBody>
+            <div className="flex flex-col  gap-1 overflow-y-auto h-[360px]">
               <Input
               size="lg"
                 label="Prenom"
@@ -254,7 +256,7 @@ const Create = ({ isOpen, onOpenChange }) => {
                     label="Chargement en cours..."
                   />
                 </div>
-              )}
+              )}</div>
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>

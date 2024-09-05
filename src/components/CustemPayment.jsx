@@ -13,7 +13,6 @@ import { IoClose } from "react-icons/io5";
 import { BiSend } from "react-icons/bi";
 
 const CustemPayment = ({
-  payment,
   loading,
   formData,
   handelPay50,

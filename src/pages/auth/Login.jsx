@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 import ToggleThem from "../../components/ToggleThem";
 import { Button, Input } from "@nextui-org/react";
 import { LuMail } from "react-icons/lu";
@@ -10,6 +10,9 @@ import { formatErrorField } from "../../utils/utils";
 import { authActions } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 export const Login = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Connection";
+  }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

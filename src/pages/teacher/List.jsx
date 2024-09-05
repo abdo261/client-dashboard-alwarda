@@ -1,7 +1,7 @@
 import { Button, Chip, Input, Pagination, useDisclosure } from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
 import { BiSolidEdit, BiTrash } from "react-icons/bi";
-import { FaPhoneVolume, FaPlus, FaSchool } from "react-icons/fa";
+import { FaPhoneVolume, FaPlus} from "react-icons/fa";
 import { FiEye, FiSearch } from "react-icons/fi";
 import swal from "sweetalert";
 import Create from "./Create";
@@ -20,6 +20,9 @@ const centres = [
   "r",
 ];
 const List = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Enseignants";
+  }, []);
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
@@ -88,8 +91,8 @@ const List = () => {
       <div className="flex justify-start ">
         <h1 className="text-3xl font-semibold underline">Enseignats</h1>
       </div>
-      <div className="flex justify-between gap-3 items-end bg-white  shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-        <form className="w-full sm:max-w-[44%]">
+      <div className="flex justify-between gap-3 items-start md:items-center bg-white  shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
+        <div className="w-full sm:max-w-[44%]">
           <Input
             fullWidth
             isClearable
@@ -102,14 +105,14 @@ const List = () => {
             size="lg"
             className="tracking-widest"
           />
-        </form>
+        </div>
         <Button
           endContent={<FaPlus />}
           color="primary"
           variant="flat"
           onPress={onCreateOpen}
         >
-          Créer
+            Nouveau
         </Button>
       </div>
       <div className="rounded-lg border border-gray-200 dark:border-gray-700 mt-4 shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">

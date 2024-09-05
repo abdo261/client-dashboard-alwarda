@@ -25,6 +25,9 @@ import ErrorAlert from "../../components/ErrorAlert";
 import { TfiReload } from "react-icons/tfi";
 
 const List = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Centres";
+  }, []);
   const dispatch = useDispatch();
   const { centres, loading, error } = useSelector((state) => state.centre);
 
@@ -50,13 +53,12 @@ const List = () => {
     const filteredCentres = centres?.filter((c) =>
       c.name.toLowerCase().includes(searchItem.toLowerCase())
     );
-  
+
     const totalFilteredCentres = filteredCentres?.length;
     const pages = Math.ceil(totalFilteredCentres / rowsPerPage);
-  
+
     return { totalFilteredCentres, pages, filteredCentres };
   }, [searchItem, centres, rowsPerPage]);
-  
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -127,7 +129,7 @@ const List = () => {
         </div>
       </div>
       <div className="flex justify-between gap-3 items-center bg-white  shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-        <form className="w-full sm:max-w-[44%]">
+        <div className="w-full sm:max-w-[44%]">
           <Input
             fullWidth
             isClearable
@@ -140,7 +142,7 @@ const List = () => {
             size="lg"
             className="tracking-widest"
           />
-        </form>
+        </div>
         <Button
           endContent={<FaPlus />}
           color="primary"
@@ -182,7 +184,7 @@ const List = () => {
                     <div className="w-full flex justify-end">
                       {centres && (
                         <Chip variant="flat" color="success" size="lg">
-                         Total {totalFilteredCentres} {/*  //totoal */}
+                          Total {totalFilteredCentres} {/*  //totoal */}
                         </Chip>
                       )}
                     </div>

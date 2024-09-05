@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { request } from "../../utils/request";
+import { request } from "../request";
 import { paymentActions } from "../slices/paymentSlice";
 import { studentActions } from "../slices/studentSlice";
 
@@ -8,7 +8,7 @@ export const getpayments = (cb) => async (dispatch) => {
   dispatch(paymentActions.setGetLoading(true));
   dispatch(paymentActions.setPayments(null));
   try {
-    // await new Promise((resolve)=>setTimeout(resolve,5000))
+    // 
     const response = await request.get(`/payments`);
 
     dispatch(paymentActions.setPayments(response.data));
@@ -35,7 +35,7 @@ export const getpaymentsByPaymentsSchool = (school, cb) => async (dispatch) => {
   dispatch(paymentActions.setGetLoading(true));
   dispatch(paymentActions.setPayments(null));
   try {
-    // await new Promise((resolve)=>setTimeout(resolve,5000))
+    // 
     const response = await request.get(`/payments/payments/${school}`);
 
     dispatch(paymentActions.setPayments(response.data));
@@ -102,7 +102,7 @@ export const getpaymentById = (id, cb) => async (dispatch) => {
   dispatch(paymentActions.setPayment(null));
 
   try {
-    // await new Promise((resolve)=>setTimeout(resolve,5000))
+    // 
 
     const response = await request.get(`/payments/${id}`);
     dispatch(paymentActions.setPayment(response.data));

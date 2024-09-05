@@ -21,6 +21,9 @@ import { CgDanger } from "react-icons/cg";
 import ErrorAlert from "../../components/ErrorAlert";
 
 const List = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Utilisateurs";
+  }, []);
   const dispatch = useDispatch();
   const { error, loading, users } = useSelector((state) => state.user);
 
@@ -90,15 +93,15 @@ const List = () => {
         setItemToDelete(null);
       });
     }
-  }, [itemToDelete]);
+  }, [itemToDelete,dispatch]);
   console.log(error);
   return (
     <>
       <div className="flex justify-start ">
         <h1 className="text-3xl font-semibold underline">Utilisateurs</h1>
       </div>
-      <div className="flex justify-between gap-3 items-end bg-white  shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-        <form className="w-full sm:max-w-[44%]">
+      <div className="flex justify-between gap-3 items-start md:items-center bg-white  shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
+        <div className="w-full sm:max-w-[44%]">
           <Input
             fullWidth
             isClearable
@@ -111,14 +114,14 @@ const List = () => {
             size="lg"
             className="tracking-widest"
           />
-        </form>
+        </div>
         <Button
           endContent={<FaPlus />}
           color="primary"
           variant="flat"
           onPress={onCreateOpen}
         >
-          Créer
+            Nouveau
         </Button>
       </div>
       {error && (
@@ -151,7 +154,6 @@ const List = () => {
 
                   <th className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white ">
                     <div className="w-full flex justify-end">
-                      {" "}
                       {users && (
                         <Chip variant="flat" color="success" size="lg">
                           Total {totalFilteredUsers}
@@ -213,18 +215,6 @@ const List = () => {
 
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 w-full ">
                         <div className="flex justify-center w-full items-center gap-2">
-                          {/* <Button
-                        size="sm"
-                        isIconOnly
-                        radius="md"
-                        className="text-xl"
-                        color="primary"
-                        variant="ghost"
-                        as={Link}
-                        to={`/utilisateurs/show/${i + 1}`}
-                      >
-                        <FiEye />
-                      </Button> */}
                           <Button
                             size="sm"
                             isIconOnly
@@ -253,7 +243,6 @@ const List = () => {
                   ))
                 ) : (
                   <tr>
-                    {" "}
                     <td colSpan={6}>
                       <div className="flex itesm-center justify-center font-semibold text-lg py-5 text-red-500">
                         aucun Utilisateur trouvé
@@ -274,7 +263,6 @@ const List = () => {
             label="Chargement en cours..."
           />
         </div>
-        // <TableSkitlon rows={rowsPerPage} />
       )}
       {pages > 1 && (
         <div className="my-4  w-full flex justify-between">

@@ -25,6 +25,9 @@ import ErrorAlert from "../../components/ErrorAlert";
 import { TfiReload } from "react-icons/tfi";
 const types = ["ECOLE_PRIMAIRE", "COLLEGE", "LYCEE"];
 const List = () => {
+  useEffect(() => {
+    document.title = "Alwarda |  Niveaux";
+  }, []);
   const dispatch = useDispatch();
   const { levels, loading, error } = useSelector((state) => state.level);
 
@@ -118,8 +121,8 @@ const List = () => {
           </Tooltip>
         </div>
       </div>
-      <div className="flex justify-between gap-3 items-start bg-white shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
-        <form className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="flex justify-between gap-3 items-start md:items-center bg-white shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)] p-3 rounded-lg mt-4 dark:bg-[#43474b] dark:text-white">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
           <Input
             fullWidth
             isClearable
@@ -146,14 +149,14 @@ const List = () => {
               </SelectItem>
             ))}
           </Select>
-        </form>
+        </div>
         <Button
           endContent={<FaPlus />}
           color="primary"
           variant="flat"
           onPress={onCreateOpen}
         >
-          Créer
+            Nouveau
         </Button>
       </div>
       {error && (
@@ -162,7 +165,7 @@ const List = () => {
         </div>
       )}
       {!error && levels && (
-        <div className="rounded-lg border border-gray-200 w-full h-[292px] max-h-[535px] dark:border-gray-700 mt-4">
+        <div className="rounded-lg border border-gray-200 w-full h-[535px] dark:border-gray-700 mt-4">
           <div className="overflow-x-auto rounded-t-lg w-full justify-center shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white dark:divide-gray-700 dark:bg-[#43474b] text-lg">
               <thead className="ltr:text-left rtl:text-right">

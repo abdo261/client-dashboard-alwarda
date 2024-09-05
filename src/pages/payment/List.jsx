@@ -40,6 +40,9 @@ const status = [
   { id: 4, name: "Partiellement payé", value: "Partiellement payé" },
 ];
 const List = ({ schoolType }) => {
+  useEffect(() => {
+    document.title = "Alwarda |  Paiements";
+  }, []);
   const dispatch = useDispatch();
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -48,7 +51,7 @@ const List = ({ schoolType }) => {
   useEffect(() => {
     dispatch(getstudentsByPaymentsSchool(schoolType));
     dispatch(getLevelsBySchool(schoolType));
-    setSelectedLevel('')
+    setSelectedLevel("");
   }, [dispatch, schoolType]);
 
   const { error, loading, students } = useSelector((state) => state.student);
@@ -280,7 +283,7 @@ const List = ({ schoolType }) => {
               )}
             </form>
           </div>
-          <div className="rounded-lg border border-gray-200 dark:border-gray-700 mt-4 shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
+          <div className="rounded-lg border border-gray-200 dark:border-gray-700  h-[535px] mt-4 shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
             <div className="overflow-x-auto rounded-t-lg">
               <table className="min-w-full divide-y-2 divide-gray-200 bg-white  dark:divide-gray-700 dark:bg-[#43474b] ">
                 <thead className="ltr:text-left rtl:text-right">
@@ -404,16 +407,18 @@ const List = ({ schoolType }) => {
               </table>
             </div>
           </div>
-          <div className="my-4  w-full flex justify-between">
-            <Pagination
-              showControls
-              isCompact
-              total={pages}
-              page={page}
-              onChange={(page) => setPage(page)}
-              showShadow
-            />
-          </div>{" "}
+          {page > 1 && (
+            <div className="my-4  w-full flex justify-between">
+              <Pagination
+                showControls
+                isCompact
+                total={pages}
+                page={page}
+                onChange={(page) => setPage(page)}
+                showShadow
+              />
+            </div>
+          )}
         </CardBody>
       )}
       {loading.loadingGet && (

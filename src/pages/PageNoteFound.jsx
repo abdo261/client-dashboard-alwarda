@@ -1,9 +1,12 @@
 import { Button } from "@nextui-org/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const PageNoteFound = () => {
+  useEffect(() => {
+    document.title = "Alwarda | No Trouve ?";
+  }, []);
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   return (
@@ -17,7 +20,6 @@ const PageNoteFound = () => {
           </p>
           <Button
             onClick={() => navigate(user ? "/" : "/auth/login")}
-            // className="px-6 py-3 bg-white  font-semibold rounded-full hover:bg-purple-100 transition duration-300 ease-in-out dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
           >
             Go Back Home
           </Button>

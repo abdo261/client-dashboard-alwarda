@@ -2,29 +2,24 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FiEye, FiSearch } from "react-icons/fi";
 import {
-  Avatar,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
   Chip,
   Input,
   Pagination,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   Spinner,
 } from "@nextui-org/react";
-import { MdPhoneInTalk } from "react-icons/md";
+
 import { getLevelById } from "../../redux/api/levelApi";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorAlert from "../../components/ErrorAlert";
 import { formatTimestamp } from "../../utils/utils";
-import { FaBook, FaPhoneVolume } from "react-icons/fa";
+import {  FaPhoneVolume } from "react-icons/fa";
 import PieChart from "../../components/PieChart";
 import { CgDanger } from "react-icons/cg";
 
 const Show = () => {
+  useEffect(() => {
+    document.title = "Alwarda | Details Niveau";
+  }, []);
   const { id } = useParams();
   const { level, loading, error } = useSelector((state) => state.level);
   const dispatch = useDispatch();
