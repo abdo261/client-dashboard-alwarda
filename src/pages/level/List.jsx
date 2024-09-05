@@ -141,7 +141,7 @@ const List = () => {
             id="type"
           >
             {types.map((s) => (
-              <SelectItem value={s} key={s}>
+              <SelectItem value={s} key={s} className="dark:text-white">
                 {s}
               </SelectItem>
             ))}
@@ -205,7 +205,7 @@ const List = () => {
                         <Chip
                           variant="bordered"
                           color="default"
-                          endContent={<PiStudent />}
+                          startContent={<PiStudent />}
                           size="lg"
                           radius="sm"
                         >

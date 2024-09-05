@@ -12,30 +12,42 @@ import {
 } from "@nextui-org/react";
 import SelectMaterial from "../../components/SelectMaterial";
 import { parseDate } from "@internationalized/date";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCentres } from "../../redux/api/centreApi";
+import {getLevels } from "../../redux/api/levelApi";
+
 
 const Create = ({ isOpen, onOpenChange }) => {
- 
+  const dispatch = useDispatch()
+  const {centres , loading : centresLoading ,error : centresError} = useSelector((state)=>state.centre)
+  const {levels , loading : levelsLoading , error :levelsError} = useSelector((state)=>state.level)
+  const { errorValidation, loading } = useSelector((state) => state.student);
+  
+  const [formData , setFormData] = useState({
+    firstName : "",
+    lastName : "",
+    sex : "",
+    phone : "",
+    parentPhone : "",
+    registrationDate : "",
+    centreId : "",
+    levelId : "",
+  })
+
+  useEffect(()=>{
+    dispatch(getCentres())
+    dispatch(getLevels())
+  },[])
+
+  console.log(centres)
+
   const [date, setDate] = useState(
    new Date()
   );
-
+  console.log(formData)
   const today = parseDate(new Date().toISOString().split("T")[0]);
-  const centres = [
-    { key: "cat", label: "Cat" },
-    { key: "dog", label: "Dog" },
-    { key: "elephant", label: "Elephant" },
-    { key: "lion", label: "Lion" },
-    { key: "tiger", label: "Tiger" },
-    { key: "giraffe", label: "Giraffe" },
-    { key: "dolphin", label: "Dolphin" },
-    { key: "penguin", label: "Penguin" },
-    { key: "zebra", label: "Zebra" },
-    { key: "shark", label: "Shark" },
-    { key: "whale", label: "Whale" },
-    { key: "otter", label: "Otter" },
-    { key: "crocodile", label: "Crocodile" },
-  ];
+
    const handelSubmit = (e) => {
     e.preventDefault();
      // Check if date is set and convert to ISO string
@@ -61,6 +73,8 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Nom"
                   placeholder="Enter Le Nom D'eleve"
                   variant="bordered"
+                  onChange={(e) => setFormData((prev) => ({ ...prev, firstName: e.target.value }))}
+                  value={formData.firstName}
                 />
                 <Input
                   size="sm"
@@ -68,6 +82,8 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Prenom"
                   placeholder="Enter Le Prenom D'eleve"
                   variant="bordered"
+                  onChange={(e) => setFormData((prev) => ({ ...prev, lastName: e.target.value }))}
+                  value={formData.lastName}
                 />
                 
                 <Select
@@ -75,6 +91,8 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Sex"
                   placeholder="Selectioné Le Sex"
                   variant="bordered"
+                  onChange={(e) => setFormData((prev) => ({...prev, sex: e.target.value }))}
+                  value={formData.sex}
                 >
                   {['Home',"Femme"].map((sex) => (
                     <SelectItem  className="dark:text-white" key={sex}>{sex}</SelectItem>
@@ -86,6 +104,8 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Télé Personnee"
                   placeholder="Enter Le Télé D'eleve"
                   variant="bordered"
+                  onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
+                  value={formData.phone}
                 />
                 <Input
                   size="sm"
@@ -93,6 +113,8 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Télé Parents"
                   placeholder="Enter Le Télé De Parents "
                   variant="bordered"
+                  onChange={(e) => setFormData((prev) => ({ ...prev, parentPhone: e.target.value }))}
+                  value={formData.parentPhone}
                 />
                 <DatePicker
                   defaultValue={today}
@@ -109,9 +131,11 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Centre"
                   placeholder="Selectioné Le Centre "
                   variant="bordered"
+                  onChange={(e) => setFormData((prev) => ({ ...prev, centreId: e.target.value }))}
+                  value={formData.centreId}
                 >
                   {centres.map((centre) => (
-                    <SelectItem  className="dark:text-white" key={centre.key}>{centre.label}</SelectItem>
+                    <SelectItem  className="dark:text-white" key={centre.id}>{centre.name}</SelectItem>
                   ))}
                 </Select>
 
@@ -121,9 +145,11 @@ const Create = ({ isOpen, onOpenChange }) => {
                   label="Niveau"
                   placeholder="Selectioné Le Niveau"
                   variant="bordered"
+                  onChange={(e) => setFormData((prev) => ({ ...prev, levelId: e.target.value }))}
+                  value={formData.levelId}
                 >
-                  {centres.map((Niveau) => (
-                    <SelectItem  className="dark:text-white" key={Niveau.key}>{Niveau.label}</SelectItem>
+                  {levels.map((level) => (
+                    <SelectItem  className="dark:text-white" key={level.id}>{level.name}</SelectItem>
                   ))}
                 </Select>
                 <SelectMaterial />

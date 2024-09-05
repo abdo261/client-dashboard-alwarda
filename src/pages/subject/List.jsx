@@ -18,7 +18,6 @@ import swal from "sweetalert";
 import { BiSolidEdit, BiTrash } from "react-icons/bi";
 import Edit from "./Edit";
 import { PiStudent, PiMoneyWavyThin } from "react-icons/pi";
-import { FaUserShield } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deleteSubject,
@@ -153,9 +152,9 @@ const SubjectList = () => {
               setPage(1)
             } }
           >
-            <SelectItem key="" value="">Tous les niveaux</SelectItem>
+            <SelectItem key="" value=""  className="dark:text-white">Tous les niveaux</SelectItem>
             {levels?.map((level) => (
-              <SelectItem key={level.id} value={level.id}>
+              <SelectItem key={level.id} value={level.id}  className="dark:text-white">
                 {level.name}
               </SelectItem>
             ))}
