@@ -65,3 +65,22 @@ if(isPayed){
   return amountPAyed===0 ? "danger" : "warning"
 }
 }
+export function translateMonthToFrench(month) {
+  const monthsInEnglishToFrench = {
+    January: "Janvier",
+    February: "Février",
+    March: "Mars",
+    April: "Avril",
+    May: "Mai",
+    June: "Juin",
+    July: "Juillet",
+    August: "Août",
+    September: "Septembre",
+    October: "Octobre",
+    November: "Novembre",
+    December: "Décembre",
+  };
+
+  return monthsInEnglishToFrench[month] || month; // If month not found, return the original month
+}
+

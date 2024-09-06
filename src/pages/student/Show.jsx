@@ -1,171 +1,128 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Spinner,
-} from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getstudentById } from "../../redux/api/studentApi";
 import { formatTimestamp } from "../../utils/utils";
+// import ErrorAlert from "../../components/ErrorAlert";
+import { useParams } from "react-router-dom";
 import ErrorAlert from "../../components/ErrorAlert";
+import SwipperSubjects from "../../components/SwipperSubjects";
+import TableStudentsSubjectsDetails from "../../components/TableStudentsSubjectsDetails";
+import SwipperStudentsPaymentsDetails from "../../components/SwipperStudentsPaymentsDetails";
 
-const Show = ({ isOpen, onOpenChange, itemToShow }) => {
+const Show = () => {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const { student, loading, error } = useSelector((state) => state.student);
   useEffect(() => {
-    if (itemToShow) {
-      dispatch(getstudentById(itemToShow));
-    }
-  }, [dispatch, itemToShow]);
+    dispatch(getstudentById(id));
+  }, [dispatch, id]);
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      placement="center"
-      size="lg"
-    >
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className="flex flex-col gap-1 dark:text-white">
-              Details d'eleve
-            </ModalHeader>
-            <ModalBody>
-              {!error &&
-                (!loading.loadingGetById ? (
-                  <div className=" flex  flex-col items-start gap-1 dark:text-white">
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        Nom :
-                      </span>
-                      <span> {student?.firstName}</span>
-                    </div>
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        Prenom :
-                      </span>
-                      <span> {student?.lastName}</span>
-                    </div>
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        sex :
-                      </span>
-                      <span> {student?.sex}</span>
-                    </div>
+    <>
+      {error && <ErrorAlert message={error} />}
+      {loading?.loadingGetById && (
+        <div className="w-full flex justify-center items-center pt-16">
+          <Spinner
+            size="lg"
+            className="m-auto"
+            label="Chargement en cours..."
+          />
+        </div>
+      )}
+      {student && (
+        <>
+          <div className="w-full grid gap-3 grid-cols-1 grid-rows-1  md:grid-cols-2  lg:grid-cols-3  ">
+            <div className="p-3 bg-white rounded-lg flex flex-col gap-2 dark:bg-[#242526] text-xl  ">
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Prenom :{" "}
+                </span>
+                <span className="font-semibold ">{student.firstName} </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Nom :{" "}
+                </span>
+                <span className="font-semibold ">{student.lastName} </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Tél :{" "}
+                </span>
+                <span className="font-semibold ">{student.phone} </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Tél Parent :{" "}
+                </span>
+                <span className="font-semibold ">{student.phoneParent} </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Sex :{" "}
+                </span>
+                <span className="font-semibold ">{student.sex} </span>
+              </div>
 
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        Télé :
-                      </span>
-                      <span className={student?.phone ? "" : "text-gray-500"}>
-                        {student?.phone ? student?.phone : "Aucune Télé élève"}
-                      </span>
-                    </div>
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        Télé Parent:
-                      </span>
-                      <span
-                        className={student?.phoneParent ? "" : "text-gray-500"}
-                      >
-                        {student?.phoneParent
-                          ? student?.phoneParent
-                          : "Aucune Télé Parent"}
-                      </span>
-                    </div>
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        Inscri Par:
-                      </span>
-                      <span>
-                        {student?.user?.firstName} {student?.user?.lastName}
-                      </span>
-                    </div>
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        Inscri le :
-                      </span>
-                      <span> {formatTimestamp(student?.registrationDate)}</span>
-                    </div>
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0 flex-shrink-0 ">
-                        Centre :
-                      </span>
-                      <span
-                        className={student?.centre?.name ? "" : "text-gray-500"}
-                      >
-                        {student?.centre?.name
-                          ? student?.centre?.name
-                          : "Aucune Centre"}
-                      </span>
-                    </div>
-                    <div className="flex  items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        Niveau :
-                      </span>
-                      <span
-                        className={student?.level?.name ? "" : "text-gray-500"}
-                      >
-                        {student?.level?.name
-                          ? student?.level?.name
-                          : "Aucune Niveau"}
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-1">
-                      <span className="font-semibold text-gray-400 flex-shrink-0">
-                        Matières :
-                      </span>
-                      <span className="flex flex-col">
-                        {student?.subjects && student.subjects.length > 0 ? (
-                          student.subjects.map((subject) => (
-                            <span
-                              className="font-semibold flex gap-1"
-                              key={subject.id}
-                            >
-                              - {subject.name} :{" "}
-                              <span className="underline">
-                                {subject.pricePerMonth} DH
-                              </span>
-                            </span>
-                          ))
-                        ) : (
-                          <span className="text-gray-500"> Aucune matière</span>
-                        )}
-                      </span>
-                    </div>
-                    {student?.subjects?.length > 0 && (
-                      <div className="flex  items-start gap-1 mt-3">
-                        <span className="font-semibold text-gray-400 flex-shrink-0">
-                          Prix total à payer :
-                        </span>
-                        <span className="underline font-bold text-lg">
-                          {" "}
-                          450 DH{" "}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="py-6 flex w-full justify-center">
-                    <Spinner size="lg" label="Chargement en cours..." />
-                  </div>
-                ))}
-              {error && <ErrorAlert message={error} />}
-            </ModalBody>
-            <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
-                Ferme
-              </Button>
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Grade :{" "}
+                </span>
+                <span className="font-semibold ">{student.school} </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Niveau :{" "}
+                </span>
+                <span className="font-semibold ">{student.level.name} </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Centre :{" "}
+                </span>
+                <span className="font-semibold flex items-center gap-3">
+                  {student.centre.name}
+                  <div
+                    className="size-6 rounded-lg  mx-auto border-1 border-black"
+                    style={{ background: student.centre.color }}
+                  ></div>
+                </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Date d'iscreption :{" "}
+                </span>
+                <span className="font-semibold">
+                  {formatTimestamp(student.registrationDate)}{" "}
+                </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-gray-400 flex-shrink-0 font-semibold">
+                  Inscri par :{" "}
+                </span>
+                <span className="font-semibold">
+                  {student.user.firstName + " " + student.user.firstName}{" "}
+                </span>
+              </div>
+            </div>
+            <div className="p-3  flex  justify-center items-center">
+              {student.subjects.length > 0 ? (
+                <SwipperSubjects subjects={student.subjects} />
+              ) : (
+                <h1 className="font-bold text-xl text-danger">No Matiéres</h1>
+              )}
+            </div>
+            <div className="p-3 bg-white rounded-lg dark:bg-[#242526]  ">
+              {<TableStudentsSubjectsDetails subjects={student.subjects} />}
+            </div>
+          </div>
+          <div className="w-full py-3 mt-2 ">
+            <SwipperStudentsPaymentsDetails payments={student.payments} />
+          </div>
+        </>
+      )}
+    </>
   );
 };
 

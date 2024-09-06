@@ -19,7 +19,7 @@ import swal from "sweetalert";
 import { FiEye } from "react-icons/fi";
 import { BiSolidEdit, BiTrash } from "react-icons/bi";
 import Edit from "./Edit";
-import Show from "./Show";
+import {Link} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { getStudents } from "../../redux/api/studentApi";
 import { formatTimestamp } from "../../utils/utils";
@@ -75,23 +75,16 @@ const List = () => {
     onOpen: onEditOpen,
     onOpenChange: onEditChangeOpen,
   } = useDisclosure();
-  const {
-    isOpen: isShowOpen,
-    onOpen: onShowOpen,
-    onOpenChange: onShowChangeOpen,
-  } = useDisclosure();
+
   const [itemToEdit, setItemToEdit] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
-  const [itemToShow, setItemToShow] = useState(null);
+
 
   const SelectEditItem = (id) => {
     setItemToEdit(id);
     onEditOpen();
   };
-  const SelectShowItem = (id) => {
-    setItemToShow(id);
-    onShowOpen();
-  };
+
 
   useEffect(() => {
     if (itemToDelete) {
@@ -291,7 +284,8 @@ const List = () => {
                             className="text-xl"
                             color="primary"
                             variant="ghost"
-                            onPress={() => SelectShowItem(s.id)}
+                            as={Link}
+                            to={`/eleves/show/${s.id}`}
                           >
                             <FiEye />
                           </Button>
@@ -363,12 +357,7 @@ const List = () => {
         itemToEdit={itemToEdit}
         SelectEditItem={SelectEditItem}
       />
-      <Show
-        onOpenChange={onShowChangeOpen}
-        isOpen={isShowOpen}
-        itemToShow={itemToShow}
-        SelectEditItem={SelectShowItem}
-      />
+    
     </>
   );
 };
