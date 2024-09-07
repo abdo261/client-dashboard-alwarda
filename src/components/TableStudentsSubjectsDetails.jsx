@@ -5,6 +5,7 @@ import { PiMoneyWavyThin, PiStudent } from "react-icons/pi";
 import { TbSchool } from "react-icons/tb";
 
 const TableStudentsSubjectsDetails = ({ subjects }) => {
+  console.log(subjects)
   return (
     <>
       {subjects.length > 0 ? (

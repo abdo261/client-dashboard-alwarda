@@ -101,6 +101,7 @@ export const getstudentById = (id, cb) => async (dispatch) => {
   dispatch(studentActions.setError(null));
   dispatch(studentActions.setGetLoadingById(true));
   dispatch(studentActions.setStudent(null));
+console.log('get by is sttudent ---------------')
 
   try {
     
@@ -108,7 +109,7 @@ export const getstudentById = (id, cb) => async (dispatch) => {
     const response = await request.get(`/students/${id}`);
     dispatch(studentActions.setStudent(response.data));
   } catch (error) {
-   
+    dispatch(studentActions.setStudent(null));
     if (error?.response) {
       if (error.response.status === 500 || error.response.status === 404) {
         dispatch(studentActions.setError(error.response.data.message));
@@ -132,7 +133,7 @@ export const getstudentById = (id, cb) => async (dispatch) => {
   }
 };
 
-export const updatestudent = (id, updatedstudent, cb) => async (dispatch) => {
+export const updateStudent = (id, updatedstudent, cb) => async (dispatch) => {
   dispatch(studentActions.setError(null));
   dispatch(studentActions.setCreateLoading(true));
   dispatch(studentActions.setStudent(null));
@@ -147,7 +148,6 @@ export const updatestudent = (id, updatedstudent, cb) => async (dispatch) => {
     } 
   
   } catch (error) {
-   
     if (error?.response) {
       if (error.response.status === 500) {
         toast.error(error.response.data.message, {

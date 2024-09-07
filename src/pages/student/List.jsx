@@ -19,27 +19,31 @@ import swal from "sweetalert";
 import { FiEye } from "react-icons/fi";
 import { BiSolidEdit, BiTrash } from "react-icons/bi";
 import Edit from "./Edit";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getStudents } from "../../redux/api/studentApi";
+import { deleteStudent, getStudents } from "../../redux/api/studentApi";
 import { formatTimestamp } from "../../utils/utils";
 import { CgDanger } from "react-icons/cg";
 import { getLevels } from "../../redux/api/levelApi";
 import ErrorAlert from "../../components/ErrorAlert";
-
+import { LiaBookMedicalSolid } from "react-icons/lia";
 
 const List = () => {
   useEffect(() => {
     document.title = "Alwarda | Etudients";
   }, []);
 
-  const { students, loading: studentsLoading, error: studentsError } = useSelector((state) => state.student);
+  const {
+    students,
+    loading: studentsLoading,
+    error: studentsError,
+  } = useSelector((state) => state.student);
   const { levels } = useSelector((state) => state.level);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getStudents());
-    dispatch(getLevels)
+    dispatch(getLevels);
   }, [dispatch]);
   const [searchItem, setSearchItem] = useState("");
   const [page, setPage] = useState(1);
@@ -79,12 +83,10 @@ const List = () => {
   const [itemToEdit, setItemToEdit] = useState(null);
   const [itemToDelete, setItemToDelete] = useState(null);
 
-
   const SelectEditItem = (id) => {
     setItemToEdit(id);
     onEditOpen();
   };
-
 
   useEffect(() => {
     if (itemToDelete) {
@@ -95,14 +97,12 @@ const List = () => {
         dangerMode: true,
       }).then((isOk) => {
         if (isOk) {
-          console.log("delete " + itemToDelete);
+          dispatch(deleteStudent(itemToDelete));
         }
         setItemToDelete(null);
       });
     }
-  }, [itemToDelete]);
-
- 
+  }, [itemToDelete,dispatch]);
 
   return (
     <>
@@ -124,17 +124,23 @@ const List = () => {
             className="tracking-widest"
           />
           <Select
-          size="lg"
+            size="lg"
             aria-label="Niveau"
             placeholder="Filtrer par niveau"
             variant="faded"
             onChange={(e) => {
-              setPage(1)
+              setPage(1);
             }}
           >
-            <SelectItem key="" value="" className="dark:text-white" >Tous les niveaux </SelectItem>
+            <SelectItem key="" value="" className="dark:text-white">
+              Tous les niveaux{" "}
+            </SelectItem>
             {levels?.map((level) => (
-              <SelectItem key={level.id} value={level.id} className="dark:text-white">
+              <SelectItem
+                key={level.id}
+                value={level.id}
+                className="dark:text-white"
+              >
                 {level.name}
               </SelectItem>
             ))}
@@ -146,7 +152,7 @@ const List = () => {
           variant="flat"
           onPress={onCreateOpen}
         >
-            Nouveau
+          Nouveau
         </Button>
       </div>
       {studentsError && (
@@ -192,7 +198,7 @@ const List = () => {
               </thead>
 
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700 font-sans tracking-wide">
-                {students && items.length > 0 ?
+                {students && items.length > 0 ? (
                   items?.map((s) => (
                     <tr
                       className="hover:bg-blue-200 dark:hover:bg-gray-900"
@@ -231,16 +237,29 @@ const List = () => {
                               {s.subjects?.length}
                             </Button>
                           </PopoverTrigger>
-                          {s.subjects?.length > 0 && (
-                            <PopoverContent className="w-fit">
+                          {s.subjects?.length > 0 ? (
+                            <PopoverContent className=" relative">
                               <div className="px-1 py-2 w-full">
                                 <p className="text-small font-bold text-foreground">
                                   les Matiéres
                                 </p>
                                 <div className="mt-2 flex flex-col gap-2 w-full">
                                   {s.subjects.map((s) => (
-                                    <Chip variant="dot" key={s.id}>{s.name} </Chip>
+                                    <Chip variant="dot" key={s.id}>
+                                      {s.name}{" "}
+                                    </Chip>
                                   ))}
+                                </div>
+                              </div>
+                            </PopoverContent>
+                          ) : (
+                            <PopoverContent className=" relative">
+                              <div className="px-1 py-2 w-full">
+                                <p className="text-small font-bold text-foreground">
+                                  Ajouter matiéres
+                                </p>
+                                <div className="mt-2 flex flex-col gap-2 w-full">
+                                  <LiaBookMedicalSolid />
                                 </div>
                               </div>
                             </PopoverContent>
@@ -256,8 +275,11 @@ const List = () => {
                           radius="sm"
                           className=" "
                         >
-                          {s.phone ? s.phone :
-                            <span className="text-gray-500"> Aucune Télé</span>}
+                          {s.phone ? (
+                            s.phone
+                          ) : (
+                            <span className="text-gray-500"> Aucune Télé</span>
+                          )}
                         </Chip>
                       </td>
 
@@ -314,22 +336,22 @@ const List = () => {
                         </div>
                       </td>
                     </tr>
-                  )) : (
-                    <tr>
-                      <td colSpan={6}>
-                        <div className="flex itesm-center justify-center font-semibold text-lg py-5 text-red-500">
-                          aucun centre trouvé
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                }
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={8}>
+                      <div className="flex itesm-center justify-center font-semibold text-lg py-5 text-red-500">
+                        aucun centre trouvé
+                      </div>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
         </div>
       )}
-       {studentsLoading.loadingGet && (
+      {studentsLoading.loadingGet && (
         <div className="w-full flex justify-center items-center mt-16">
           <Spinner
             size="lg"
@@ -357,7 +379,6 @@ const List = () => {
         itemToEdit={itemToEdit}
         SelectEditItem={SelectEditItem}
       />
-    
     </>
   );
 };
