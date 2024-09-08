@@ -119,7 +119,7 @@ useEffect(() => {
       </div>
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 p-2">
-        <form action="#">
+        <div >
           <Tooltip
             content={"Déconnecter"}
             showArrow
@@ -145,7 +145,7 @@ useEffect(() => {
               </button>
             </span>
           </Tooltip>
-        </form>
+        </div>
       </div>
     </aside>
   );

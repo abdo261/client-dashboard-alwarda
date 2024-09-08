@@ -13,12 +13,14 @@ const Home = () => {
   }, []);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUserById(loginUser.id));
-  }, [dispatch, loginUser?.id]);
+    if (loginUser) {
+      dispatch(getUserById(loginUser.id));
+    }
+  }, [dispatch, loginUser]);
 
   return (
     <>
-      {user &&
+      {loginUser && user &&
         (!user.isOwner ? (
           <div className="grid grid-cols-[auto] md:grid-cols-[auto,1fr]  gap-2 w-full">
             <div className=" bg-white rounded-lg flex flex-col gap-3 justify-center  p-3 dark:bg-[#242526] dark:text-white">
@@ -56,7 +58,8 @@ const Home = () => {
 
             <div className=" bg-white rounded-lg flex flex-col items-center p-3 dark:bg-[#242526] dark:text-white">
               <h1 className="font-bold lg:text-3xl text-xl">
-                {user.centre.name} <Chip>{user.countSex.HOMME+user.countSex.FEMME}</Chip> 
+                {user.centre.name}{" "}
+                <Chip>{user.countSex.HOMME + user.countSex.FEMME}</Chip>
               </h1>
               <PieChart
                 boysCount={user.countSex.HOMME}
@@ -100,7 +103,10 @@ const Home = () => {
             </div>
 
             <div className=" bg-white rounded-lg flex flex-col items-center p-3 dark:bg-[#242526] dark:text-white">
-              <h1 className="font-bold lg:text-3xl text-xl">Totale D'élèves  <Chip>{user.countSex.HOMME+user.countSex.FEMME}</Chip></h1>
+              <h1 className="font-bold lg:text-3xl text-xl">
+                Totale D'élèves{" "}
+                <Chip>{user.countSex.HOMME + user.countSex.FEMME}</Chip>
+              </h1>
               <PieChart
                 boysCount={user.countSex.HOMME}
                 girlsCount={user.countSex.FEMME}
