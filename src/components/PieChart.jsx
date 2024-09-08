@@ -2,6 +2,7 @@
 import ReactApexChart from 'react-apexcharts';
 
 const PieChart = ({girlsCount=50,boysCount=50,breakpoint=280,width=280,widthChart=280}) => {
+
   const data = {
     series: [girlsCount, boysCount], 
     options: {

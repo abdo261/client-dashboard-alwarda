@@ -70,6 +70,7 @@ export const getUserById = (id, cb) => async (dispatch) => {
   dispatch(userActions.setUser(null));
   try {
     const response = await request.get(`/users/${id}`);
+   
     dispatch(userActions.setUser(response.data));
   } catch (error) {
    

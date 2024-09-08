@@ -40,6 +40,9 @@ const status = [
   { id: 4, name: "Partiellement payé", value: "Partiellement payé" },
 ];
 const List = ({ schoolType }) => {
+  const [isMounthSelectOpen, setIsMounthSelectOpen] = useState(false);
+  const [isStatusSelectOpen, setIsStatusSelectOpen] = useState(false);
+  const [isLevelSelectOpen, setIsLevelSelectOpen] = useState(false);
   useEffect(() => {
     document.title = "Alwarda |  Paiements";
   }, []);
@@ -222,6 +225,8 @@ const List = ({ schoolType }) => {
                 variant="faded"
                 selectedKeys={[`${selectedMonth}`]}
                 onChange={handelSelectMonthChnage}
+                isOpen={isMounthSelectOpen}
+                onClick={() => setIsMounthSelectOpen(!isMounthSelectOpen)}
               >
                 {monthsTable.map((month, i) => (
                   <SelectItem
@@ -243,6 +248,8 @@ const List = ({ schoolType }) => {
                 onChange={handelSelectStatusChnage}
                 value={selectedStatus}
                 isDisabled={selectedMonth === "" ? true : false}
+                isOpen={isStatusSelectOpen}
+                onClick={() => setIsStatusSelectOpen(!isStatusSelectOpen)}
               >
                 {status.map(
                   (s) =>
@@ -265,6 +272,8 @@ const List = ({ schoolType }) => {
                   onChange={handelSelectLavelChnage}
                   selectedKeys={[`${selectedLevel}`]}
                   value={selectedLevel}
+                  isOpen={isLevelSelectOpen}
+                  onClick={() => setIsLevelSelectOpen(!isLevelSelectOpen)}
                 >
                   {levels.map((level, i) => (
                     <SelectItem

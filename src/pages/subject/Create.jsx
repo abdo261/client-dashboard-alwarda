@@ -136,7 +136,7 @@ const Create = ({ isOpen, onOpenChange }) => {
                 }
               >
                 {levels?.map((level) => (
-                  <SelectItem key={level.id} endContent={level.type}>{level.name}</SelectItem>
+                  <SelectItem key={level.id}  className="dark:text-white" endContent={level.type}>{level.name}</SelectItem>
                 ))}
 
               </Select>

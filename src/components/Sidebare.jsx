@@ -9,12 +9,10 @@ import { GiBookCover } from "react-icons/gi";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import { logoutUser } from "../redux/api/authApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import swal from "sweetalert"
+import { useEffect, useState } from "react";
 
-const AdminLinks = [
-  { name: "Utilisateurs", href: "/utilisateurs", icon: <FaUserShield /> },
-  { name: "Centres", href: "/centres", icon: <FaSchool /> },
-];
 const Links = [
   { name: "Eleves", href: "/eleves", icon: <PiStudent /> },
   { name: "Enseignants", href: "/enseignats", icon: <FaUserTie /> },
@@ -25,10 +23,32 @@ const Links = [
 ];
 
 const Sidebare = ({ open }) => {
+  const {user} = useSelector(state=>state.auth)
+  const AdminLinks = [
+  { name: "Utilisateurs", href: "/utilisateurs", icon: <FaUserShield />,isShow:user?.isOwner },
+  { name: "Centres", href: "/centres", icon: <FaSchool />,isShow:user?.isOwner },
+];
   const dispatch=useDispatch()
   const handelLogout = ()=>{
-  dispatch(logoutUser())
+    setIsLogout(true)
+
 }
+const [isLogout,setIsLogout] = useState(false)
+useEffect(() => {
+  if (isLogout) {
+    swal({
+      title: "Êtes-vous sûr por déconnecter ?",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((isOk) => {
+      if (isOk) {
+        dispatch(logoutUser(()=>setIsLogout(false)));
+      }
+      setIsLogout(false);
+    });
+  }
+}, [isLogout, dispatch]);
   return (
     <aside
       className={`flex h-screen  ${
@@ -48,6 +68,7 @@ const Sidebare = ({ open }) => {
           <div className="px-2">
             <div className="py-4">
               {AdminLinks.map((l, i) => (
+                l.isShow && 
                 <Tooltip
                   content={l.name}
                   showArrow

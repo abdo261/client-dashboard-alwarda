@@ -106,7 +106,7 @@ const Create = ({ isOpen, onOpenChange, onCreateChangeOpen }) => {
                 }
               >
                 {types.map((s) => (
-                  <SelectItem value={s} key={s}>
+                  <SelectItem value={s} key={s} className="dark:text-white">
                     {s}
                   </SelectItem>
                 ))}

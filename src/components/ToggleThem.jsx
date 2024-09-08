@@ -25,7 +25,7 @@ const ToggleThem = ({ size = "sm" }) => {
       {" "}
       <Button
         isIconOnly
-        className="text-lg"
+        className="text-lg "
         radius="full"
         variant="bordered"
         onClick={toggleDark}
