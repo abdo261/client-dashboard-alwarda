@@ -1,6 +1,6 @@
 import { FaSchool } from "react-icons/fa";
 import { PiStudent } from "react-icons/pi";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { Tooltip } from "@nextui-org/react";
 import { FaUserShield } from "react-icons/fa6";
@@ -10,7 +10,7 @@ import { FaHandHoldingUsd } from "react-icons/fa";
 import { FaUserTie } from "react-icons/fa";
 import { logoutUser } from "../redux/api/authApi";
 import { useDispatch, useSelector } from "react-redux";
-import swal from "sweetalert"
+import swal from "sweetalert";
 import { useEffect, useState } from "react";
 
 const Links = [
@@ -23,32 +23,47 @@ const Links = [
 ];
 
 const Sidebare = ({ open }) => {
-  const {user} = useSelector(state=>state.auth)
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
   const AdminLinks = [
-  { name: "Utilisateurs", href: "/utilisateurs", icon: <FaUserShield />,isShow:user?.isOwner },
-  { name: "Centres", href: "/centres", icon: <FaSchool />,isShow:user?.isOwner },
-];
-  const dispatch=useDispatch()
-  const handelLogout = ()=>{
-    setIsLogout(true)
-
-}
-const [isLogout,setIsLogout] = useState(false)
-useEffect(() => {
-  if (isLogout) {
-    swal({
-      title: "Êtes-vous sûr por déconnecter ?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((isOk) => {
-      if (isOk) {
-        dispatch(logoutUser(()=>setIsLogout(false)));
-      }
-      setIsLogout(false);
-    });
-  }
-}, [isLogout, dispatch]);
+    {
+      name: "Utilisateurs",
+      href: "/utilisateurs",
+      icon: <FaUserShield />,
+      isShow: user?.isOwner,
+    },
+    {
+      name: "Centres",
+      href: "/centres",
+      icon: <FaSchool />,
+      isShow: user?.isOwner,
+    },
+  ];
+  const dispatch = useDispatch();
+  const handelLogout = () => {
+    setIsLogout(true);
+  };
+  const [isLogout, setIsLogout] = useState(false);
+  useEffect(() => {
+    if (isLogout) {
+      swal({
+        title: "Êtes-vous sûr por déconnecter ?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((isOk) => {
+        if (isOk) {
+          dispatch(
+            logoutUser(() => {
+              setIsLogout(false);
+              navigate("/");
+            })
+          );
+        }
+        setIsLogout(false);
+      });
+    }
+  }, [isLogout, dispatch,navigate]);
   return (
     <aside
       className={`flex h-screen  ${
@@ -67,27 +82,29 @@ useEffect(() => {
         <div className="border-t border-gray-100">
           <div className="px-2">
             <div className="py-4">
-              {AdminLinks.map((l, i) => (
-                l.isShow && 
-                <Tooltip
-                  content={l.name}
-                  showArrow
-                  placement="right"
-                  size="lg"
-                  color="foreground"
-                  radius="sm"
-                  delay={0}
-                  closeDelay={0}
-                  key={i}
-                >
-                  <NavLink
-                    to={l.href}
-                    className={` group relative flex justify-center rounded p-2  text-gray-500 hover:bg-gray-100 hover:text-gray-700 text-2xl `}
-                  >
-                    {l.icon}
-                  </NavLink>
-                </Tooltip>
-              ))}
+              {AdminLinks.map(
+                (l, i) =>
+                  l.isShow && (
+                    <Tooltip
+                      content={l.name}
+                      showArrow
+                      placement="right"
+                      size="lg"
+                      color="foreground"
+                      radius="sm"
+                      delay={0}
+                      closeDelay={0}
+                      key={i}
+                    >
+                      <NavLink
+                        to={l.href}
+                        className={` group relative flex justify-center rounded p-2  text-gray-500 hover:bg-gray-100 hover:text-gray-700 text-2xl `}
+                      >
+                        {l.icon}
+                      </NavLink>
+                    </Tooltip>
+                  )
+              )}
             </div>
 
             <ul className="space-y-1 border-t border-gray-100 pt-4">
@@ -119,7 +136,7 @@ useEffect(() => {
       </div>
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 p-2">
-        <div >
+        <div>
           <Tooltip
             content={"Déconnecter"}
             showArrow
@@ -133,7 +150,7 @@ useEffect(() => {
           >
             <span>
               <button
-              onClick={handelLogout}
+                onClick={handelLogout}
                 type="submit"
                 className="group relative flex w-full justify-center rounded-lg p-2 text-gray-500  dark:text-gray-300 hover:bg-red-400  hover:text-white text-2xl"
               >
