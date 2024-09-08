@@ -28,6 +28,7 @@ const Create = ({ isOpen, onOpenChange }) => {
   const dispatch = useDispatch();
   const { centres } = useSelector((state) => state.centre);
   const { levels } = useSelector((state) => state.level);
+  const {user}=useSelector(state=>state.auth)
   const { loading, errorValidation } = useSelector((state) => state.student);
   const { subjects, loading: subjectsLoading } = useSelector(
     (state) => state.subject
@@ -71,7 +72,7 @@ const Create = ({ isOpen, onOpenChange }) => {
 
     dispatch(
       createStudent(
-        { ...formData, registrationDate: isoDate, registredBy: 1 },
+        { ...formData, registrationDate: isoDate, },
         () => onOpenChange()
       )
     );
@@ -297,7 +298,7 @@ const Create = ({ isOpen, onOpenChange }) => {
                   }
                 >
                   {centres?.map((centre) => (
-                    <SelectItem className="dark:text-white" key={centre.id}>
+                    <SelectItem className="dark:text-white" key={centre.id} endContent={centre?.user?.id ===user.id && "Votre Centre ici"}>
                       {centre.name}
                     </SelectItem>
                   ))}

@@ -10,6 +10,7 @@ export const getCentres = (cb) => async (dispatch) => {
     // 
     const response = await request.get("/centres");
     dispatch(centreActions.setCentres(response.data));
+    console.log(response)
   } catch (error) {
    
     // dispatch(centreActions.setError(null));
