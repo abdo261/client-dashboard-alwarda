@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, getUsers } from "../../redux/api/userApi";
 import { CgDanger } from "react-icons/cg";
 import ErrorAlert from "../../components/ErrorAlert";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const List = () => {
   useEffect(() => {
@@ -93,7 +94,7 @@ const List = () => {
         setItemToDelete(null);
       });
     }
-  }, [itemToDelete,dispatch]);
+  }, [itemToDelete, dispatch]);
   console.log(error);
   return (
     <>
@@ -121,7 +122,7 @@ const List = () => {
           variant="flat"
           onPress={onCreateOpen}
         >
-            Nouveau
+          Nouveau
         </Button>
       </div>
       {error && (
@@ -202,15 +203,21 @@ const List = () => {
                         </Chip>
                       </td>
                       <td className="whitespace-nowrap tracking-wider px-4 py-2 text-gray-700 dark:text-gray-200 w-auto text-center">
-                        <Chip
-                          variant={c.centre ? "bordered" : "flat"}
-                          color={c.centre ? "default" : "danger"}
-                          startContent={c.centre && <FaSchool />}
-                          size="lg"
-                          radius="sm"
-                        >
-                          {c.centre ? c.centre.name : <CgDanger />}
-                        </Chip>
+                        {c.isOwner ? (
+                          <Chip variant="flat" color="success" startContent={ <MdOutlineAdminPanelSettings className="text-xl"/>}>
+                           Admin
+                          </Chip>
+                        ) : (
+                          <Chip
+                            variant={c.centre ? "bordered" : "flat"}
+                            color={c.centre ? "default" : "danger"}
+                            startContent={c.centre && <FaSchool />}
+                            size="lg"
+                            radius="sm"
+                          >
+                            {c.centre ? c.centre.name : <CgDanger />}
+                          </Chip>
+                        )}
                       </td>
 
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-200 w-full ">

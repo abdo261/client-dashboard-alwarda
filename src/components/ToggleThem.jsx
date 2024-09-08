@@ -21,11 +21,12 @@ const ToggleThem = ({ size = "sm" }) => {
     <motion.span
       whileTap={{ rotate: "360deg", scale: 0.6 }}
       transition={{ duration: 0.3 }}
+      className="cursor-none"
     >
       {" "}
       <Button
         isIconOnly
-        className="text-lg "
+        className="text-lg cursor-pointer"
         radius="full"
         variant="bordered"
         onClick={toggleDark}

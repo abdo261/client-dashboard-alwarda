@@ -59,8 +59,8 @@ const Home = () => {
 
             <div className=" bg-white rounded-lg flex flex-col items-center p-3 dark:bg-[#242526] dark:text-white">
               <h1 className="font-bold lg:text-3xl text-xl">
-                {user?.centre?.name}
-                <Chip>{user?.countSex.HOMME + user?.countSex.FEMME}</Chip>
+                {user?.centre?.name || "Vous n'avez aucun centre"}
+                
               </h1>
               <PieChart
                 boysCount={user?.countSex.HOMME}
