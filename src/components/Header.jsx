@@ -5,8 +5,10 @@ import { RiMenu3Line } from "react-icons/ri";
 
 import ToggleThem from "./ToggleThem";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = ({ toggleSideBare, open }) => {
+  const {user} = useSelector(state=>state.auth)
   return (
     <header
       className={`fixed top-0 right-0  z-[100] ${
@@ -26,9 +28,9 @@ const Header = ({ toggleSideBare, open }) => {
         <ToggleThem />
         <div className="flex items-center gap-2">
           <Link to="/" className="flex flex-col items-end ">
-            <span className="text-xs sm:text-medium font-semibold">Abdellah Ait Bachikh</span>
+            <span className="text-xs sm:text-medium font-semibold">{user.firstName + " " + user.lastName}</span>
             <span className="text-[10px] sm:text-sm font-semibold text-gray-400">
-              @Responsable
+            {user.isOwner ? "@Admin" :" @Responsable" } 
             </span>
           </Link>
           <Avatar isBordered className="flex-shrink-0" />

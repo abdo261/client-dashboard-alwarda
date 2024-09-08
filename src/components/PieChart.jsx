@@ -1,5 +1,6 @@
 
 import ReactApexChart from 'react-apexcharts';
+import ErrorAlert from './ErrorAlert';
 
 const PieChart = ({girlsCount=50,boysCount=50,breakpoint=280,width=280,widthChart=280}) => {
 
@@ -30,7 +31,10 @@ const PieChart = ({girlsCount=50,boysCount=50,breakpoint=280,width=280,widthChar
 
   return (
     <div className="pie-chart">
-      <ReactApexChart options={data.options} series={data.series} type="pie" width="280"  />
+      {
+        (girlsCount===0 && boysCount===0 ) ? (<ErrorAlert variant='warning' className="mt-4" message="Aucun étudiant"/>):( <ReactApexChart options={data.options} series={data.series} type="pie" width="280"  />)
+      }
+     
     </div>
   );
 };

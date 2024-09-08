@@ -62,7 +62,12 @@ const Create = ({ isOpen, onOpenChange }) => {
   };
   useEffect(() => {
     if (isOpen) {
-      setFormData({ name: "", color: "", location: "" });
+      setFormData({     firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        phone: "",
+        centreId: "",});
       dispatch(userActions.setErrorValidation(null));
       dispatch(getCentres());
     }
