@@ -51,3 +51,7 @@ a.active span {
   stroke-dasharray: 125.6;
   transform: rotate(-90deg);
 }
+
+input{
+  touch-action: manipulation;
+}
