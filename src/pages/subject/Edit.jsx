@@ -150,30 +150,12 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
                   defaultSelectedKeys={[subject ?  subject?.levelId + "" : "" ]}
                 >
                   {levels?.map((level) => (
-                    <SelectItem key={level.id} value={level.id}>
+                    <SelectItem key={level.id} value={level.id} className="dark:text-white" endContent={level.type}>
                       {level.name}
                     </SelectItem>
                   ))}
                 </Select>
-                <Select
-                  size="sm"
-                  label="Type d'École"
-                  placeholder="Sélectionnez Le Type d'École"
-                  variant="bordered"
-                  onChange={(e) => handleChange("school", e.target.value)}
-                  value={formData.school}
-                  defaultSelectedKeys={[subject ?  subject?.school : ""]}
-                >
-                  <SelectItem key="COLLEGE" value="COLLEGE">
-                    College
-                  </SelectItem>
-                  <SelectItem key="LYCEE" value="LYCEE">
-                    Lycee
-                  </SelectItem>
-                  <SelectItem key="ECOLE_PRIMAIRE" value="ECOLE_PRIMAIRE">
-                    Ecole Primaire
-                  </SelectItem>
-                </Select>
+             
               </>
             ) : (
               <div className="py-6 flex w-full justify-center">

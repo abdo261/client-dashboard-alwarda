@@ -11,14 +11,14 @@ import { FaSchool } from "react-icons/fa";
 import { CgDanger } from "react-icons/cg";
 
 // Replace with your server URL
-const SOCKET_SERVER_URL = "http://localhost:5000";
-const token = localStorage.getItem("session_user")
-  ? JSON.parse(localStorage.getItem("session_user")).token
-  : null;
+const SOCKET_SERVER_URL = process.env.REACT_APP_SOKET_URL;
 
 const Home = () => {
   const { user: loginUser } = useSelector((state) => state.auth);
   const { user, users } = useSelector((state) => state.user);
+  const token = localStorage.getItem("session_user")
+  ? JSON.parse(localStorage.getItem("session_user")).token
+  : null;
 
   useEffect(() => {
     document.title = "Alwarda | Accueil";
@@ -33,17 +33,20 @@ const Home = () => {
 
   const [connectedClients, setConnectedClients] = useState([]);
   useEffect(() => {
-    const newSocket = io(SOCKET_SERVER_URL);
-    newSocket.on("connect", () => {
-      newSocket.emit("conectCLintId", token);
-    });
-    newSocket.on("connectedClients", (clients) => {
-      setConnectedClients(clients);
-    });
-    return () => {
-      newSocket.close();
-    };
-  }, []);
+    if (token) {
+      const newSocket = io(SOCKET_SERVER_URL);
+      newSocket.on("connect", () => {
+        newSocket.emit("conectCLintId", token);
+      });
+      newSocket.on("connectedClients", (clients) => {
+        setConnectedClients(clients);
+      });
+
+      return () => {
+        newSocket.close();
+      };
+    }
+  }, [token]);
   return (
     <>
       {loginUser && user ? (
@@ -184,8 +187,18 @@ const Home = () => {
                     </td>
 
                     <td className="whitespace-nowrap tracking-wider px-2 py-1 text-gray-700 dark:text-gray-200 w-auto text-center">
-                    <Chip variant="flat" color={connectedClients.includes(user.id) ? "success" : "default" }size="sm">
-                       {connectedClients.includes(user.id)  ? "Conecté" : "Déconnecter"}
+                      <Chip
+                        variant="flat"
+                        color={
+                          connectedClients.includes(user.id)
+                            ? "success"
+                            : "default"
+                        }
+                        size="sm"
+                      >
+                        {connectedClients.includes(user.id)
+                          ? "Conecté"
+                          : "Déconnecter"}
                       </Chip>
                     </td>
 

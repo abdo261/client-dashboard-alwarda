@@ -467,7 +467,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
                       }}
                       errorValidation={errorValidation}
                     />
-                    <Checkbox isSelected={currentMonth} onValueChange={setCurrentMonth} />
+                    <Checkbox isSelected={currentMonth} onValueChange={setCurrentMonth}>Inclure le mois en cours dans les mises à jour des Matières</Checkbox>
                     </>
                   )}
                 </div>
