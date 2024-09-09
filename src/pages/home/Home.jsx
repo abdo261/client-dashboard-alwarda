@@ -6,11 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserById, getUsers } from "../../redux/api/userApi";
 import { Chip, Spinner } from "@nextui-org/react";
 import io from "socket.io-client";
-import { HiMail } from "react-icons/hi";
 import { FaSchool } from "react-icons/fa";
 import { CgDanger } from "react-icons/cg";
 
-// Replace with your server URL
+
 const SOCKET_SERVER_URL = process.env.REACT_APP_SOKET_URL;
 
 const Home = () => {
