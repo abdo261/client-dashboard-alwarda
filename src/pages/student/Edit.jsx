@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Chip,
   DatePicker,
   Input,
@@ -28,6 +29,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
   const dispatch = useDispatch();
   const { centres } = useSelector((state) => state.centre);
   const { levels } = useSelector((state) => state.level);
+  const [currentMonth,setCurrentMonth]=useState(false)
   const { loading, errorValidation, student } = useSelector(
     (state) => state.student
   );
@@ -45,6 +47,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
     centreId: "",
     levelId: "",
     subjectIds: [],
+    currentMonth:false
   });
   const [subjectsIds, setSubjectsIds] = useState([]);
   useEffect(() => {
@@ -98,6 +101,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
         itemToEdit,
         {
           ...formData,
+          currentMonth:currentMonth,
           subjectsIds: formData.subjectIds.map((s) => parseInt(s)),
         },
         openChange
@@ -115,6 +119,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
       centreId: "",
       levelId: "",
       subjectIds: [],
+      currentMonth:false
     });
     setSubjectsIds([]); // Clear subjects as well
   };
@@ -129,6 +134,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
     if (student) {
       setFormData({
         ...student,
+        currentMonth:false,
         subjectIds:
           student.subjects.length > 0
             ? student.subjects.map((s) => s.id + "")
@@ -448,7 +454,7 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
                         choisire chine niveau pour selectioné les matiértes
                       </Chip>
                     </div>
-                  ) : (
+                  ) : (<>
                     <SelectMaterialEdit
                       subjects={subjects}
                       selectedKeys={subjectsIds}
@@ -461,6 +467,8 @@ const Edit = ({ isOpen, onOpenChange, itemToEdit, SelectEditItem }) => {
                       }}
                       errorValidation={errorValidation}
                     />
+                    <Checkbox isSelected={currentMonth} onValueChange={setCurrentMonth} />
+                    </>
                   )}
                 </div>
               )}
