@@ -30,7 +30,7 @@ const List = () => {
   }, []);
   const dispatch = useDispatch();
   const { levels, loading, error } = useSelector((state) => state.level);
-
+  const {user } = useSelector(state=>state.auth)
   const getLevelsCallback = useCallback(() => {
     dispatch(getLevels());
   }, [dispatch]);
@@ -181,7 +181,7 @@ const List = () => {
                   </th>
                   <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
                     <div className="w-full flex justify-end">
-                      {filteredLevels && (
+                      {user && user.isOwner &&  filteredLevels && (
                         <Chip variant="flat" color="success" size="lg">
                           Total {filteredLevels.length}
                         </Chip>

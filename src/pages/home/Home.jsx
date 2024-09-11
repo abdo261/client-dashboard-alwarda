@@ -129,7 +129,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className=" bg-white rounded-lg flex flex-col items-center p-3 dark:bg-[#242526] dark:text-white">
+            {/* <div className=" bg-white rounded-lg flex flex-col items-center p-3 dark:bg-[#242526] dark:text-white">
               <h1 className="font-bold lg:text-3xl text-xl">
                 Totale D'élèves{" "}
                 <Chip>{user?.countSex.HOMME + user?.countSex.FEMME}</Chip>
@@ -138,7 +138,7 @@ const Home = () => {
                 boysCount={user?.countSex.HOMME}
                 girlsCount={user?.countSex.FEMME}
               />
-            </div>
+            </div> */}
           </div>
         )
       ) : (
@@ -146,7 +146,8 @@ const Home = () => {
           <Spinner label="Chargement ..." size="lg" />
         </div>
       )}
-      <div className="rounded-lg border border-gray-200 w-full h-fit overflow-y-auto dark:border-gray-700 mt-4 ">
+      {user?.isOwner && 
+        <div className="rounded-lg border border-gray-200 w-full h-fit overflow-y-auto dark:border-gray-700 mt-4 ">
         <div className="overflow-x-auto rounded-t-lg w-full justify-center shadow-[0px_0px_7px_-2px_rgba(0,0,0,0.75)]">
           <table className="min-w-full divide-y-2 divide-gray-200 bg-white dark:divide-gray-700 dark:bg-[#43474b] text-xs">
             <thead className="ltr:text-left rtl:text-right">
@@ -240,6 +241,8 @@ const Home = () => {
           </table>
         </div>
       </div>
+      }
+      
     </>
   );
 };

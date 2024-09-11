@@ -20,9 +20,13 @@ const App = () => {
         {user ? (
           <>
             {homeRoutes}
-            {centerRoutes}
+            {user.isOwner && (
+              <>
+                {centerRoutes}
+                {utilisateurRoutes}
+              </>
+            )}
             {studentRoutes}
-            {utilisateurRoutes}
             {teacherRoutes}
             {levelRoutes}
             {subjectRoutes}

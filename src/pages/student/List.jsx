@@ -32,7 +32,7 @@ const List = () => {
   useEffect(() => {
     document.title = "Alwarda | Etudients";
   }, []);
-
+  const {user } = useSelector(state=>state.auth)
   const {
     students,
     loading: studentsLoading,
@@ -188,7 +188,7 @@ const List = () => {
                     Inscrit Le
                   </th>
                   <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
-                    {students && (
+                    {user && user.isOwner && students && (
                       <Chip variant="flat" color="success" size="lg">
                         Total {students?.length}
                       </Chip>

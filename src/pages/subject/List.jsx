@@ -48,7 +48,7 @@ const SubjectList = () => {
     getSubjectsCallback();
     getLevelsCallback();
   }, [getSubjectsCallback, getLevelsCallback]);
-
+  const {user } = useSelector(state=>state.auth)
   const [searchItem, setSearchItem] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [page, setPage] = useState(1);
@@ -203,7 +203,7 @@ const SubjectList = () => {
                   </th>
                   <th className="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
                     <div className="w-full flex justify-end">
-                      {subjects && (
+                      {user && user.isOwner  && subjects && (
                         <Chip variant="flat" color="success" size="lg">
                           Total {filteredSubjects.length}
                         </Chip>

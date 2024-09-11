@@ -50,7 +50,7 @@ const List = ({ schoolType }) => {
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
-
+  const {user } = useSelector(state=>state.auth)
   useEffect(() => {
     dispatch(getstudentsByPaymentsSchool(schoolType));
     dispatch(getLevelsBySchool(schoolType));
@@ -315,7 +315,7 @@ const List = ({ schoolType }) => {
 
                     <th className="whitespace-nowrap px-4 py-2  text-gray-900 dark:text-white ">
                       <div className="w-full flex justify-end">
-                        {students && (
+                        {user && user.isOwner && students && (
                           <Chip variant="flat" color="success" size="lg">
                             Total {totalFilteredStudents}
                           </Chip>
